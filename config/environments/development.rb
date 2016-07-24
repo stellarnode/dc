@@ -27,7 +27,7 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -51,6 +51,19 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # SMTP settings for mailgun
+  config.action_mailer.perform_deliveries = true
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = {
+    :port           => 587,
+    :address        => "smtp.mailgun.org",
+    :domain         => ENV['mailgun_domain'],
+    :user_name      => ENV['mailgun_login'],
+    :password       => ENV['mailgun_password'],
+    :authentication => :plain,
+  }
+
 
   # Needed by Devise gem
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

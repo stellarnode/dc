@@ -81,6 +81,18 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  # SMTP settings for mailgun
+  config.action_mailer.perform_deliveries = true
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = {
+    :port           => 587,
+    :address        => "smtp.mailgun.org",
+    :domain         => ENV['mailgun_domain'],
+    :user_name      => ENV['mailgun_login'],
+    :password       => ENV['mailgun_password'],
+    :authentication => :plain,
+  }
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end

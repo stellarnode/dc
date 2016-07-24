@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   	include Pundit
   	protect_from_forgery with: :exception, prepend: true
-	before_filter :ensure_signup_complete, only: [:new, :create, :update, :destroy]
-  
+	before_action :ensure_signup_complete, only: [:new, :create, :update, :destroy]
+
 	def ensure_signup_complete
 	  # Ensure we don't go into an infinite loop
 	  return if action_name == 'finish_signup'
@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
 	end
 
 	rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-	
+
 	private
-	
+
 	def user_not_authorized
 	  flash[:alert] = "You are not authorized to perform this action."
 	  redirect_to(request.referrer || root_path)
-	end	
+	end
 end

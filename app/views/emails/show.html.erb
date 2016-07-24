@@ -1,0 +1,16 @@
+<h2><%= @email.subject %></h2>
+<p>
+  <strong>To:</strong> <%= @email.to %>
+</p>
+<p>
+  <strong>Subject:</strong> <%= @email.subject %>
+</p>
+<p><strong>Sent on</strong> <%= @email.created_at %></p>
+<p><%= @email.body %></p>
+
+<p>
+  <%= link_to "All Emails", user_emails_path(current_user) %> |
+  <%= link_to "Delete", user_email_path(current_user, @email),
+                        method: :delete,
+                        data: { confirm: "Are you sure?" } %>
+</p>

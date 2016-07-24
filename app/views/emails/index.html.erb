@@ -1,0 +1,19 @@
+<h2>Email Messages You Sent</h2>
+
+<br />
+
+<% @emails.each do |email| %>
+  <h3><%= link_to email.subject, user_email_path(current_user, email) %></h3>
+  <p><%= truncate(email.body, length: 100) %></p>
+  <p><em>Sent on <%= email.created_at %></em></p>
+  <hr />
+<% end %>
+
+<% if @emails.size == 0 %>
+<p>
+  You have not sent any emails yet.
+</p>
+<% end %>
+
+<p></p>
+<%= link_to "New Email", new_user_email_path, class: "btn btn-lg btn-primary" %>

@@ -1,0 +1,17 @@
+<h1>Chat</h1>
+
+<br />
+
+<div id="message_view">
+
+  <% if @chat_messages.any? %>
+  <ul>
+    <%= render partial: 'chat_message', collection: @chat_messages %>
+  </ul>
+  <% end %>
+
+</div>
+
+<br />
+
+<%= render partial: 'form', locals: { chat_message: current_user.chat_messages.build } %>

@@ -52,10 +52,9 @@ gem 'omniauth-facebook'
 gem 'carrierwave'
 
 gem 'sidekiq'
-gem 'faye'
-gem 'thin', require: false
-gem 'render_sync'
 gem 'crono'
+
+gem 'sprockets', '3.6.3' # Delete version number once Sprockets 4.0 become available
 
 gem 'rack', '~> 2.0.1'
 
