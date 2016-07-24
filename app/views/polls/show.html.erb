@@ -24,7 +24,7 @@
   <% if @voted || @poll.status == 3 %>
     <b> &rArr; <span style="color: orange">
     <%= Vote.where(:option_id => option.id).count %>
-    </span></b></p>
+    </span></b><span style="color: red"></span></p>
   <% end %> 
 <% end %>
 

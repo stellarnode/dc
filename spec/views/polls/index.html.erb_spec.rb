@@ -7,14 +7,14 @@ RSpec.describe "polls/index", type: :view do
         :title => "Title",
         :body => "MyText",
         :status => 2,
-        :poll_type => 3,
+        :type => 3,
         :user => nil
       ),
       Poll.create!(
         :title => "Title",
         :body => "MyText",
         :status => 2,
-        :poll_type => 3,
+        :type => 3,
         :user => nil
       )
     ])

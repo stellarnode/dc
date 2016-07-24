@@ -1,6 +1,6 @@
 class PollsController < ApplicationController
   before_action :authenticate_user!
-  before_filter :set_cache_headers, only: [:voting, :show ]
+  before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index, :my_index]
   before_action :user_can_vote?,    only: [:voting, :show]
@@ -85,8 +85,6 @@ class PollsController < ApplicationController
   def update
     respond_to do |format|
       if @poll.update(poll_params) && save_poll_options #&& check_poll_datetime
-        #save_poll_options
-        byebug
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else

@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :post do
-    title "MyString"
-    body "MyText"
-    user nil
+    title FFaker::Lorem.phrase
+    body FFaker::Lorem.paragraphs 3
+    user_id nil
     is_pinned false
     is_draft false
     comments_count 1

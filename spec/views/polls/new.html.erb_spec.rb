@@ -6,7 +6,7 @@ RSpec.describe "polls/new", type: :view do
       :title => "MyString",
       :body => "MyText",
       :status => 1,
-      :poll_type => 1,
+      :type => 1,
       :user => nil
     ))
   end
@@ -22,7 +22,7 @@ RSpec.describe "polls/new", type: :view do
 
       assert_select "input#poll_status[name=?]", "poll[status]"
 
-      assert_select "input#poll_poll_type[name=?]", "poll[poll_type]"
+      assert_select "input#poll_type[name=?]", "poll[type]"
 
       assert_select "input#poll_user_id[name=?]", "poll[user_id]"
     end

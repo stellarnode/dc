@@ -1,11 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "posts/new", type: :view do
+RSpec.describe "posts/new", :type => :view do
+
+  let (:user) {
+    FactoryGirl.create(:user)
+  }
+
   before(:each) do
     assign(:post, Post.new(
       :title => "MyString",
       :body => "MyText",
-      :user => nil,
+      :user_id => user.id,
       :is_pinned => false,
       :is_draft => false,
       :comments_count => 1
@@ -20,8 +25,6 @@ RSpec.describe "posts/new", type: :view do
       assert_select "input#post_title[name=?]", "post[title]"
 
       assert_select "textarea#post_body[name=?]", "post[body]"
-
-      assert_select "input#post_user_id[name=?]", "post[user_id]"
 
       assert_select "input#post_is_pinned[name=?]", "post[is_pinned]"
 

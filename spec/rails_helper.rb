@@ -5,6 +5,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -25,6 +26,8 @@ require 'rspec/rails'
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -51,7 +54,16 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   # Filter lines from Rails gems in backtraces.
-  config.filter_rails_from_backtrace!
+  # config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.include RequestHelpers, :type => :request
+
+  config.include Devise::TestHelpers, type: :controller
+  #config.include Devise::TestHelpers, type: :view
+  #config.include Devise::TestHelpers, type: :request
+
+  config.include FactoryGirl::Syntax::Methods
+  config.include Capybara::DSL
 end

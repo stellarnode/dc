@@ -1,6 +1,5 @@
 <%= simple_form_for(@poll) do |f| %>
   <%= f.error_notification %>
-    <%= action_name %>
     <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your question here" %> 
     <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your description here", 
     :input_html => {rows: 7} %>
@@ -23,7 +22,7 @@
           <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
         </div>
         <br>
-        <input type="button" class="btn btn-primary" value="Add another option (max. 20)" onClick="addInput('dynamicInput');">
+        <input type="button" class="btn btn-primary" value="Add another option (max. 20)" onClick="addInput('dynamicInput', counter);">
         <p></p>
       <% when 'edit', 'create', 'update' %>
         <%= f.input :poll_type, as: :select, collection: 

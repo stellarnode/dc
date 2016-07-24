@@ -23,12 +23,17 @@ RSpec.describe PollsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Poll. As you add validations to Poll, be sure to
   # adjust the attributes here as well.
+  let (:user) {
+    FactoryGirl.create(:user)
+  }
+
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {title: 'Superpoll', body: 'Superpoll', start: "2016-07-11 11:20:01", finish: "2016-07-11 11:20:03", 
+      status: 1, poll_type: 1, user_id: user.id }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {title: nil, body: nil, start: nil, finish: nil, status: nil, poll_type: nil, user_id: user.id }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -103,14 +108,15 @@ RSpec.describe PollsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {title: 'Superpoll2', body: 'Superpoll2', start: "2016-07-11 11:20:03", finish: "2016-07-11 11:20:05", 
+      status: 2, poll_type: 2, user_id: user.id }
       }
 
       it "updates the requested poll" do
         poll = Poll.create! valid_attributes
         put :update, params: {id: poll.to_param, poll: new_attributes}, session: valid_session
         poll.reload
-        skip("Add assertions for updated state")
+        expect(assigns(:poll)).to eq(poll)
       end
 
       it "assigns the requested poll as @poll" do
