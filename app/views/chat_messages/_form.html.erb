@@ -1,10 +1,10 @@
-<%= form_for(chat_message, remote: true) do |f| %>
+<%= form_for(chat_message, remote: true, id: "new_message") do |f| %>
 
   <div class="field form-group">
-    <%= f.text_area :message, rows: "3", autofocus: "on", autocomplete: "off", class: "form-control", placeholder: "Type your message..." %>
+    <%= f.text_area :message, rows: "3", autofocus: "on", autocomplete: "off", class: "form-control", id: "message_form", placeholder: "Type your message..." %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Send", class: "btn btn-success message-btn" %>
+    <%= f.submit "Send", id: "message_submit", class: "btn btn-success message-btn" %>
   </div>
 <% end %>

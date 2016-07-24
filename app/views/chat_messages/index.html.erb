@@ -5,7 +5,7 @@
 <div id="message_view">
 
   <% if @chat_messages.any? %>
-  <ul>
+  <ul id="list_of_messages">
     <%= render partial: 'chat_message', collection: @chat_messages %>
   </ul>
   <% end %>
@@ -14,4 +14,4 @@
 
 <br />
 
-<%= render partial: 'form', locals: { chat_message: current_user.chat_messages.build } %>
+<%= render partial: 'form', locals: { chat_message: @chat_message } %>
