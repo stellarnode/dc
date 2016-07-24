@@ -1,5 +1,5 @@
 <li>
-  <strong>
+  <strong class=<%= current_user.email == chat_message.user.email ? "current_user" : "" %>>
     <%= chat_message.user.email %>:
   </strong>
     <%= chat_message.message %>

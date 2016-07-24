@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource 		:profile, only: [:show, :edit, :update ]
   resources 	:flats
   resources 	:posts
+  resources   :chat_messages
 
   devise_for 	:users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
 
@@ -21,6 +22,8 @@ Rails.application.routes.draw do
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
+
+  mount ActionCable.server => '/cable'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

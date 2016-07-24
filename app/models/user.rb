@@ -1,19 +1,20 @@
 class User < ApplicationRecord
-  
+
   TEMP_EMAIL_PREFIX = 'dc@user'
   TEMP_EMAIL_REGEX = /\Adc@user/
-  
+
   after_create :create_profile
   has_one :profile, dependent: :destroy
   has_many :posts
   has_many :identities, dependent: :destroy
   has_many :emails, dependent: :destroy
   has_many :polls, -> { includes :options }
+  has_many :chat_messages
   accepts_nested_attributes_for :polls
   has_many :votes
 
   rolify
-  
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
   devise :invitable, :database_authenticatable, :registerable,
@@ -69,5 +70,5 @@ class User < ApplicationRecord
 
   def create_profile
     Profile.create(user: self)
-  end 
+  end
 end
