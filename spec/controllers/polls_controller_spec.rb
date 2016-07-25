@@ -15,7 +15,7 @@ RSpec.describe PollsController, type: :controller do
   }
 
   let(:valid_attributes) {
-    { title: 'Superpoll', body: 'Superpoll', start: "2016-12-31 11:20:01", finish: "valid_options 11:20:03", 
+    { title: 'Superpoll', body: 'Superpoll', start: "2016-12-31 11:20:01", finish: "2016-12-31 11:20:03", 
       status: 1, poll_type: 1, user_id: @user.id }
   }
 
