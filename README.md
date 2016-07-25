@@ -2,7 +2,9 @@
 
 To run this application, remember to do the following (instructions given for Mac OS):
 
-* Install Redis: `brew install redis`
+* For Mac OS: install Redis: `brew install redis`
+
+* For Win: install Redis from: https://github.com/MSOpenTech/redis/releases. Reload the computer. Redis server will start automaticly
 
 * Run Redis server: `/usr/local/bin/redis-server` (in a separate terminal window)
 
