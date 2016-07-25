@@ -9,8 +9,8 @@ class User < ApplicationRecord
   has_many :identities, dependent: :destroy
   has_many :emails, dependent: :destroy
   has_many :polls, -> { includes :options }
-  has_many :chat_messages
   accepts_nested_attributes_for :polls
+  has_many :chat_messages
   has_many :votes
 
   rolify

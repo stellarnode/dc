@@ -1,13 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe "polls/new", type: :view do
+  
+  let (:user) {
+    FactoryGirl.create(:user)
+  }
+
   before(:each) do
     assign(:poll, Poll.new(
       :title => "MyString",
       :body => "MyText",
-      :status => 1,
-      :type => 1,
-      :user => nil
+      :status => 2,
+      :start => "2016-12-31 11:20:01",
+      :finish => "2016-12-31 12:20:01",
+      :poll_type => 1,
+      :user => user
     ))
   end
 

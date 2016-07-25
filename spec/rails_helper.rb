@@ -60,7 +60,9 @@ RSpec.configure do |config|
 
   config.include RequestHelpers, :type => :request
 
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::TestHelpers, type: :controller # For Devise 4.1.1
+  #config.include Devise::Test::ControllerHelpers        # For Devise 4.2.0
+  config.extend ControllerMacros, :type => :controller
   #config.include Devise::TestHelpers, type: :view
   #config.include Devise::TestHelpers, type: :request
 
