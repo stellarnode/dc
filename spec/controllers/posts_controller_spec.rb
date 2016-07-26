@@ -11,11 +11,11 @@ RSpec.describe PostsController, :type => :controller do
   
   let(:valid_attributes) {
     { title: 'Superpost', body: 'jshd dgb', user_id: user.id, is_pinned: true, is_draft: true, 
-      comments_count: 2 }
+      commentable: true }
   }
 
   let(:invalid_attributes) {
-    { title: nil, body: nil, user_id: user.id, is_pinned: true, is_draft: true, comments_count: 1 }
+    { title: nil, body: nil, user_id: user.id, is_pinned: true, is_draft: true, commentable: true }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -90,7 +90,7 @@ RSpec.describe PostsController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        {title: 'Superpost2', body: 'jshd dgb swf', user_id: user.id, is_pinned: true, is_draft: true, comments_count: 2}
+        {title: 'Superpost2', body: 'jshd dgb swf', user_id: user.id, is_pinned: true, is_draft: true, commentable: true}
       }
 
       it "updates the requested post" do

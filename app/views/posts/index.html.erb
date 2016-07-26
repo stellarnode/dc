@@ -23,7 +23,7 @@
         <td><%= post.user %></td>
         <td><%= post.is_pinned %></td>
         <td><%= post.is_draft %></td>
-        <td><%= post.comments_count %></td>
+        <td><%= post.commentable %></td>
         <td><%= link_to 'Show', post %></td>
         <td><%= link_to 'Edit', edit_post_path(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>

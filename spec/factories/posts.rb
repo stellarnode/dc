@@ -5,6 +5,6 @@ FactoryGirl.define do
     user_id nil
     is_pinned false
     is_draft false
-    comments_count 1
+    commentable false
   end
 end
