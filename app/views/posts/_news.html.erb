@@ -1,0 +1,13 @@
+<h2>News</h2>
+
+<% @posts.each do |post| %>
+    
+    <h3><%= link_to "#{post.title}", post_path(post) %></h3>
+
+    <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
+    <p><b>User:</b> <%= post.user_id %></p>   
+    <p><b>Commentable:</b> <%= post.commentable %></p>
+    <p><b>Comments total:</b> <%= post.thread.comments.count %></p>
+
+    <hr>
+<% end %>

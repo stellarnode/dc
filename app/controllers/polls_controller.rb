@@ -4,6 +4,7 @@ class PollsController < ApplicationController
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index, :my_index]
   before_action :user_can_vote?,    only: [:voting, :show]
+  before_action :count_votes,       only: [:show]
 
   # Set editing poll time limit
   def set_editing_time
@@ -36,7 +37,7 @@ class PollsController < ApplicationController
   # GET /polls/1/edit
   def edit
     alert_string = ''
-      if @poll.user != current_user
+      unless belongs_to_user?(@poll)
         alert_string = "You can edit only your own polls. "
         path = my_polls_path
       end
@@ -155,14 +156,26 @@ class PollsController < ApplicationController
     end  
   end
 
-  private
-    # Reloads voting & show pages to prevent poll cheating
-    def set_cache_headers
-      response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-      response.headers["Pragma"] = "no-cache"
-      response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  # Reloads voting & show pages to prevent poll cheating
+  def set_cache_headers
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+  end
+  
+  # Counts votes for building bars
+  #TODO: another count_votes for 'multiply checkboxes' poll_type
+  def count_votes
+    if @voted || @poll.status == 3
+      @votes = []
+      @poll.options.each_with_index do |option, index|
+        @votes.push(Vote.where(:option_id => option.id).count)
+      end
+      @votes.push(@votes.inject(0){|sum,x| sum + x })
     end
-    
+  end
+  
+  private    
     # Validates start & finish datetimes
     def check_poll_datetime
       if @poll.finish > @poll.start && @poll.start > DateTime.now && @poll.finish > DateTime.now 

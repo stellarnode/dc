@@ -2,12 +2,13 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :title %>
-    <%= f.input :body %>
-    <%= f.association :user %>
-    <%= f.input :is_pinned %>
-    <%= f.input :is_draft %>
-    <%= f.input :commentable %>
+    <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your post title here" %>
+    <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your post here", 
+    :input_html => {rows: 7} %>
+
+    <%= f.input :is_pinned, label: 'Pin to newsboard' %>
+    <%= f.input :is_draft, label: 'Save as draft' %>
+    <%= f.input :commentable, label: 'Allow comments' %>
   </div>
 
   <div class="form-actions">

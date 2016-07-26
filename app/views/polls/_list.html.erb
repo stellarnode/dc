@@ -1,6 +1,6 @@
 <% @polls.each do |poll| %>
     <h3><%= link_to "#{poll.title}", poll_path(poll) %></h3>
-    <p><b>Body:</b> <%= truncate(poll.body, length: 100) %></p>
+    <p><b>Body:</b> <%= truncate(poll.body, length: 200, separator: ' ') %></p>
 
     <p><b>Start:</b> <%= poll.start.to_formatted_s(:long_ordinal) %></p>
     <p><b>Finish:</b> <%= poll.finish.to_formatted_s(:long_ordinal) %></p>
@@ -20,7 +20,7 @@
     <% poll.options.each_with_index do |option, index| %>
       <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
       <% if poll.status == 3 %>
-        <b> &rArr; <span style="color: orange">
+        <b> &rArr; <span style="color: #428bca">
         <%= Vote.where(:option_id => option.id).count %>
         </span></b></p>
       <% end %> 
@@ -36,7 +36,7 @@
       <span style="color: red">Voting was closed at <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
     <% end %>
     </p>
-    <% if poll.user == current_user %>
+    <% if belongs_to_user?(poll) %>
       <%= link_to 'Show', poll %> |
       <% if (DateTime.now.to_i - poll.created_at.to_i) < @editing_time %>
         <%= link_to 'Edit', edit_poll_path(poll) %> | 
@@ -44,7 +44,7 @@
       <%= link_to 'Destroy', poll, method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
   <hr />
-  <% end %>
+<% end %>
 
 <br>
 

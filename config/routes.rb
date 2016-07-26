@@ -1,24 +1,26 @@
 Rails.application.routes.draw do
 
-  resources :polls
-  match '/polls/:id/voting' => 'polls#voting', via: [:get], :as => :voting_poll
-  match '/mypolls' => 'polls#my_index', via: [:get], :as => :my_polls
-  post '/votes' => 'votes#create', via: [:post], :as => :new_votes
+  resources   :polls
+  match       '/polls/:id/voting' => 'polls#voting', via: [:get], :as => :voting_poll
+  match       '/mypolls' => 'polls#my_index', via: [:get], :as => :my_polls
+  post        '/votes' => 'votes#create', via: [:post], :as => :new_votes
 
+  resources   :posts
+  match       '/myposts' => 'posts#my_index', via: [:get], :as => :my_posts
+  
   resource 		:profile, only: [:show, :edit, :update ]
   resources 	:flats
-  resources 	:posts
   resources   :chat_messages
 
   devise_for 	:users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
 
-  resources :users do
+  resources   :users do
     resources :emails, only: [:index, :show, :new, :create, :destroy]
   end
 
-  match 		'/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+  match 		  '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
 
-  root 			'welcome#index'
+  root 			  'welcome#index'
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'

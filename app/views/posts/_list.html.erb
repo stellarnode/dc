@@ -1,0 +1,20 @@
+<% @posts.each do |post| %>
+    
+    <h3><%= link_to "#{post.title}", post_path(post) %></h3>
+
+    <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
+    <p><b>User:</b> <%= post.user_id %></p>   
+    <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
+    <p><b>Is draft:</b> <%= post.is_draft %></p>   
+    <p><b>Commentable:</b> <%= post.commentable %></p>
+    <p><b>Comments total:</b> <%= post.thread.comments.count %></p>
+
+    <% if belongs_to_user?(post) %>
+      <%= link_to 'Show', post %> |
+      <%= link_to 'Edit', edit_post_path(post) %> | 
+      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
+    <hr>
+<% end %>
+
+<%= button_to "Create New Post", new_post_path, method: :get, class: "btn btn-lg btn-primary" %>
