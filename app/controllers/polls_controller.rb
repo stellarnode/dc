@@ -172,11 +172,11 @@ class PollsController < ApplicationController
         @votes.push(Vote.where(:option_id => option.id).count)
         voted_users.push(option.votes.pluck(:user_id))
       end
-      case @poll_type
+      case @poll.poll_type
         when 1
           @votes.push(@votes.inject(0){|sum,x| sum + x })
         when 2
-          @votes.push(voted_users.uniq.inject(0){|sum,x| sum + x })
+          @votes.push(voted_users.uniq.count)
       end
     end
   end
