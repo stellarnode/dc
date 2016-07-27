@@ -164,14 +164,20 @@ class PollsController < ApplicationController
   end
   
   # Counts votes for building bars
-  #TODO: another count_votes for 'multiply checkboxes' poll_type
   def count_votes
     if @voted || @poll.status == 3
       @votes = []
+      voted_users = []
       @poll.options.each_with_index do |option, index|
         @votes.push(Vote.where(:option_id => option.id).count)
+        voted_users.push(option.votes.pluck(:user_id))
       end
-      @votes.push(@votes.inject(0){|sum,x| sum + x })
+      case @poll_type
+        when 1
+          @votes.push(@votes.inject(0){|sum,x| sum + x })
+        when 2
+          @votes.push(voted_users.uniq.inject(0){|sum,x| sum + x })
+      end
     end
   end
   

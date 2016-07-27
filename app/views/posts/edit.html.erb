@@ -2,5 +2,8 @@
 
 <%= render 'form', post: @post %>
 
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+<div class="btn-group btn-group" role="group" aria-label="...">
+  <%= link_to 'Show', @post, type: 'button', class: 'btn btn-primary' %>  
+  <%= link_to 'My posts', my_posts_path, type: 'button', class: 'btn btn-primary' %>
+  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-primary' %>
+</div>

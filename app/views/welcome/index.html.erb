@@ -1,24 +1,14 @@
-<!--
-<% if user_signed_in? %>
-	<%= render :partial => "/posts/news" %>
-<% else %>
-	<h1>Welcome</h1>
-<% end %>
--->
-
-<div class="container">
   <div class="row">
     
     <% if !user_signed_in? %>
     	<h1>Welcome</h1>
     <% else %>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
 		<%= render :partial => "/posts/news" %>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6">
 		<%= render :partial => "/polls/actual_polls" %>
     </div>
   	<% end %>
 
   </div><!--/row-->
-</div><!--/container-->

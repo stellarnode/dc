@@ -1,20 +1,34 @@
 <% @posts.each do |post| %>
     
-    <h3><%= link_to "#{post.title}", post_path(post) %></h3>
+  <h3><%= link_to "#{post.title}", post_path(post) %></h3>
 
-    <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
-    <p><b>User:</b> <%= post.user_id %></p>   
-    <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
-    <p><b>Is draft:</b> <%= post.is_draft %></p>   
-    <p><b>Commentable:</b> <%= post.commentable %></p>
-    <p><b>Comments total:</b> <%= post.thread.comments.count %></p>
+  <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
+  <p><b>User:</b> <%= post.user_id %></p>   
+  <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
+  <p><b>Is draft:</b> <%= post.is_draft %></p>   
+  <p><b>Commentable:</b> <%= post.commentable %></p>
+  <p><b>Comments total:</b> <%= post.thread.comments.count %></p>
 
-    <% if belongs_to_user?(post) %>
-      <%= link_to 'Show', post %> |
-      <%= link_to 'Edit', edit_post_path(post) %> | 
-      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
-    <% end %>
-    <hr>
+  <% if belongs_to_user?(post) %>
+    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+      <%= link_to 'Show', post, type: 'button', class: 'btn btn-default' %>
+      <%= link_to 'Edit', edit_post_path(post), type: 'button', class: 'btn btn-default' %>  
+      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, 
+        type: 'button', class: 'btn btn-default' %>
+    </div>
+  <% end %>
+  <hr>
+<% end %>
+
+<br>
+
+<% if @posts.size == 0 %>
+  <% case action_name %>
+    <% when 'index' %>
+      <p>There's absolutely no posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+    <% when 'my_index' %>
+        <p>You don't have any posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+  <% end %>
 <% end %>
 
 <%= button_to "Create New Post", new_post_path, method: :get, class: "btn btn-lg btn-primary" %>

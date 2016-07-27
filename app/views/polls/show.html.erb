@@ -1,4 +1,4 @@
-<h3><%= @poll.title %></h3>
+<h2><%= @poll.title %></h2>
 <p><b>Body:</b> <%= @poll.body %></p>
 <p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
 <p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
@@ -20,9 +20,7 @@
 <% @poll.options.each_with_index do |option, index| %>
   <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
   <% if @voted || @poll.status == 3 %>
-    <b> &rArr; <span style="color: #428bca">
-    <%= @votes[index] %>
-    </span></b></p>
+    <b><span style="color: #428bca">&#8756; <%= @votes[index] %></span></b></p>
     <% unless @votes.last == 0 %>
       <% bar_size = @votes[index] * 100 / @votes.last %>
     <% else %>
@@ -51,18 +49,24 @@
 </p>
 
 <% if belongs_to_user?(@poll) %>
-  <% if (DateTime.now.to_i - @poll.created_at.to_i) < @editing_time %>
-    <%= link_to 'Edit', edit_poll_path(@poll) %> | 
-  <% end %> 
-  <%= link_to 'Destroy', @poll, method: :delete, data: { confirm: 'Are you sure?' } %> | 
-  <%= link_to 'All Polls', polls_path %> | 
-  <%= link_to 'My Polls', my_polls_path %>
+  <div class="btn-group btn-group" role="group" aria-label="...">
+    <% if (DateTime.now.to_i - @poll.created_at.to_i) < @editing_time && @poll.status == 2 %>
+      <%= link_to 'Edit', edit_poll_path(@poll), type: 'button', class: 'btn btn-primary' %>  
+    <% end %>
+    <%= link_to 'Destroy', @poll, method: :delete, data: { confirm: 'Are you sure?' }, 
+      type: 'button', class: 'btn btn-primary' %>
+    <%= link_to 'My polls', my_polls_path, type: 'button', class: 'btn btn-primary' %>
+    <%= link_to 'All polls', polls_path, type: 'button', class: 'btn btn-primary' %>
+  </div>
 <% end %>
-<p></p>
 
 <nav aria-label="...">
   <ul class="pager">
+    <% unless @poll == Poll.first %>
     <li><%= link_to '< Prev. Poll', Poll.where("id < ?", @poll.id).last %></li>
-    <li><%= link_to 'Next Poll >', Poll.where("id > ?", @poll.id).first %></li>
+    <% end %>
+    <% unless @poll == Poll.last %>
+      <li><%= link_to 'Next Poll >', Poll.where("id > ?", @poll.id).first %></li>
+    <% end %>
   </ul>
 </nav>
