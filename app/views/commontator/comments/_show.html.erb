@@ -9,10 +9,10 @@
    avatar = Commontator.commontator_avatar(creator, self) || ''
 %>
 
-<div id="comment_<%= comment.id.to_s %>_div" class="comment">
-  <div id="comment_<%= comment.id.to_s %>_top_div" class="comment_div">
-    <span id="comment_<%= comment.id.to_s %>_commontator_span" class="comment_commontator">
-      <%= link.blank? ? name : link_to(name, link) %>
+<div id="comment_<%= comment.id.to_s %>_div" class="well well-sm">
+  <div id="comment_<%= comment.id.to_s %>_top_div">
+    <span id="comment_<%= comment.id.to_s %>_commontator_span">
+      <small><b><%= link.blank? ? name : link_to(name, link) %></b></small>
     </span>
     <span id="comment_<%= comment.id.to_s %>_actions_span" class="comment_actions">
       <%= render :partial => 'commontator/comments/actions',
@@ -34,14 +34,15 @@
                  :locals => { :comment => comment } %>
     </div>
   </div>
+  <br>
   <div id="comment_<%= comment.id.to_s %>_bottom_div" class="comment_div">
-    <span id="comment_<%= comment.id.to_s %>_created_timestamp_span" class="comment_timestamp">
-      <%= comment.created_timestamp %>
+    <span id="comment_<%= comment.id.to_s %>_created_timestamp_span" class="">
+      <small><i><%= comment.created_timestamp %></i></small>
     </span>
     <br/>
-    <span id="comment_<%= comment.id.to_s %>_updated_timestamp_span" class="comment_timestamp">
+    <span id="comment_<%= comment.id.to_s %>_updated_timestamp_span" class="">
     <% if comment.is_modified? %>
-      <%= comment.updated_timestamp %>
+      <small><i><%= comment.updated_timestamp %></i></small>
     <% end %>
     </span>
   </div>

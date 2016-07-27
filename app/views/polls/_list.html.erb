@@ -1,5 +1,7 @@
 <% @polls.each do |poll| %>
-  <h3><%= link_to "#{poll.title}", poll_path(poll) %></h3>
+  <h3><%= link_to "#{poll.title}", poll_path(poll) %>
+  <span class="label label-primary"><%= poll.created_at.to_date == Date.today ? 'New' : '' %></span>
+  </h3>
   <p><b>Body:</b> <%= truncate(poll.body, length: 200, separator: ' ') %></p>
   <p><b>Start:</b> <%= poll.start.to_formatted_s(:long_ordinal) %></p>
   <p><b>Finish:</b> <%= poll.finish.to_formatted_s(:long_ordinal) %></p>

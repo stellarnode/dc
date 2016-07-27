@@ -6,6 +6,11 @@ class ProfilesController < ApplicationController
   end
 
   def edit
+    unless belongs_to_user?(@profile)
+      respond_to do |format|
+         format.html { redirect_to profile_path(current_user), alert: 'You can edit only your own profile.' }
+       end
+    end
   end
 
   def update
@@ -17,7 +22,8 @@ class ProfilesController < ApplicationController
   private
 
   def set_profile
-    @profile = current_user.profile
+    #@profile = current_user.profile
+    @profile = Profile.find(params[:id])
   end
 
   def permit_profile

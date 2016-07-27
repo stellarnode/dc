@@ -1,13 +1,15 @@
 <% @posts.each do |post| %>
     
-  <h3><%= link_to "#{post.title}", post_path(post) %></h3>
+  <h3><%= link_to "#{post.title}", post_path(post) %>
+  <span class="label label-primary"><%= post.created_at.to_date == Date.today ? 'New' : '' %></span>
+  </h3>
 
   <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
   <p><b>User:</b> <%= post.user_id %></p>   
   <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
   <p><b>Is draft:</b> <%= post.is_draft %></p>   
   <p><b>Commentable:</b> <%= post.commentable %></p>
-  <p><b>Comments total:</b> <%= post.thread.comments.count %></p>
+  <p><b>Comments total:</b> <span class="badge"><%= post.thread.comments.count %></span></p>
 
   <% if belongs_to_user?(post) %>
     <div class="btn-group btn-group-sm" role="group" aria-label="...">

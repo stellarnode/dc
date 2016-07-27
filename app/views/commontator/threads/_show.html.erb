@@ -63,6 +63,7 @@
     <% end %>
   </span>
 
+  <!-- Here is the 'Comments' word -->
   <span id="thread_<%= thread.id.to_s %>_header_span" class="thread_header">
     <%= t "commontator.thread.status.#{thread.is_closed? ? 'closed' : 'open'}",
           :closer_name => (thread.is_closed? ? Commontator.commontator_name(thread.closer) : '') %>
@@ -111,8 +112,9 @@
                :locals => { :thread => thread, :user => user, :per_page => per_page } %>
   <% end %>
 </span>
-
+<!--
 <script type="text/javascript">
   <%= render partial: 'commontator/threads/hide_show_links.js',
              locals: { thread: thread } %>
 </script>
+-->

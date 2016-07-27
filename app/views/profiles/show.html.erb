@@ -1,7 +1,9 @@
-<h1>Profile</h1>
+<h1><%= belongs_to_user?(@profile) ? 'My' : 'User ' + @profile.user.email %> profile</h1>
 
-<p>Name: <%= @profile.full_name %></p>
-<p>Phone Number: <%= @profile.phone %></p>
-<p>Avatar: <%= image_tag @profile.avatar %></p>
+<p><b>Name:</b> <%= @profile.full_name %></p>
+<p><b>Phone Number:</b> <%= @profile.phone %></p>
+<p><b>Avatar:</b> <%= image_tag @profile.avatar %></p>
 
-<%= link_to "Edit Profile", edit_profile_path %>
+<% if belongs_to_user?(@profile) %>
+	<%= link_to "Edit Profile", edit_profile_path %>
+<% end %>

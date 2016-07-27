@@ -26,6 +26,11 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    unless belongs_to_user?(@post)
+      respond_to do |format|
+         format.html { redirect_to my_posts_path, alert: 'You can edit only your own posts.' }
+       end
+    end
   end
 
   # POST /posts

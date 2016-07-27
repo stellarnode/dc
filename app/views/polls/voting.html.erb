@@ -38,7 +38,7 @@
 	    	<% when 1 %>
 				<% @poll.options.each do |option| %>
 				<div class="field form-group">
-			  		<%= label_tag "poll_option_#{option.id}", class: "radio" do %>
+			  		<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
 		            	<%= radio_button_tag("options", option.id, checked = false) %><%= option.poll_option %>
 		            <% end %>
 			  	</div>
@@ -46,7 +46,7 @@
 		    <% when 2 %>
 				<% @poll.options.each do |option| %>
 				<div class="field form-group">
-			  		<%= label_tag "poll_option_#{option.id}" do %>
+			  		<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
 		            	<%= check_box("options", option.id) %> <%= option.poll_option %>
 		            <% end %>
 			  	</div>

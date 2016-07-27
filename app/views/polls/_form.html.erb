@@ -14,14 +14,16 @@
                     [['RadioButtons', 1], ['Multiply CheckBoxes', 2]], selected: 'RadioButtons' %>
         <p><b>Options (min. 2):</b></p>
         <div>
-          Option 1<br>
+          <span>Option 1</span><br>
           <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
+          <p></p>
         </div>
-        <div id="dynamicInput">
-          Option 2<br>
+          <div id="dynamicInput">
+          <span>Option 2</span><br>
           <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
+          <p></p>
         </div>
-        <br>
+        <p></p>
         <input type="button" class="btn btn-primary" value="Add another option (max. 20)" onClick="addInput('dynamicInput', counter);">
         <p></p>
       <% when 'edit', 'create', 'update' %>
@@ -36,8 +38,9 @@
         <div id="dynamicInputEdit">
           Option <%= @poll.options.count + 1 %><br>
           <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
+          <p></p>
         </div>
-        <br>
+        <p></p>
         <input type="button" class="btn btn-primary" value="Add another option (max 20)" onClick="addInputEdit('dynamicInputEdit');">
         <% end %>
         <p></p>

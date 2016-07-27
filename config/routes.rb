@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources   :posts
   match       '/myposts' => 'posts#my_index', via: [:get], :as => :my_posts
   
-  resource 		:profile, only: [:show, :edit, :update ]
+  resources		:profiles, only: [:show, :edit, :update ]
   resources 	:flats
   resources   :chat_messages
 

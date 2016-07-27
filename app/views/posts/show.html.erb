@@ -16,8 +16,8 @@
   <%= @post.commentable %></p>
 
 <p><b>Comments total:</b>
-  <%= @post.thread.comments.count %></p>
-
+  <span class="badge"><%= @post.thread.comments.count %></span></p>
+<br>
 <% if belongs_to_user?(@post) %>
 	<div class="btn-group btn-group" role="group" aria-label="...">
 	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-primary' %>  
