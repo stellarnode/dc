@@ -11,6 +11,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.11.0)
     actioncable (5.0.0)
       actionpack (= 5.0.0)
       nio4r (~> 1.2)
@@ -339,6 +340,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  aasm
   byebug
   capistrano
   capistrano-bundler

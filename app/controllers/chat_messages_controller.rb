@@ -3,7 +3,7 @@ class ChatMessagesController < ApplicationController
   before_action :set_user, only: [:index]
 
   def index
-    @chat_messages = ChatMessage.all.order("created_at ASC")
+    @chat_messages = ChatMessage.all.order("created_at ASC").limit(500)
     @chat_message = ChatMessage.new
     respond_to do |format|
       format.html
