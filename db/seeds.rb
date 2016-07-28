@@ -4,4 +4,13 @@
 # Examples:
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+
+Category.delete_all
+
+name_collection = ['Buy', 'Sell', 'News', 'Help']
+
+name_collection.size.times do |x|
+	Category.create(name: name_collection[x] )
+end
+
+puts 'Categories created'

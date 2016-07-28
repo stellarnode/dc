@@ -1,23 +1,25 @@
 <div class="row">
     
   <% if !user_signed_in? %>
-    
-    <div class="jumbotron">
-      <h1>Welcome</h1>
-      <p>Domochat is a&nbsp;place to&nbsp;communicate with&nbsp;your neighbors and&nbsp;manage the&nbsp;life of&nbsp;your house.</p>
-      <%= button_to "Sign Up Now", new_user_registration_path, method: :get, class: 'btn btn-primary btn-lg' %>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Welcome</h1>
+        <p><i>Domochat</i> is&nbsp;a&nbsp;place to&nbsp;communicate with&nbsp;your neighbors and&nbsp;manage the&nbsp;life of&nbsp;your house.</p>
+        <%= button_to "Sign Up Now", new_user_registration_path, method: :get, class: 'btn btn-primary btn-lg' %>
+      </div>
     </div>
     
     <% else %>
-    
-    <div class="col-lg-6">
-      <div class="thumbnail">
-        <div class="caption">
-		      <%= render :partial => "/posts/news" %>
-        </div><!--/thumbnail-->
-      </div><!--/caption-->
-    </div><!--/col-->
-    
+    <% unless @posts.empty?%>
+      <div class="col-lg-6">
+        <div class="thumbnail">
+          <div class="caption">
+  		      <%= render :partial => "/posts/news" %>
+          </div><!--/thumbnail-->
+        </div><!--/caption-->
+      </div><!--/col-->
+    <% end %>
+    <% unless @polls.empty?%>
     <div class="col-lg-6">
       <div class="thumbnail">
         <div class="caption">
@@ -25,7 +27,8 @@
         </div><!--/thumbnail-->
       </div><!--/caption-->
     </div><!--/col-->
-  	
+  	<% end %>
+    
     <% end %>
 
   </div><!--/row-->

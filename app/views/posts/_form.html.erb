@@ -9,7 +9,11 @@
     <%= f.input :is_pinned, label: 'Pin to newsboard' %>
     <%= f.input :is_draft, label: 'Save as draft' %>
     <%= f.input :commentable, label: 'Allow comments' %>
-  </div>
+
+    <%= f.simple_fields_for :post_categories, @post.post_categories.build do |ff| %>
+      <%= ff.input :category_id, label: 'Category', as: :select, collection: Category.all, selected: '' %>
+      <% end %>
+    </div>
 
   <div class="form-actions">
     <%= f.submit "Save Post", class: "btn btn-lg btn-success" %>
