@@ -19,8 +19,8 @@ class ApplicationController < ActionController::Base
 
 private
 
-  	def belongs_to_user?(model)
-  	  model.user == current_user ? true : false
+  	def belongs_to_user?(object)
+  	  object.user == current_user ? true : false
   	end
 
 	def user_not_authorized

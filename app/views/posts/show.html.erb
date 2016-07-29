@@ -31,15 +31,6 @@
 	</div>
 <% end %>
 
-<nav aria-label="...">
-  <ul class="pager">
-    <% unless @post == Post.first %>
-    <li><%= link_to '< Prev. post', Post.where("id < ?", @post.id).last %></li>
-    <% end %>
-    <% unless @post == Post.last %>
-      <li><%= link_to 'Next post >', Post.where("id > ?", @post.id).first %></li>
-    <% end %>
-  </ul>
-</nav>
+<%= render partial: '/shared/pager', locals: { model_name: Post, object_name: @post } %>
 
 <%= commontator_thread(@post) if @post.commentable %>

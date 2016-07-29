@@ -3,7 +3,7 @@
 <% @posts.each do |post| %>
     
     <h3><%= link_to "#{post.title}", post_path(post) %> 
-    <span class="label label-primary"><%= post.created_at.to_date == Date.today ? 'New' : '' %></span>
+    <span class="label label-primary"><%= 'New' if post.created_at.to_date == Date.today %></span>
     </h3>
 
     <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
