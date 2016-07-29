@@ -54,6 +54,7 @@ gem 'carrierwave'
 gem 'sidekiq'
 gem 'crono'
 gem 'aasm'
+gem 'kaminari'
 
 gem 'sprockets', '3.6.3' # Delete version number once Sprockets 4.0 become available
 gem 'sprockets-es6'

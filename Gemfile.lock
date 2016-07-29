@@ -149,6 +149,9 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.3)
     jwt (1.5.4)
+    kaminari (0.17.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.7.1)
@@ -360,6 +363,7 @@ DEPENDENCIES
   figaro
   jbuilder (~> 2.5)
   jquery-rails
+  kaminari
   omniauth
   omniauth-facebook
   pg (~> 0.18)

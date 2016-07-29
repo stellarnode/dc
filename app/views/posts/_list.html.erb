@@ -4,6 +4,7 @@
   <span class="label label-primary"><%= 'New' if post.created_at.to_date == Date.today %></span>
   </h3>
   <p><b>Category:</b><%= post.categories.first.name %></p>
+  <p><b>Post ID: </b><%= post.id %></p>
   <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
   <p><b>User:</b> <%= post.user_id %></p>   
   <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
@@ -19,11 +20,9 @@
         type: 'button', class: 'btn btn-default' %>
     </div>
   <% end %>
-  <hr>
+  <% unless post == @posts.last %><hr><% end %>
 <% end %>
-
-<br>
-
+<br><br>
 <% if @posts.size == 0 %>
   <% case action_name %>
     <% when 'index' %>
@@ -33,4 +32,10 @@
   <% end %>
 <% end %>
 
-<%= button_to "Create New Post", new_post_path, method: :get, class: "btn btn-lg btn-primary" %>
+<div>
+  <%= button_to "Create New Post", new_post_path, method: :get, class: "btn btn-lg btn-primary" %>
+</div>
+
+<div align ="center">
+  <%= paginate @posts %>
+</div>

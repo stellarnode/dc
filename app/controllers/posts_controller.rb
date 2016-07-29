@@ -5,12 +5,12 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.published.order(created_at: :desc)
+    @posts = Post.published.order(created_at: :desc).page params[:page]
   end
 
   # List of all user's posts
   def my_index
-    @posts = current_user.posts.order(is_draft: :asc, created_at: :desc)
+    @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
   end 
 
   # GET /posts/1
