@@ -10,16 +10,25 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    if @category == nil
+    @category_name = params[:category_name]
+    if @category_name == nil
       @posts = Post.published.order(created_at: :desc).page params[:page]
     else
-      @posts = @category.posts.published.order(created_at: :desc)
+      @category = Category.where(:name => @category_name).first
+      @posts = @category.posts.published.order(created_at: :desc).page params[:page]
     end
   end
 
   # List of all user's posts
   def my_index
-    @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
+    @category_name = params[:category_name]
+    if @category_name == nil
+      @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
+    else
+      @category = Category.where(:name => @category_name).first
+      posts = current_user.posts.order(is_draft: :asc, created_at: :desc)
+      @posts = @category.posts.page params[:page]
+    end
   end 
 
   # GET /posts/1
@@ -83,9 +92,13 @@ class PostsController < ApplicationController
   end
 
   def set_category
-    @category = Category.where(:name => params[:category_name]).first
-    respond_to do |format|
-      format.html { redirect_to posts_path, notice: "#{@category}" }
+    category_name = params[:category_name]
+    category_name = nil if category_name == 'All'
+    case Rails.application.routes.recognize_path(request.referrer)[:action]
+    when 'index'
+      redirect_to posts_path(:category_name => category_name)
+    when 'my_index'
+      redirect_to my_posts_path(:category_name => category_name)
     end
   end
 
@@ -103,6 +116,8 @@ class PostsController < ApplicationController
                                     :is_pinned, 
                                     :is_draft, 
                                     :commentable,
-                                    post_categories_attributes: [:category_id, :post_id])
+                                    :category_name,
+                                    post_categories_attributes: [:category_id, :post_id]
+                                    )
     end
 end

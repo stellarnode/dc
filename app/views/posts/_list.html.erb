@@ -1,13 +1,18 @@
 <ul class="nav nav-tabs">
-  <% @categories.each do |category| %>
-  <% if @category != nil %>
-  <% if category.name == @category.name  %>
+  <% if @category_name == nil %>
     <li role="presentation" class="active">
-  <% end %>  
   <% else %>
     <li role="presentation">
   <% end %>
-  <%= link_to "#{category.name}", set_category_path(:category_name => category.name ), method: :post %></li>
+  <%= link_to 'All', set_category_path(:category_name => 'All'), method: :post %></li>
+
+  <% @categories.each do |category| %>
+  <% if category.name == @category_name %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+  <%= link_to "#{category.name}", set_category_path(:category_name => category.name), method: :post %></li> 
   <% end %>
 </ul>
 
