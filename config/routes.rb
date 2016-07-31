@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 
   resources   :posts
   match       '/myposts' => 'posts#my_index', via: [:get], :as => :my_posts
-  
+  #post        '/category' => 'categories#set_category', via: [:post], :as => :set_category
+  match        'posts/category' => 'posts#set_category', via: [:post], :as => :set_category
+
   resources		:profiles, only: [:show, :edit, :update ]
   resources 	:flats
   resources   :chat_messages

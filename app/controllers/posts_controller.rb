@@ -1,11 +1,20 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :get_categories, only: [:index, :my_index]
+
+  def get_categories
+    @categories = Category.all
+  end
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.published.order(created_at: :desc).page params[:page]
+    if @category == nil
+      @posts = Post.published.order(created_at: :desc).page params[:page]
+    else
+      @posts = @category.posts.published.order(created_at: :desc)
+    end
   end
 
   # List of all user's posts
@@ -73,12 +82,19 @@ class PostsController < ApplicationController
     end
   end
 
+  def set_category
+    @category = Category.where(:name => params[:category_name]).first
+    respond_to do |format|
+      format.html { redirect_to posts_path, notice: "#{@category}" }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
     end
-
+  
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit( :title, 

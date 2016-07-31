@@ -1,9 +1,22 @@
+<ul class="nav nav-tabs">
+  <% @categories.each do |category| %>
+  <% if @category != nil %>
+  <% if category.name == @category.name  %>
+    <li role="presentation" class="active">
+  <% end %>  
+  <% else %>
+    <li role="presentation">
+  <% end %>
+  <%= link_to "#{category.name}", set_category_path(:category_name => category.name ), method: :post %></li>
+  <% end %>
+</ul>
+
 <% @posts.each do |post| %>
     
   <h3><%= link_to "#{post.title}", post_path(post) %>
   <span class="label label-primary"><%= 'New' if post.created_at.to_date == Date.today %></span>
   </h3>
-  <p><b>Category:</b><%= post.categories.first.name %></p>
+  <p><b>Category: </b><%= post.categories.first.name %></p>
   <p><b>Post ID: </b><%= post.id %></p>
   <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
   <p><b>User:</b> <%= post.user_id %></p>   
