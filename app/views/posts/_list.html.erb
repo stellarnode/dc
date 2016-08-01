@@ -44,9 +44,9 @@
 <% if @posts.size == 0 %>
   <% case action_name %>
     <% when 'index' %>
-      <p>There's absolutely no posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+      <p>There's absolutely no <i><%= @category_name %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
     <% when 'my_index' %>
-        <p>You don't have any posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+        <p>You don't have any <i><%= @category_name %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
   <% end %>
 <% end %>
 

@@ -14,6 +14,8 @@ To run this application, remember to do the following (instructions given for Ma
 
 * Launch Crono service in a separate terminal window in your Rails project root directory: `crono` (or `bundle exec crono`)
 
+* Run command 'rake db:seed' to create categories for posts.
+
 * In a separate terminal window start Rails server: `rails s`
 
 

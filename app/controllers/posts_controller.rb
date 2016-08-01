@@ -25,9 +25,9 @@ class PostsController < ApplicationController
     if @category_name == nil
       @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
     else
-      @category = Category.where(:name => @category_name).first
+      category = Category.where(:name => @category_name).first
       posts = current_user.posts.order(is_draft: :asc, created_at: :desc)
-      @posts = @category.posts.page params[:page]
+      @posts = category.posts.page params[:page]
     end
   end 
 
@@ -40,6 +40,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
+    @post.post_categories.build
   end
 
   # GET /posts/1/edit
@@ -94,12 +95,9 @@ class PostsController < ApplicationController
   def set_category
     category_name = params[:category_name]
     category_name = nil if category_name == 'All'
-    case Rails.application.routes.recognize_path(request.referrer)[:action]
-    when 'index'
-      redirect_to posts_path(:category_name => category_name)
-    when 'my_index'
-      redirect_to my_posts_path(:category_name => category_name)
-    end
+    action_name = Rails.application.routes.recognize_path(request.referrer)[:action]
+    controller_name = Rails.application.routes.recognize_path(request.referrer)[:controller]
+    redirect_to :controller => controller_name, :action => action_name, :category_name => category_name
   end
 
   private
@@ -117,7 +115,7 @@ class PostsController < ApplicationController
                                     :is_draft, 
                                     :commentable,
                                     :category_name,
-                                    post_categories_attributes: [:category_id, :post_id]
+                                    post_categories_attributes: [:category_id, :post_id, :id]
                                     )
     end
 end
