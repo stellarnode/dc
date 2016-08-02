@@ -7,10 +7,8 @@
 
 Category.delete_all
 
-name_collection = ['Buy', 'Sell', 'News', 'Help']
-
-name_collection.size.times do |x|
-	Category.create(name: name_collection[x] )
+['Buy', 'Sell', 'News', 'Help'].each do |category|
+	Category.find_or_create_by(name: category)
 end
 
 puts 'Categories created'

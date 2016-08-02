@@ -4,6 +4,7 @@ class User < ApplicationRecord
   TEMP_EMAIL_REGEX = /\Adc@user/
 
   after_create  :create_profile
+  after_create  :add_role_to_user
   has_one       :profile, dependent: :destroy
   has_many      :posts
   has_many      :identities, dependent: :destroy
@@ -71,5 +72,13 @@ class User < ApplicationRecord
 
   def create_profile
     Profile.create(user: self)
+  end
+
+  def add_role_to_user
+    if !self.has_any_role? && self == User.first
+      self.add_role :admin
+    else
+      self.add_role :user
+    end
   end
 end

@@ -10,8 +10,12 @@ class Post < ApplicationRecord
 	  scope 							:draft, 	     -> { where(is_draft: true) }
   	scope 							:news, 		     -> { where(is_pinned: true) }
 
+    # Use roles with this model
+    resourcify
+
   	# Set comments to Post
     acts_as_commontable
+    
     # Set number of posts per page
     paginates_per 2
 end

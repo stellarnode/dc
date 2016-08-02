@@ -14,8 +14,8 @@ class PostsController < ApplicationController
     if @category_name == nil
       @posts = Post.published.order(created_at: :desc).page params[:page]
     else
-      @category = Category.where(:name => @category_name).first
-      @posts = @category.posts.published.order(created_at: :desc).page params[:page]
+      category = Category.where(:name => @category_name).first
+      @posts = category.posts.published.order(created_at: :desc).page params[:page]
     end
   end
 
@@ -26,8 +26,7 @@ class PostsController < ApplicationController
       @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
     else
       category = Category.where(:name => @category_name).first
-      posts = current_user.posts.order(is_draft: :asc, created_at: :desc)
-      @posts = category.posts.page params[:page]
+      @posts = category.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
     end
   end 
 
