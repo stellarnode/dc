@@ -10,7 +10,7 @@ RSpec.describe "polls/new", type: :view do
     assign(:poll, Poll.new(
       :title => "MyString",
       :body => "MyText",
-      :status => 2,
+      :state => :created,
       :start => "2016-12-31 11:20:01",
       :finish => "2016-12-31 12:20:01",
       :poll_type => 1,
@@ -27,7 +27,7 @@ RSpec.describe "polls/new", type: :view do
 
       assert_select "textarea#poll_body[name=?]", "poll[body]"
 
-      assert_select "input#poll_status[name=?]", "poll[status]"
+      assert_select "input#poll_state[name=?]", "poll[state]"
 
       assert_select "input#poll_type[name=?]", "poll[type]"
 

@@ -10,7 +10,7 @@ RSpec.describe "polls/show", type: :view do
     @poll = assign(:poll, Poll.create!(
       :title => "MyString",
       :body => "MyText",
-      :status => 2,
+      :state => :created,
       :start => "2016-12-31 11:20:01",
       :finish => "2016-12-31 12:20:01",
       :poll_type => 1,

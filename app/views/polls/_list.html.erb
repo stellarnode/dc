@@ -20,7 +20,7 @@
   <p><b>Options:</b></p>
   <% poll.options.each_with_index do |option, index| %>
     <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
-    <% if poll.status == 3 %>
+    <% if poll.closed %>
       <b><span style="color: #428bca">&#8756; 
       <%= Vote.where(:option_id => option.id).count %>
       </span></b></p>
@@ -28,12 +28,12 @@
   <% end %>
 
   <p><b>Poll Status:</b> 
-  <% case poll.status %>
-    <% when 2 %> 
+  <% case poll.state %>
+    <% when :created %>
       <span style="color: orange">Voting will start at <%= poll.start.to_formatted_s(:long_ordinal) %></span>
-    <% when 1 %> 
+    <% when :opened %>
       <span style="color: dodgerblue">Voting is in progress. Open 'til <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
-    <% when 3 %>
+    <% when :closed %>
       <span style="color: red">Voting was closed at <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
   <% end %>
   </p>
@@ -41,7 +41,7 @@
   <% if belongs_to_user?(poll) %>
     <div class="btn-group btn-group-sm" role="group" aria-label="...">
       <%= link_to 'Show', poll, type: 'button', class: 'btn btn-default' %>
-      <% if (DateTime.now.to_i - poll.created_at.to_i) < @editing_time && poll.status == 2 %>
+      <% if (DateTime.now.to_i - poll.created_at.to_i) < @editing_time && poll.created %>
         <%= link_to 'Edit', edit_poll_path(poll), type: 'button', class: 'btn btn-default' %>  
       <% end %>
       <%= link_to 'Destroy', poll, method: :delete, data: { confirm: 'Are you sure?' }, 
