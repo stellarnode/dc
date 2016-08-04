@@ -16,11 +16,11 @@ RSpec.describe PollsController, type: :controller do
 
   let(:valid_attributes) {
     { title: 'Superpoll', body: 'Superpoll', start: "2016-12-31 11:20:01", finish: "2016-12-31 11:20:03", 
-      status: 1, poll_type: 1, user_id: @user.id }
+      state: :opened, poll_type: 1, user_id: @user.id }
   }
 
   let(:invalid_attributes) {
-    { title: nil, body: nil, start: nil, finish: nil, status: nil, poll_type: nil, user_id: @user.id }
+    { title: nil, body: nil, start: nil, finish: nil, state: nil, poll_type: nil, user_id: @user.id }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -97,7 +97,7 @@ RSpec.describe PollsController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {title: 'Superpoll2', body: 'Superpoll2', start: "2016-07-11 11:20:03", finish: "2016-07-11 11:20:05", 
-      status: 2, poll_type: 2, user_id: @user.id }
+      state: :created, poll_type: 2, user_id: @user.id }
       }
 
       it "updates the requested poll" do

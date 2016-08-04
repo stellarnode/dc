@@ -15,11 +15,13 @@ class PollsController < ApplicationController
   # GET /polls.json
   # List of all polls in app
   def index
+    # Вот тут я не понял вообще что на что менять надо
     @polls = Poll.all.order(status: :asc, created_at: :desc)
   end
   
   # List of all user's polls
   def my_index
+    # Здесь я тоже не понял, что на что надо менять
     @polls = current_user.polls.order(status: :asc, created_at: :desc)
   end
 
@@ -65,17 +67,20 @@ class PollsController < ApplicationController
   # POST /polls.json
   def create
     @poll = Poll.new(poll_params)
-    # Now set Poll status eq. 1 for testing. 
-    # All statuses: 1 = 'open'; 2 = 'before'; 3 = 'closed'
-    @poll.status = 2
+    # Now set Poll status eq. :opened for testing.
+    # All statuses: :opened; :created; :closed
+    @poll.creat
+    # Я не уверен, что .create - это правильное использование.
+    # Возможно, лучше использовать new ???
     @poll.user = current_user
 
     respond_to do |format|
       if check_poll_datetime && @poll.save && save_poll_options
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
-        format.json { render :show, status: :created, location: @poll }
+        format.json { render :show, statе: :created, location: @poll }
       else
         format.html { render :new }
+        # Здесь явно будет ошибка со статусом :unprocessable_entity
         format.json { render json: @poll.errors, status: :unprocessable_entity }
       end
     end
@@ -87,9 +92,11 @@ class PollsController < ApplicationController
     respond_to do |format|
       if @poll.update(poll_params) && save_poll_options #&& check_poll_datetime
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
+        # Не совсем понятный статус :ok  . О чем речь вообще?
         format.json { render :show, status: :ok, location: @poll }
       else
         format.html { render :edit }
+        # Здесь явно будет ошибка со статусом :unprocessable_entity
         format.json { render json: @poll.errors, status: :unprocessable_entity }
       end
     end
@@ -165,7 +172,7 @@ class PollsController < ApplicationController
   
   # Counts votes for building bars
   def count_votes
-    if @voted || @poll.status == 3
+    if @voted || @poll.cloused
       @votes = []
       voted_users = []
       @poll.options.each_with_index do |option, index|
@@ -197,6 +204,6 @@ class PollsController < ApplicationController
     end
 
     def poll_params
-      params.require(:poll).permit(:title, :body, :start, :finish, :status, :poll_type, :user_id)#, options_attributes: [:poll_option])
+      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id)#, options_attributes: [:poll_option])
     end
 end
