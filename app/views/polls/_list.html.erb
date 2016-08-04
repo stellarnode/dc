@@ -29,11 +29,11 @@
 
   <p><b>Poll Status:</b> 
   <% case poll.state %>
-    <% when :created %>
+    <% when 'created' %>
       <span style="color: orange">Voting will start at <%= poll.start.to_formatted_s(:long_ordinal) %></span>
-    <% when :opened %>
+    <% when 'opened' %>
       <span style="color: dodgerblue">Voting is in progress. Open 'til <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
-    <% when :closed %>
+    <% when 'closed' %>
       <span style="color: red">Voting was closed at <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
   <% end %>
   </p>
