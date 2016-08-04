@@ -23,9 +23,9 @@
   </h3>
   <p><b>Category: </b><%= post.categories.first.name %></p>
   <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
- 
+  <p><b>User:</b> <%= post.user_id %></p> 
+
   <% if current_user.is_admin? %>
-    <p><b>User:</b> <%= post.user_id %></p>
     <p><b>Post ID: </b><%= post.id %></p>
     <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
     <p><b>Is draft:</b> <%= post.is_draft %></p>   
@@ -36,7 +36,7 @@
     <p><b>Comments total:</b> <span class="badge"><%= post.thread.comments.count %></span></p>
   <% end %>
   
-  <% if belongs_to_user?(post) %>
+  <% if current_user.is_admin? or can? :edit, post %>
     <div class="btn-group btn-group-sm" role="group" aria-label="...">
       <%= link_to 'Show', post, type: 'button', class: 'btn btn-default' %>
       <%= link_to 'Edit', edit_post_path(post), type: 'button', class: 'btn btn-default' %>  

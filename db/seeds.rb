@@ -7,7 +7,7 @@
 
 Category.delete_all
 
-['Buy', 'Sell', 'News', 'Help'].each do |category|
+['Buy', 'Sell', 'News', 'Help', 'Other'].each do |category|
 	Category.find_or_create_by(name: category)
 end
 

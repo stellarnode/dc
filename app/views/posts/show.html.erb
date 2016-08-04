@@ -1,13 +1,10 @@
 <h2><%= @post.title %></h2>
 
-<p><b>Category:</b>
-  <%= @post.categories.first.name %></p>
-
-<p><b>Body: </b>
-  <%= @post.body %></p>
+<p><b>Category:</b><%= @post.categories.first.name %></p>
+<p><b>Body: </b><%= @post.body %></p>
+<p><b>User: </b><%= @post.user_id %></p>
 
 <% if current_user.is_admin? or can? :edit, @post %>
-  <p><b>User: </b><%= @post.user_id %></p>
   <p><b>Post ID: </b><%= @post.id %></p>
   <p><b>Is pinned: </b><%= @post.is_pinned %></p>
   <p><b>Is draft: </b><%= @post.is_draft %></p>
@@ -19,7 +16,8 @@
 <% end %>
 
 <br>
-<% if belongs_to_user?(@post) %>
+
+<% if current_user.is_admin? or can? :edit, @post %>
 	<div class="btn-group btn-group" role="group" aria-label="...">
 	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-primary' %>  
 	  <%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' }, 

@@ -1,0 +1,31 @@
+<ul class="nav navbar-nav">
+  <% @menu = (HashWithIndifferentAccess.new(YAML.load(File.read(File.expand_path("#{Rails.root}/config/menus/menus.yml", __FILE__))))) %>
+  <% @menu.each do |key, value| %>
+    
+    <%= active_class(value[:controller], value[:nav_type]) %>
+    <%= link_to key, url_for(value[:path] || '#') unless value[:path].nil? %></li>
+<!--    
+    <% if value[:nav_type] == 'dropdown' %>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" ><%= key %></a>
+      <ul class="dropdown-menu">
+      <% value[:item].each do |item_key| %>
+      <%= item_value = item_key[1].to_a.flatten! %><br>
+      <% end %>
+      </ul>
+      </li>
+    <% else %>
+      <%= link_to key, url_for(value[:path] || '#') %></li>
+    <% end %>
+-->  
+  <% end %>
+
+  <%= active_class('emails', 'dropdown') %>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Email </a>
+    <ul class="dropdown-menu">
+      <li><%= link_to "Create New Email", url_for("/users/#{current_user.id}/emails/new") %></li>
+      <li role="separator" class="divider"></li>
+      <li><%= link_to "My Emails", url_for("/users/#{current_user.id}/emails") %></li>
+    </ul>
+  </li>
+
+</ul>
