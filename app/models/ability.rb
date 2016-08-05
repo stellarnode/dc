@@ -13,7 +13,9 @@ class Ability
     if user.has_role? :user
         can :read, :all
         can :read, Post
+        can :read, Poll
         can [:create, :update, :destroy], Post, :user => user
+        can [:create, :update, :destroy], Poll, :user => user
     end
     if user.has_role? :moderator
         can :crud, :all

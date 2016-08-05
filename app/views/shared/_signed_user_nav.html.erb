@@ -1,0 +1,17 @@
+<ul class="nav navbar-nav navbar-right">
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %> <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><%= link_to "Show Profile", profile_path(current_user) %></li>
+      <li><%= link_to "Edit Account", edit_user_registration_path %></li>
+      <li role="separator" class="divider"></li>
+      <li><%= link_to "My Posts", posts_path(show_me: 'my') %></li>
+      <li><%= link_to "Create New Post", new_post_path %></li>
+      <li role="separator" class="divider"></li>
+      <li><%= link_to "My Polls", polls_path(show_me: 'my') %></li>
+      <li><%= link_to "Create New Poll", new_poll_path %></li>
+      <li role="separator" class="divider"></li>
+      <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+    </ul>
+  </li>
+</ul>

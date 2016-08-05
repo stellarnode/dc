@@ -2,27 +2,28 @@ class PollsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
-  before_action :set_editing_time,  only: [:edit, :show, :index, :my_index]
+  before_action :set_editing_time,  only: [:edit, :show, :index]
   before_action :user_can_vote?,    only: [:voting, :show]
   before_action :count_votes,       only: [:show]
 
   # Set editing poll time limit
   def set_editing_time
-    @editing_time = 10.hour
+    @editing_time = 3.hour
   end
 
   # GET /polls
   # GET /polls.json
   # List of all polls in app
   def index
-    @polls = Poll.all.order(state: :asc, created_at: :desc)
+    @show_me = params[:show_me] || 'all'
+    case @show_me
+    when 'all'
+      @polls = Poll.all.order(state: :asc, created_at: :desc).page params[:page]
+    when 'my'
+      @polls = current_user.polls.order(state: :asc, created_at: :desc).page params[:page]
+    end
   end
   
-  # List of all user's polls
-  def my_index
-    @polls = current_user.polls.order(state: :asc, created_at: :desc)
-  end
-
   # GET /polls/1
   # GET /polls/1.json
   def show
@@ -36,20 +37,11 @@ class PollsController < ApplicationController
 
   # GET /polls/1/edit
   def edit
-    alert_string = ''
-      unless belongs_to_user?(@poll)
-        alert_string = "You can edit only your own polls. "
-        path = my_polls_path
-      end
-      if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
-        alert_string = alert_string + "Sorry! You can't edit this poll, 'cause editing time limit is over."
-        path = @poll
-      end     
-      unless alert_string == ''
-        respond_to do |format|
-         format.html { redirect_to path, alert: alert_string }
-        end
-      end
+    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
+      respond_to do |format|
+        format.html { redirect_to @poll, alert: "Sorry! You can't edit this poll, 'cause editing time is over." }
+      end   
+    end
   end
 
   # GET /polls/1/voting
@@ -160,7 +152,7 @@ class PollsController < ApplicationController
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
   
-  # Counts votes for building bars
+  # Counts votes for building bars - Move to helper??
   def count_votes
     if @voted || @poll.closed?
       @votes = []
@@ -194,6 +186,6 @@ class PollsController < ApplicationController
     end
 
     def poll_params
-      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id)
+      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id, :show_me)
     end
 end

@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs">
+  <% if @category_name == 'All' %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+  <%= link_to 'All', set_category_path(category_name: 'All', show_me: @show_me), method: :post %></li>
+
+  <% @categories.each do |category| %>
+  <% if category.name == @category_name %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+  <%= link_to "#{category.name}", set_category_path(category_name: category.name, show_me: @show_me), method: :post %></li> 
+  <% end %>
+</ul>

@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :get_categories, only: [:index, :my_index]
+  before_action :get_categories, only: :index
 
   def get_categories
     @categories = Category.all
@@ -10,25 +10,25 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @category_name = params[:category_name]
-    if @category_name == nil
-      @posts = Post.published.order(created_at: :desc).page params[:page]
-    else
-      category = Category.where(:name => @category_name).first
-      @posts = category.posts.published.order(created_at: :desc).page params[:page]
+    @category_name = params[:category_name] || 'All'
+    @show_me = params[:show_me] || 'all'
+    case @show_me
+    when 'all'
+      if @category_name == 'All'
+        @posts = Post.published.order(created_at: :desc).page params[:page]
+      else
+        category = Category.where(:name => @category_name).first
+        @posts = category.posts.published.order(created_at: :desc).page params[:page]
+      end
+    when 'my'
+      if @category_name == 'All'
+        @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
+      else
+        category = Category.where(:name => @category_name).first
+        @posts = category.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
+      end
     end
   end
-
-  # List of all user's posts
-  def my_index
-    @category_name = params[:category_name]
-    if @category_name == nil
-      @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
-    else
-      category = Category.where(:name => @category_name).first
-      @posts = category.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
-    end
-  end 
 
   # GET /posts/1
   # GET /posts/1.json
@@ -44,11 +44,6 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    unless belongs_to_user?(@post)
-      respond_to do |format|
-         format.html { redirect_to my_posts_path, alert: 'You can edit only your own posts.' }
-       end
-    end
   end
 
   # POST /posts
@@ -93,19 +88,18 @@ class PostsController < ApplicationController
 
   def set_category
     category_name = params[:category_name]
-    category_name = nil if category_name == 'All'
+    show_me = params[:show_me]
     action_name = Rails.application.routes.recognize_path(request.referrer)[:action]
     controller_name = Rails.application.routes.recognize_path(request.referrer)[:controller]
-    redirect_to :controller => controller_name, :action => action_name, :category_name => category_name
+    redirect_to controller: controller_name, action: action_name, category_name: category_name, show_me: show_me
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_post
       @post = Post.find(params[:id])
     end
   
-    # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit( :title, 
                                     :body, 
@@ -114,6 +108,7 @@ class PostsController < ApplicationController
                                     :is_draft, 
                                     :commentable,
                                     :category_name,
+                                    :show_me,
                                     post_categories_attributes: [:category_id, :post_id, :id]
                                     )
     end

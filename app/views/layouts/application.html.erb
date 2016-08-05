@@ -9,29 +9,22 @@
     <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
     <%= favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
-
     <!-- For iPhone with high-resolution Retina display: -->
     <!-- Size should be 114 x 114 pixels -->
     <%= favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
-
     <!-- For first- and second-generation iPad: -->
     <!-- Size should be 72 x 72 pixels -->
     <%= favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
-
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
     <!-- Size should be 57 x 57 pixels -->
     <%= favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
-
     <!-- For all other devices -->
     <!-- Size should be 32 x 32 pixels -->
     <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
-
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js" type="text/javascript"></script>
@@ -53,37 +46,17 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse">
 
           <% if user_signed_in? %>
-
-          <!-- Main nav -->
-          <%= render partial: '/shared/main_nav' %>
-          <!-- End of Main nav -->
-
-          <!-- Right nav -->
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %> <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Show Profile", profile_path(current_user) %></li>
-                <li><%= link_to "Edit Account", edit_user_registration_path %></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to "My Posts", my_posts_path %></li>
-                <li><%= link_to "Create New Post", new_post_path %></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to "My Polls", my_polls_path %></li>
-                <li><%= link_to "Create New Poll", new_poll_path %></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
-              </ul>
-            </li>
-          </ul>
-
+            <!-- Main nav -->
+            <%= render partial: '/shared/main_nav' %>
+            <!-- End of Main nav -->
+            <!-- Signed user nav -->
+            <%= render partial: '/shared/signed_user_nav' %>
+            <!-- Signed user nav -->
           <% else %>
-
-          <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "Sign Up", new_user_registration_path %></li>
-            <li><%= link_to "Sign In", new_user_session_path %></li>
-          </ul>
-          <!-- End of Right nav -->
+            <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to "Sign Up", new_user_registration_path %></li>
+              <li><%= link_to "Sign In", new_user_session_path %></li>
+            </ul>
           <% end %>
 
         </div>
@@ -98,15 +71,9 @@
         </div>
         <% if user_signed_in? %>
           <div class="col-md-3">
-            <div class="well sidebar-nav">
-              <h3>Sidebar</h3>
-              <ul class="nav nav-list">
-                <li><%= link_to "All Posts", posts_path %></li>
-                <li><%= link_to "All Polls", polls_path %></li>
-                <li><%= link_to "Create New Email", new_user_email_path(current_user) %></li>
-                <li><%= link_to "Chat", chat_messages_path %></li>
-              </ul>
-            </div><!--/.well -->
+            <!-- Side nav -->
+            <%= render partial: '/shared/side_nav' %>
+            <!-- Side nav -->
           </div><!--/span-->
         <% end %>
       </div><!--/row-->
