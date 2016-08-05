@@ -15,12 +15,12 @@ class PollsController < ApplicationController
   # GET /polls.json
   # List of all polls in app
   def index
-    @polls = Poll.all.order(status: :asc, created_at: :desc)
+    @polls = Poll.all.order(state: :asc, created_at: :desc)
   end
   
   # List of all user's polls
   def my_index
-    @polls = current_user.polls.order(status: :asc, created_at: :desc)
+    @polls = current_user.polls.order(state: :asc, created_at: :desc)
   end
 
   # GET /polls/1
@@ -65,9 +65,6 @@ class PollsController < ApplicationController
   # POST /polls.json
   def create
     @poll = Poll.new(poll_params)
-    # Now set Poll status eq. 1 for testing. 
-    # All statuses: 1 = 'open'; 2 = 'before'; 3 = 'closed'
-    @poll.status = 2
     @poll.user = current_user
 
     respond_to do |format|
@@ -85,7 +82,7 @@ class PollsController < ApplicationController
   # PATCH/PUT /polls/1.json
   def update
     respond_to do |format|
-      if @poll.update(poll_params) && save_poll_options #&& check_poll_datetime
+      if @poll.update(poll_params) && save_poll_options
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
@@ -116,7 +113,7 @@ class PollsController < ApplicationController
     end  
   end
   
-  # Save poll options
+  # Save poll options - for refactoring!
   def save_poll_options
     if options_empty?
       flash[:alert] = "You set no options. Have to add options!"
@@ -142,7 +139,7 @@ class PollsController < ApplicationController
     end
   end
   
-  # Check can user vote or not? 
+  # Check can user vote or not? - for refactoring - gem acts_as_votable
   def user_can_vote?
     @poll.options.each do |poll_option|
       if poll_option.votes.pluck(:user_id).include? current_user.id
@@ -165,7 +162,7 @@ class PollsController < ApplicationController
   
   # Counts votes for building bars
   def count_votes
-    if @voted || @poll.status == 3
+    if @voted || @poll.closed?
       @votes = []
       voted_users = []
       @poll.options.each_with_index do |option, index|
@@ -197,6 +194,6 @@ class PollsController < ApplicationController
     end
 
     def poll_params
-      params.require(:poll).permit(:title, :body, :start, :finish, :status, :poll_type, :user_id)#, options_attributes: [:poll_option])
+      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id)
     end
 end

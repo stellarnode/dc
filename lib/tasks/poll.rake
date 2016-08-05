@@ -5,7 +5,7 @@ namespace :poll do
   	#puts "Open 'before' polls"
   	Poll.before.each do |poll|
   		if DateTime.now >= poll.start && DateTime.now <= poll.finish
-  			poll.status = 1
+  			poll.open
   			poll.save!
   		end
   	end
@@ -16,7 +16,7 @@ namespace :poll do
   	#puts "Close 'open' polls"
   	Poll.opened.each do |poll|
   		if DateTime.now > poll.finish
-  			poll.status = 3
+  			poll.close
   			poll.save!
   		end
   	end
@@ -28,15 +28,17 @@ namespace :poll do
   	#puts 'Set all polls statuses'
   	Poll.all.each do |poll|
   		if DateTime.now >= poll.start && DateTime.now <= poll.finish
-  			poll.status = 1
+  			poll.open
   			poll.save!
   		end
   		if DateTime.now < poll.start
-  			poll.status = 2
+  			poll.create
+        #  Не уверен в правильности такого метода
+        #  Возможно, тут надо было бы использовать new или что-то подобное ?
   			poll.save!
   		end
   		if DateTime.now > poll.finish
-  			poll.status = 3
+  			poll.close
   			poll.save!
   		end
   	end

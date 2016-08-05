@@ -1,4 +1,4 @@
-<% if @poll.status != 1 %>
+<% if @poll.opened! %>
 	
 	<h2 style="color: red">This poll is not open now.</h2>
 
@@ -12,12 +12,12 @@
 	<p>Finish: <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
 	    
 	<p>Poll Status: 
-	  <% case @poll.status %>
-	    <% when 2 %> 
+	  <% case @poll.state %>
+	    <% when 'created' %>
 	      <span style="color: orange">Voting will start at <%= @poll.start.to_formatted_s(:long_ordinal) %></span>
-	    <% when 1 %> 
+	    <% when 'opened' %>
 	      <span style="color: dodgerblue">Voting is in progress. Open 'til <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-	    <% when 3 %>
+	    <% when 'closed' %>
 	      <span style="color: red">Voting was closed at <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
 	  <% end %>
 	</p>
