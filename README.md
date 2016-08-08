@@ -6,7 +6,7 @@ To run this application, remember to do the following (instructions given for Ma
 
 * For Win: install Redis from: https://github.com/MSOpenTech/redis/releases. Reload the computer. Redis server will start automaticly
 
-* Run Redis server: `/usr/local/bin/redis-server` (in a separate terminal window)
+* Run Redis server (for Mac OS): `/usr/local/bin/redis-server` (in a separate terminal window)
 
 * Launch Sidekiq for async jobs in a separate terminal window: `bundle exec sidekiq`
 
@@ -15,6 +15,7 @@ To run this application, remember to do the following (instructions given for Ma
 * Launch Crono service in a separate terminal window in your Rails project root directory: `crono` (or `bundle exec crono`)
 
 * Run command 'rake db:seed' to create categories for posts.
+* Run command 'rake poll:all' to set poll states.
 
 * In a separate terminal window start Rails server: `rails s`
 

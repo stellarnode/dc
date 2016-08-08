@@ -3,7 +3,6 @@ class PollsController < ApplicationController
   #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index]
-  #before_action :user_can_vote?,    only: [:voting, :show]
   before_action :count_votes,       only: [:show]
 
   # Set editing poll time limit
@@ -46,7 +45,7 @@ class PollsController < ApplicationController
 
   # GET /polls/1/voting
   def voting
-    unless user_can_vote?
+    unless Poll.voted_by_user(@poll, current_user)
       respond_to do |format|
         format.html { redirect_to @poll, alert: "You've voted for this poll." }
       end
@@ -93,26 +92,13 @@ class PollsController < ApplicationController
     end
   end
   
-  # Check can user vote or not? - for refactoring - gem acts_as_votable
-  def user_can_vote?
-    @poll.options.each do |poll_option|
-      if poll_option.votes.pluck(:user_id).include? current_user.id
-        @voted = true
-        false
-        return
-      else
-        @voted = false
-        true
-      end
-    end  
-  end
-
+  # TODO: replace this action w/ checking on model level
   # Reloads voting & show pages to prevent poll cheating
-  def set_cache_headers
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
+#  def set_cache_headers
+#    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+#    response.headers["Pragma"] = "no-cache"
+#    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+#  end
   
   # Counts votes for building bars - Move to helper??
   def count_votes
@@ -124,9 +110,9 @@ class PollsController < ApplicationController
         voted_users.push(option.votes.pluck(:user_id))
       end
       case @poll.poll_type
-        when 1
+        when 'radio'
           @votes.push(@votes.inject(0){|sum,x| sum + x })
-        when 2
+        when 'check_box'
           @votes.push(voted_users.uniq.count)
       end
     end
@@ -155,7 +141,8 @@ class PollsController < ApplicationController
                                     :state, 
                                     :poll_type, 
                                     :user_id, 
-                                    :show_me,
+                                    :show_me, 
+                                    :votes_count, 
                                     options_attributes: [:poll_option, :poll_id, :id, :_destroy]
                                     )
     end

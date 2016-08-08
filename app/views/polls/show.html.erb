@@ -3,14 +3,7 @@
 <p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
 <p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
     
-<p><b>Poll Type:</b> 
-  <% case @poll.poll_type %>
-    <% when 1 %>
-      <span>RadioButtons</span>
-    <% when 2 %>
-      <span>Multiply CheckBoxes</span>
-  <% end %>
-</p>
+<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p> 
 
 <p><b>User:</b> <%= @poll.user_id %></p>
 
@@ -38,6 +31,7 @@
       <span style="color: orange">Voting will start at <%= @poll.start.to_formatted_s(:long_ordinal) %></span>
     <% when 'opened' %> 
       <span style="color: dodgerblue">Voting is in progress. Open 'til <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
+      <!-- TODO: replace @voted -->
       <% unless @voted %>
         <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-primary" %>
       <% else %>

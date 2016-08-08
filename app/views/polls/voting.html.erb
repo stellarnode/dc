@@ -1,4 +1,4 @@
-<% if @poll.opened! %>
+<% unless @poll.opened? %>
 	
 	<h2 style="color: red">This poll is not open now.</h2>
 
@@ -22,20 +22,13 @@
 	  <% end %>
 	</p>
 	    
-	<p>Poll Type: 
-	  <% case @poll.poll_type %>
-	    <% when 1 %>
-	      <span>RadioButtons</span>
-	    <% when 2 %>
-	      <span>Multiply CheckBoxes</span>
-	  <% end %>
-	</p>
+	<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p> 
 
 	<p><b>Options:</b></p>  
 
   	<%= form_tag "/votes" do |f| %>
 		<% case @poll.poll_type %>
-	    	<% when 1 %>
+	    	<% when 'radio' %>
 				<% @poll.options.each do |option| %>
 				<div class="field form-group">
 			  		<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
@@ -43,7 +36,7 @@
 		            <% end %>
 			  	</div>
 				<% end %>
-		    <% when 2 %>
+		    <% when 'check_box' %>
 				<% @poll.options.each do |option| %>
 				<div class="field form-group">
 			  		<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
