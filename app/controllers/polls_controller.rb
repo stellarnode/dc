@@ -1,9 +1,9 @@
 class PollsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_cache_headers, only: [:voting, :show ]
+  #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index]
-  before_action :user_can_vote?,    only: [:voting, :show]
+  #before_action :user_can_vote?,    only: [:voting, :show]
   before_action :count_votes,       only: [:show]
 
   # Set editing poll time limit
@@ -32,7 +32,7 @@ class PollsController < ApplicationController
   # GET /polls/new
   def new
     @poll = Poll.new
-    @option = Option.new
+    @poll.options.build
   end
 
   # GET /polls/1/edit
@@ -58,9 +58,8 @@ class PollsController < ApplicationController
   def create
     @poll = Poll.new(poll_params)
     @poll.user = current_user
-
     respond_to do |format|
-      if check_poll_datetime && @poll.save && save_poll_options
+      if @poll.save #check_poll_datetime && 
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
         format.json { render :show, status: :created, location: @poll }
       else
@@ -74,7 +73,7 @@ class PollsController < ApplicationController
   # PATCH/PUT /polls/1.json
   def update
     respond_to do |format|
-      if @poll.update(poll_params) && save_poll_options
+      if @poll.update(poll_params) #&& save_poll_options
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
@@ -91,43 +90,6 @@ class PollsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to polls_url, notice: "Poll \##{@poll.id} was successfully destroyed." }
       format.json { head :no_content }
-    end
-  end
-  
-  # Chech if all options are empty
-  def options_empty?
-    params[:options].each do |option|
-      if option != ""
-        return false
-      else
-        return true
-      end
-    end  
-  end
-  
-  # Save poll options - for refactoring!
-  def save_poll_options
-    if options_empty?
-      flash[:alert] = "You set no options. Have to add options!"
-      return false
-    else
-    if @poll.options.empty?
-      params[:options].each do |option|
-        if option != ""
-          new_option = Option.new(:poll_option => option, :poll_id => @poll.id)
-          new_option.save!
-        end
-      end
-    else
-      params[:options].each do |key, value|
-        if value != ""
-          update_option = Option.where(:id => key.to_i).first
-          update_option.poll_option = value
-          update_option.save!
-        end
-      end
-    end
-    return true
     end
   end
   
@@ -186,6 +148,15 @@ class PollsController < ApplicationController
     end
 
     def poll_params
-      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id, :show_me)
+      params.require(:poll).permit( :title, 
+                                    :body, 
+                                    :start, 
+                                    :finish, 
+                                    :state, 
+                                    :poll_type, 
+                                    :user_id, 
+                                    :show_me,
+                                    options_attributes: [:poll_option, :poll_id, :id, :_destroy]
+                                    )
     end
 end

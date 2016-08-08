@@ -2,8 +2,8 @@ class Poll < ApplicationRecord
   include AASM
 
 	belongs_to 						:user
-	has_many 						:options, -> { includes :votes }, dependent: :destroy
-	accepts_nested_attributes_for 	:options
+	has_many 						:options, dependent: :destroy
+	accepts_nested_attributes_for 	:options, allow_destroy: true
 	validates_presence_of 			:title, :start, :finish, :poll_type, :user_id
 
 	# Set aasm states for polls

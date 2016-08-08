@@ -97,6 +97,7 @@ GEM
       json (>= 1.7)
       mime-types (>= 1.16)
       mimemagic (>= 0.3.0)
+    cocoon (1.2.9)
     coderay (1.1.1)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -355,6 +356,7 @@ DEPENDENCIES
   capistrano3-puma
   capybara
   carrierwave
+  cocoon
   coffee-rails (~> 4.2)
   commontator (~> 4.11.1)
   crono
