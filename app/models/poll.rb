@@ -3,6 +3,7 @@ class Poll < ApplicationRecord
 
 	belongs_to 											:user
 	has_many 												:options, dependent: :destroy
+  has_many                        :votes
 	accepts_nested_attributes_for 	:options, allow_destroy: true, reject_if: :all_blank
 	validates_presence_of 					:title, :start, :finish, :poll_type, :user_id
 

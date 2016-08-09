@@ -25,22 +25,17 @@
   <% end %> 
 <% end %>
 
-<p><b>Poll Status:</b> 
-  <% case @poll.state %>
-    <% when 'created' %> 
-      <span style="color: orange">Voting will start at <%= @poll.start.to_formatted_s(:long_ordinal) %></span>
-    <% when 'opened' %> 
-      <span style="color: dodgerblue">Voting is in progress. Open 'til <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-      <!-- TODO: replace @voted -->
-      <% unless @voted %>
-        <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-primary" %>
-      <% else %>
-        <p style="color: red"><b>You've already voted for this poll.</b></p>
-      <% end %>
-    <% when 3 %>
-      <span style="color: red">Voting was closed at <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-  <% end %>
+<p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
+
+<!-- TODO: refactor this block -->
+<p>
+<% unless @poll.state == 'closed' %>
+  <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-success btn-lg" %>
+<% else %>
+  <p style="color: red"><b>You've already voted for this poll.</b></p>
+<% end %>
 </p>
+<!-- Ebd of the block -->
 
 <% if current_user.is_admin? or can? :edit, @poll %>
   <div class="btn-group btn-group" role="group" aria-label="...">

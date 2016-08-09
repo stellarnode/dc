@@ -23,16 +23,7 @@
     <% end %> 
   <% end %>
 
-  <p><b>Poll Status:</b> 
-  <% case poll.state %>
-    <% when 'created' %>
-      <span style="color: orange">Voting will start at <%= poll.start.to_formatted_s(:long_ordinal) %></span>
-    <% when 'opened' %>
-      <span style="color: dodgerblue">Voting is in progress. Open 'til <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
-    <% when 'closed' %>
-      <span style="color: red">Voting was closed at <%= poll.finish.to_formatted_s(:long_ordinal) %></span>
-  <% end %>
-  </p>
+  <p><b>Poll Status:</b> <%= show_poll_status(poll) %></p>
     
   <% if current_user.is_admin? or can? :edit, poll %>
     <div class="btn-group btn-group-sm" role="group" aria-label="...">

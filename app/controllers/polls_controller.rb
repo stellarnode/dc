@@ -7,7 +7,7 @@ class PollsController < ApplicationController
 
   # Set editing poll time limit
   def set_editing_time
-    @editing_time = 3.hour
+    @editing_time = 23.hour
   end
 
   # GET /polls
@@ -106,7 +106,8 @@ class PollsController < ApplicationController
       @votes = []
       voted_users = []
       @poll.options.each_with_index do |option, index|
-        @votes.push(Vote.where(:option_id => option.id).count)
+        #@votes.push(Vote.where(:option_id => option.id).count)
+        @votes.push(option.votes.size)
         voted_users.push(option.votes.pluck(:user_id))
       end
       case @poll.poll_type
