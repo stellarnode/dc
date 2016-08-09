@@ -1,28 +1,28 @@
 class PollsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_cache_headers, only: [:voting, :show ]
+  #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
-  before_action :set_editing_time,  only: [:edit, :show, :index, :my_index]
-  before_action :user_can_vote?,    only: [:voting, :show]
+  before_action :set_editing_time,  only: [:edit, :show, :index]
   before_action :count_votes,       only: [:show]
 
   # Set editing poll time limit
   def set_editing_time
-    @editing_time = 10.hour
+    @editing_time = 23.hour
   end
 
   # GET /polls
   # GET /polls.json
   # List of all polls in app
   def index
-    @polls = Poll.all.order(state: :asc, created_at: :desc)
+    @show_me = params[:show_me] || 'all'
+    case @show_me
+    when 'all'
+      @polls = Poll.all.order(state: :asc, created_at: :desc).page params[:page]
+    when 'my'
+      @polls = current_user.polls.order(state: :asc, created_at: :desc).page params[:page]
+    end
   end
   
-  # List of all user's polls
-  def my_index
-    @polls = current_user.polls.order(state: :asc, created_at: :desc)
-  end
-
   # GET /polls/1
   # GET /polls/1.json
   def show
@@ -31,30 +31,21 @@ class PollsController < ApplicationController
   # GET /polls/new
   def new
     @poll = Poll.new
-    @option = Option.new
+    @poll.options.build
   end
 
   # GET /polls/1/edit
   def edit
-    alert_string = ''
-      unless belongs_to_user?(@poll)
-        alert_string = "You can edit only your own polls. "
-        path = my_polls_path
-      end
-      if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
-        alert_string = alert_string + "Sorry! You can't edit this poll, 'cause editing time limit is over."
-        path = @poll
-      end     
-      unless alert_string == ''
-        respond_to do |format|
-         format.html { redirect_to path, alert: alert_string }
-        end
-      end
+    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
+      respond_to do |format|
+        format.html { redirect_to @poll, alert: "Sorry! You can't edit this poll, 'cause editing time is over." }
+      end   
+    end
   end
 
   # GET /polls/1/voting
   def voting
-    unless user_can_vote?
+    unless Poll.voted_by_user(@poll, current_user)
       respond_to do |format|
         format.html { redirect_to @poll, alert: "You've voted for this poll." }
       end
@@ -66,9 +57,8 @@ class PollsController < ApplicationController
   def create
     @poll = Poll.new(poll_params)
     @poll.user = current_user
-
     respond_to do |format|
-      if check_poll_datetime && @poll.save && save_poll_options
+      if @poll.save #check_poll_datetime && 
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
         format.json { render :show, status: :created, location: @poll }
       else
@@ -82,7 +72,7 @@ class PollsController < ApplicationController
   # PATCH/PUT /polls/1.json
   def update
     respond_to do |format|
-      if @poll.update(poll_params) && save_poll_options
+      if @poll.update(poll_params) #&& save_poll_options
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
@@ -102,77 +92,28 @@ class PollsController < ApplicationController
     end
   end
   
-  # Chech if all options are empty
-  def options_empty?
-    params[:options].each do |option|
-      if option != ""
-        return false
-      else
-        return true
-      end
-    end  
-  end
-  
-  # Save poll options - for refactoring!
-  def save_poll_options
-    if options_empty?
-      flash[:alert] = "You set no options. Have to add options!"
-      return false
-    else
-    if @poll.options.empty?
-      params[:options].each do |option|
-        if option != ""
-          new_option = Option.new(:poll_option => option, :poll_id => @poll.id)
-          new_option.save!
-        end
-      end
-    else
-      params[:options].each do |key, value|
-        if value != ""
-          update_option = Option.where(:id => key.to_i).first
-          update_option.poll_option = value
-          update_option.save!
-        end
-      end
-    end
-    return true
-    end
-  end
-  
-  # Check can user vote or not? - for refactoring - gem acts_as_votable
-  def user_can_vote?
-    @poll.options.each do |poll_option|
-      if poll_option.votes.pluck(:user_id).include? current_user.id
-        @voted = true
-        false
-        return
-      else
-        @voted = false
-        true
-      end
-    end  
-  end
-
+  # TODO: replace this action w/ checking on model level
   # Reloads voting & show pages to prevent poll cheating
-  def set_cache_headers
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
+#  def set_cache_headers
+#    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+#    response.headers["Pragma"] = "no-cache"
+#    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+#  end
   
-  # Counts votes for building bars
+  # Counts votes for building bars - Move to helper??
   def count_votes
     if @voted || @poll.closed?
       @votes = []
       voted_users = []
       @poll.options.each_with_index do |option, index|
-        @votes.push(Vote.where(:option_id => option.id).count)
+        #@votes.push(Vote.where(:option_id => option.id).count)
+        @votes.push(option.votes.size)
         voted_users.push(option.votes.pluck(:user_id))
       end
       case @poll.poll_type
-        when 1
+        when 'radio'
           @votes.push(@votes.inject(0){|sum,x| sum + x })
-        when 2
+        when 'check_box'
           @votes.push(voted_users.uniq.count)
       end
     end
@@ -194,6 +135,16 @@ class PollsController < ApplicationController
     end
 
     def poll_params
-      params.require(:poll).permit(:title, :body, :start, :finish, :state, :poll_type, :user_id)
+      params.require(:poll).permit( :title, 
+                                    :body, 
+                                    :start, 
+                                    :finish, 
+                                    :state, 
+                                    :poll_type, 
+                                    :user_id, 
+                                    :show_me, 
+                                    :votes_count, 
+                                    options_attributes: [:poll_option, :poll_id, :id, :_destroy]
+                                    )
     end
 end

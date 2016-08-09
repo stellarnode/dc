@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728184505) do
+ActiveRecord::Schema.define(version: 20160809120303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20160728184505) do
     t.integer  "poll_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "votes_count"
     t.index ["poll_id"], name: "index_options_on_poll_id", using: :btree
   end
 
@@ -118,11 +119,12 @@ ActiveRecord::Schema.define(version: 20160728184505) do
     t.text     "body"
     t.datetime "start"
     t.datetime "finish"
-    t.integer  "poll_type"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "state"
+    t.string   "poll_type"
+    t.integer  "votes_count"
     t.index ["user_id"], name: "index_polls_on_user_id", using: :btree
   end
 
@@ -223,7 +225,9 @@ ActiveRecord::Schema.define(version: 20160728184505) do
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "poll_id"
     t.index ["option_id"], name: "index_votes_on_option_id", using: :btree
+    t.index ["poll_id"], name: "index_votes_on_poll_id", using: :btree
     t.index ["user_id"], name: "index_votes_on_user_id", using: :btree
   end
 
@@ -237,5 +241,6 @@ ActiveRecord::Schema.define(version: 20160728184505) do
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "votes", "options"
+  add_foreign_key "votes", "polls"
   add_foreign_key "votes", "users"
 end

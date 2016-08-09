@@ -1,3 +1,55 @@
-<h1>All Polls</h1>
+<h1><%= @show_me.capitalize %> Polls</h1>
 
-<%= render 'list' %>
+<% @polls.each do |poll| %>
+  <h3><%= link_to "#{poll.title}", poll_path(poll) %>
+  <span class="label label-primary"><%= poll.created_at.to_date == Date.today ? 'New' : '' %></span>
+  </h3>
+  <p><b>Body:</b> <%= truncate(poll.body, length: 200, separator: ' ') %></p>
+  <p><b>Start:</b> <%= poll.start.to_formatted_s(:long_ordinal) %></p>
+  <p><b>Finish:</b> <%= poll.finish.to_formatted_s(:long_ordinal) %></p>
+    
+  <p><b>Poll Type: </b><%= show_poll_type(poll) %></p>  
+
+  <p><b>User:</b> <%= poll.user_id %></p>
+  <p><b>Poll ID:</b> <%= poll.id %></p>
+
+  <p><b>Options:</b></p>
+  <% poll.options.each_with_index do |option, index| %>
+    <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
+    <% if poll.closed? %>
+      <b><span style="color: #428bca">&#8756; 
+      <%= Vote.where(:option_id => option.id).count %>
+      </span></b></p>
+    <% end %> 
+  <% end %>
+
+  <p><b>Poll Status:</b> <%= show_poll_status(poll) %></p>
+    
+  <% if current_user.is_admin? or can? :edit, poll %>
+    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+      <%= link_to 'Show', poll, type: 'button', class: 'btn btn-default' %>
+      <% if (DateTime.now.to_i - poll.created_at.to_i) < @editing_time && poll.created? %>
+        <%= link_to 'Edit', edit_poll_path(poll), type: 'button', class: 'btn btn-default' %>  
+      <% end %>
+      <%= link_to 'Destroy', poll, method: :delete, data: { confirm: 'Are you sure?' }, 
+        type: 'button', class: 'btn btn-default' %>
+    </div>
+  <% end %>
+  <hr />
+<% end %>
+
+<br>
+
+<% if @polls.size == 0 %>
+  <% case @show_me %>
+    <% when 'all' %>
+      <p>There's absolutely no polls. <%= link_to "It's time to create one", new_poll_path %>.</p>
+    <% when 'my' %>
+        <p>You don't have any polls. <%= link_to "It's time to create one", new_poll_path %>.</p>
+  <% end %>
+<% end %>
+<%= button_to "Create New Poll", new_poll_path, method: :get, class: "btn btn-lg btn-primary" %>
+
+<div align ="center">
+  <%= paginate @polls %>
+</div>

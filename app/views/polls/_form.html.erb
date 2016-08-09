@@ -1,52 +1,27 @@
 <%= simple_form_for(@poll) do |f| %>
   <%= f.error_notification %>
-    <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your question here" %> 
-    <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your description here", 
-    :input_html => {rows: 7} %>
-    <%= f.input :start, start_year: Time.now.year, 
-    order: [:day, :month, :year, :hour, :minute], minute_step: 30 %>
-    <%= f.input :finish, start_year: Time.now.year, 
-    order: [:day, :month, :year, :hour, :minute], minute_step: 30 %>
-    
-    <% case action_name %>
-      <% when 'new' %>
-        <%= f.input :poll_type, as: :select, collection: 
-                    [['RadioButtons', 1], ['Multiply CheckBoxes', 2]], selected: 'RadioButtons' %>
-        <p><b>Options (min. 2):</b></p>
-        <div>
-          <span>Option 1</span><br>
-          <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
-          <p></p>
-        </div>
-          <div id="dynamicInput">
-          <span>Option 2</span><br>
-          <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
-          <p></p>
-        </div>
-        <p></p>
-        <input type="button" class="btn btn-primary" value="Add another option (max. 20)" onClick="addInput('dynamicInput', counter);">
-        <p></p>
-      <% when 'edit', 'create', 'update' %>
-        <%= f.input :poll_type, as: :select, collection: 
-                    [['RadioButtons', 1], ['Multiply CheckBoxes', 2]], selected: "#{@poll.poll_type}" %>
-        <p><b>Options:</b></p>
-        <% @poll.options.each_with_index do |option, index| %>
-          <%= f.label "Option #{index + 1}" %> 
-          <input class="string optional form-control" type="text" name="options[<%= option.id %>]" id="options_poll_option" value="<%= option.poll_option %>">
-        <% end %>
-        <% if @poll.options.empty? %>
-        <div id="dynamicInputEdit">
-          Option <%= @poll.options.count + 1 %><br>
-          <input class="string optional form-control" type="text" name="options[]" id="options" autocomplete="off">
-          <p></p>
-        </div>
-        <p></p>
-        <input type="button" class="btn btn-primary" value="Add another option (max 20)" onClick="addInputEdit('dynamicInputEdit');">
-        <% end %>
-        <p></p>
-    <% end %>
+  <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your question here" %> 
+  <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your description here", 
+  :input_html => {rows: 7} %>
+  <%= f.input :start, start_year: Time.now.year, 
+  order: [:day, :month, :year, :hour, :minute], minute_step: 30 %>
+  <%= f.input :finish, start_year: Time.now.year, 
+  order: [:day, :month, :year, :hour, :minute], minute_step: 30 %>
+  
+  <% @poll.poll_type.nil? ? poll_type = 'radio' : poll_type = @poll.poll_type %>
+  <%= f.input :poll_type, as: :select, collection: 
+              [['RadioButtons', 'radio'], ['Multiply CheckBoxes', 'check_box']], selected: "#{poll_type}" %>
 
-  <p><i>Remember! You have 15 minutes after creating to edit the poll.</i></p>
+  <p><b>Options (min. 2):</b></p>
+  <div id="options">
+    <%= f.simple_fields_for :options do |ff| %>
+      <%= render 'option_fields', f: ff %>
+    <% end %> 
+    <div class="links">
+      <%= link_to_add_association 'Add option', f, :options, type: 'button', class: 'btn btn-primary' %>
+    </div>
+  </div>
+    <p><i>Remember! You have 15 minutes after creating to edit the poll.</i></p>
   <div class="form-actions">
     <%= f.submit "Save Poll", class: "btn btn-lg btn-success" %>
   </div>

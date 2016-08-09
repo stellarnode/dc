@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  	helper_method :belongs_to_user?
-
   	include Pundit
   	protect_from_forgery with: :exception, prepend: true
 	before_action :ensure_signup_complete, only: [:new, :create, :update, :destroy]
@@ -18,10 +16,6 @@ class ApplicationController < ActionController::Base
 	rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
 private
-
-  	def belongs_to_user?(model)
-  	  model.user == current_user ? true : false
-  	end
 
 	def user_not_authorized
 	  flash[:alert] = "You are not authorized to perform this action."

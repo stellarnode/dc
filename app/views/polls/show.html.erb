@@ -3,14 +3,7 @@
 <p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
 <p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
     
-<p><b>Poll Type:</b> 
-  <% case @poll.poll_type %>
-    <% when 1 %>
-      <span>RadioButtons</span>
-    <% when 2 %>
-      <span>Multiply CheckBoxes</span>
-  <% end %>
-</p>
+<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p> 
 
 <p><b>User:</b> <%= @poll.user_id %></p>
 
@@ -32,41 +25,28 @@
   <% end %> 
 <% end %>
 
-<p><b>Poll Status:</b> 
-  <% case @poll.state %>
-    <% when 'created' %> 
-      <span style="color: orange">Voting will start at <%= @poll.start.to_formatted_s(:long_ordinal) %></span>
-    <% when 'opened' %> 
-      <span style="color: dodgerblue">Voting is in progress. Open 'til <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-      <% unless @voted %>
-        <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-primary" %>
-      <% else %>
-        <p style="color: red"><b>You've already voted for this poll.</b></p>
-      <% end %>
-    <% when 3 %>
-      <span style="color: red">Voting was closed at <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-  <% end %>
-</p>
+<p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
 
-<% if belongs_to_user?(@poll) %>
+<!-- TODO: refactor this block -->
+<p>
+<% unless @poll.state == 'closed' %>
+  <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-success btn-lg" %>
+<% else %>
+  <p style="color: red"><b>You've already voted for this poll.</b></p>
+<% end %>
+</p>
+<!-- Ebd of the block -->
+
+<% if current_user.is_admin? or can? :edit, @poll %>
   <div class="btn-group btn-group" role="group" aria-label="...">
     <% if (DateTime.now.to_i - @poll.created_at.to_i) < @editing_time && @poll.state == 'created' %>
       <%= link_to 'Edit', edit_poll_path(@poll), type: 'button', class: 'btn btn-primary' %>  
     <% end %>
     <%= link_to 'Destroy', @poll, method: :delete, data: { confirm: 'Are you sure?' }, 
       type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'My polls', my_polls_path, type: 'button', class: 'btn btn-primary' %>
+    <%= link_to 'My polls', polls_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
     <%= link_to 'All polls', polls_path, type: 'button', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
-<nav aria-label="...">
-  <ul class="pager">
-    <% unless @poll == Poll.first %>
-    <li><%= link_to '< Prev. Poll', Poll.where("id < ?", @poll.id).last %></li>
-    <% end %>
-    <% unless @poll == Poll.last %>
-      <li><%= link_to 'Next Poll >', Poll.where("id > ?", @poll.id).first %></li>
-    <% end %>
-  </ul>
-</nav>
+<%= render partial: '/shared/pager', locals: { model_name: Poll, object_name: @poll } %>

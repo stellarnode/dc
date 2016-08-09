@@ -4,6 +4,6 @@
 
 <div class="btn-group btn-group" role="group" aria-label="...">
   <%= link_to 'Show', @poll, type: 'button', class: 'btn btn-primary' %>  
-  <%= link_to 'My polls', my_polls_path, type: 'button', class: 'btn btn-primary' %>
+  <%= link_to 'My polls', polls_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
   <%= link_to 'All polls', polls_path, type: 'button', class: 'btn btn-primary' %>
 </div>
