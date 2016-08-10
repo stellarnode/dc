@@ -1,4 +1,4 @@
-<h1><%= @show_me.capitalize %> Polls</h1>
+<h1><%= params[:show_me].capitalize %> Polls</h1>
 
 <% @polls.each do |poll| %>
   <h3><%= link_to "#{poll.title}", poll_path(poll) %>
@@ -41,7 +41,7 @@
 <br>
 
 <% if @polls.size == 0 %>
-  <% case @show_me %>
+  <% case params[:show_me] %>
     <% when 'all' %>
       <p>There's absolutely no polls. <%= link_to "It's time to create one", new_poll_path %>.</p>
     <% when 'my' %>

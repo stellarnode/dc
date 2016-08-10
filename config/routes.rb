@@ -2,13 +2,10 @@ Rails.application.routes.draw do
 
   resources   :polls
   match       '/polls/:id/voting' => 'polls#voting', via: [:get], :as => :voting_poll
-  match       '/mypolls' => 'polls#my_index', via: [:get], :as => :my_polls
   post        '/votes' => 'votes#create', via: [:post], :as => :new_votes
 
   resources   :posts
-  match       '/myposts' => 'posts#my_index', via: [:get], :as => :my_posts
-  #post        '/category' => 'categories#set_category', via: [:post], :as => :set_category
-  match        'posts/category' => 'posts#set_category', via: [:post], :as => :set_category
+  match       'posts/category' => 'posts#set_category', via: [:post], :as => :set_category
 
   resources		:profiles, only: [:show, :edit, :update ]
   resources 	:flats

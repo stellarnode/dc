@@ -5,17 +5,11 @@ class PollsController < ApplicationController
   before_action :set_editing_time,  only: [:edit, :show, :index]
   before_action :count_votes,       only: [:show]
 
-  # Set editing poll time limit
-  def set_editing_time
-    @editing_time = 23.hour
-  end
-
   # GET /polls
   # GET /polls.json
   # List of all polls in app
   def index
-    @show_me = params[:show_me] || 'all'
-    case @show_me
+    case params[:show_me] = params[:show_me] || 'all'
     when 'all'
       @polls = Poll.all.order(state: :asc, created_at: :desc).page params[:page]
     when 'my'
@@ -72,7 +66,7 @@ class PollsController < ApplicationController
   # PATCH/PUT /polls/1.json
   def update
     respond_to do |format|
-      if @poll.update(poll_params) #&& save_poll_options
+      if @poll.update(poll_params)
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
@@ -120,31 +114,27 @@ class PollsController < ApplicationController
   end
   
   private    
-    # Validates start & finish datetimes
-    def check_poll_datetime
-      if @poll.finish > @poll.start && @poll.start > DateTime.now && @poll.finish > DateTime.now 
-        return true 
-      else
-        flash[:alert] = "You set the wrong start or finish time."
-        return false
-      end
-    end
     
-    def set_poll
-      @poll = Poll.find(params[:id])
-    end
+  # Set editing poll time limit
+  def set_editing_time
+    @editing_time = 10.hour
+  end
 
-    def poll_params
-      params.require(:poll).permit( :title, 
-                                    :body, 
-                                    :start, 
-                                    :finish, 
-                                    :state, 
-                                    :poll_type, 
-                                    :user_id, 
-                                    :show_me, 
-                                    :votes_count, 
-                                    options_attributes: [:poll_option, :poll_id, :id, :_destroy]
-                                    )
-    end
+  def set_poll
+    @poll = Poll.find(params[:id])
+  end
+
+  def poll_params
+    params.require(:poll).permit( :title, 
+                                  :body, 
+                                  :start, 
+                                  :finish, 
+                                  :state, 
+                                  :poll_type, 
+                                  :user_id, 
+                                  :show_me, 
+                                  :votes_count, 
+                                  options_attributes: [:poll_option, :poll_id, :id, :_destroy]
+                                  )
+  end
 end

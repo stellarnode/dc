@@ -23,7 +23,7 @@
 				<% @poll.options.each do |option| %>
 					<div class="field form-group">
 				  	<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
-			        <%= radio_button_tag("options", option.id, checked = false) %><%= option.poll_option %>
+			        <%= radio_button_tag("votes_params[#{@poll.id}]", option.id, checked = false) %><%= option.poll_option %>
 			      <% end %>
 				  </div>
 				<% end %>
@@ -31,7 +31,7 @@
 				<% @poll.options.each do |option| %>
 					<div class="field form-group">
 				  	<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
-			        <%= check_box("options", option.id) %> <%= option.poll_option %>
+			        <%= check_box("votes_params[#{@poll.id}]", option.id) %> <%= option.poll_option %>
 			      <% end %>
 				  </div>
 				<% end %>

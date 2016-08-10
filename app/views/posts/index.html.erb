@@ -1,7 +1,7 @@
-<h1><%= @show_me.capitalize %> Posts</h1>
+<h1><%= params[:show_me].capitalize %> Posts</h1>
 
 <!-- Nav bar for post categories -->
-<%= render partial: '/shared/categories_nav' %>
+<%= render partial: 'categories_nav' %>
 <!-- end of Nav bar for post categories -->
 
 <% @posts.each do |post| %>
@@ -38,11 +38,11 @@
 <br>
 
 <% if @posts.size == 0 %>
-  <% case @show_me %>
+  <% case params[:show_me] %>
     <% when 'all' %>
-      <p>There's absolutely no <i><%= @category_name %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+      <p>There's absolutely no <i><%= params[:category_name] %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
     <% when 'my' %>
-        <p>You don't have any <i><%= @category_name %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
+        <p>You don't have any <i><%= params[:category_name] %></i> posts. <%= link_to "It's time to create one", new_post_path %>.</p>
   <% end %>
 <% end %>
 
