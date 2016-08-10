@@ -3,7 +3,7 @@ class PollsController < ApplicationController
   #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index]
-  before_action :count_votes,       only: [:show]
+  #before_action :count_votes,       only: [:show]
 
   # GET /polls
   # GET /polls.json
@@ -20,6 +20,20 @@ class PollsController < ApplicationController
   # GET /polls/1
   # GET /polls/1.json
   def show
+    if Poll.voted_by_user(@poll, current_user) || @poll.closed?
+      @votes = []
+      voted_users = []
+      @poll.options.each_with_index do |option, index|
+        @votes.push(option.votes.size)
+        voted_users.push(option.votes.pluck(:user_id))
+      end
+      case @poll.poll_type
+        when 'radio'
+          @votes.push(@votes.inject(0){|sum,x| sum + x })
+        when 'check_box'
+          @votes.push(voted_users.uniq.count)
+      end
+    end
   end
 
   # GET /polls/new
@@ -30,16 +44,16 @@ class PollsController < ApplicationController
 
   # GET /polls/1/edit
   def edit
-    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
+    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time || !@poll.created?
       respond_to do |format|
-        format.html { redirect_to @poll, alert: "Sorry! You can't edit this poll, 'cause editing time is over." }
+        format.html { redirect_to @poll, alert: "Sorry! But you can't edit this poll." }
       end   
     end
   end
 
   # GET /polls/1/voting
   def voting
-    unless Poll.voted_by_user(@poll, current_user)
+    if Poll.voted_by_user(@poll, current_user)
       respond_to do |format|
         format.html { redirect_to @poll, alert: "You've voted for this poll." }
       end
@@ -93,28 +107,27 @@ class PollsController < ApplicationController
 #    response.headers["Pragma"] = "no-cache"
 #    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
 #  end
-  
+
+  private 
+
   # Counts votes for building bars - Move to helper??
-  def count_votes
-    if @voted || @poll.closed?
-      @votes = []
-      voted_users = []
-      @poll.options.each_with_index do |option, index|
-        #@votes.push(Vote.where(:option_id => option.id).count)
-        @votes.push(option.votes.size)
-        voted_users.push(option.votes.pluck(:user_id))
-      end
-      case @poll.poll_type
-        when 'radio'
-          @votes.push(@votes.inject(0){|sum,x| sum + x })
-        when 'check_box'
-          @votes.push(voted_users.uniq.count)
-      end
-    end
-  end
+#  def count_votes
+#    if Poll.voted_by_user(@poll, current_user) || @poll.closed?
+#      @votes = []
+#      voted_users = []
+#      @poll.options.each_with_index do |option, index|
+#        @votes.push(option.votes.size)
+#        voted_users.push(option.votes.pluck(:user_id))
+#      end
+#      case @poll.poll_type
+#        when 'radio'
+#          @votes.push(@votes.inject(0){|sum,x| sum + x })
+#        when 'check_box'
+#          @votes.push(voted_users.uniq.count)
+#      end
+#    end
+#  end
   
-  private    
-    
   # Set editing poll time limit
   def set_editing_time
     @editing_time = 10.hour

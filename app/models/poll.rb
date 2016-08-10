@@ -43,14 +43,11 @@ class Poll < ApplicationRecord
 
   # Check can user vote or not?
   def self.voted_by_user(poll, user)
-    poll.options.each do |poll_option|
-      if poll_option.votes.pluck(:user_id).include? user.id
-        false
-        return
-      else
-        true
-      end
-    end  
+    if poll.votes.pluck(:user_id).include? user.id 
+      return true 
+    else
+      return false
+    end
   end
 
 end

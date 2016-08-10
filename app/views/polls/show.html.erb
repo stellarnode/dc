@@ -11,25 +11,14 @@
 
 <p><b>Options:</b></p>
 <% @poll.options.each_with_index do |option, index| %>
-  <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
-  <% if @voted || @poll.closed? %>
-    <b><span class="label label-success"><%= @votes[index] %></span></b></p>
-    <% unless @votes.last == 0 %>
-      <% bar_size = @votes[index] * 100 / @votes.last %>
-    <% else %>
-      <% bar_size = 0 %>
-    <% end %>
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: <%= bar_size %>%;"><%= bar_size %>%</div>
-    </div>
-  <% end %> 
+  <%= show_poll_results(@poll, option, index, @votes) %>
 <% end %>
 
 <p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
 
 <!-- TODO: refactor this block -->
 <p>
-<% unless @poll.state == 'closed' %>
+<% unless Poll.voted_by_user(@poll, current_user) or poll.closed? %>
   <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-success btn-lg" %>
 <% else %>
   <p style="color: red"><b>You've already voted for this poll.</b></p>
