@@ -1,9 +1,7 @@
 class PollsController < ApplicationController
   before_action :authenticate_user!
-  #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index]
-  #before_action :count_votes,       only: [:show]
 
   # GET /polls
   # GET /polls.json
@@ -11,9 +9,9 @@ class PollsController < ApplicationController
   def index
     case params[:show_me] = params[:show_me] || 'all'
     when 'all'
-      @polls = Poll.all.order(state: :asc, created_at: :desc).page params[:page]
+      @polls = Poll.all.order(state: :desc, created_at: :desc).page params[:page]
     when 'my'
-      @polls = current_user.polls.order(state: :asc, created_at: :desc).page params[:page]
+      @polls = current_user.polls.order(state: :desc, created_at: :desc).page params[:page]
     end
   end
   
@@ -24,7 +22,9 @@ class PollsController < ApplicationController
       @votes = []
       voted_users = []
       @poll.options.each_with_index do |option, index|
-        @votes.push(option.votes.size)
+        # NOTE: option.votes.size if option.votes == nil raise exception. Have to use .to_a.
+        # TODO: solve this problem
+        @votes.push(option.votes.to_a.size)
         voted_users.push(option.votes.pluck(:user_id))
       end
       case @poll.poll_type
@@ -53,11 +53,13 @@ class PollsController < ApplicationController
 
   # GET /polls/1/voting
   def voting
-    if Poll.voted_by_user(@poll, current_user)
+    Poll.voted_by_user(@poll, current_user) ? alert_string = "You've voted for this poll. " : alert_string = ''
+    alert_string = alert_string + 'Poll is not opened.' unless @poll.opened?
+    unless alert_string.blank?
       respond_to do |format|
-        format.html { redirect_to @poll, alert: "You've voted for this poll." }
+        format.html { redirect_to @poll, alert: alert_string }
       end
-    end  
+    end
   end
 
   # POST /polls
@@ -66,7 +68,7 @@ class PollsController < ApplicationController
     @poll = Poll.new(poll_params)
     @poll.user = current_user
     respond_to do |format|
-      if @poll.save #check_poll_datetime && 
+      if @poll.save
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
         format.json { render :show, status: :created, location: @poll }
       else
@@ -100,34 +102,8 @@ class PollsController < ApplicationController
     end
   end
   
-  # TODO: replace this action w/ checking on model level
-  # Reloads voting & show pages to prevent poll cheating
-#  def set_cache_headers
-#    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-#    response.headers["Pragma"] = "no-cache"
-#    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-#  end
-
   private 
 
-  # Counts votes for building bars - Move to helper??
-#  def count_votes
-#    if Poll.voted_by_user(@poll, current_user) || @poll.closed?
-#      @votes = []
-#      voted_users = []
-#      @poll.options.each_with_index do |option, index|
-#        @votes.push(option.votes.size)
-#        voted_users.push(option.votes.pluck(:user_id))
-#      end
-#      case @poll.poll_type
-#        when 'radio'
-#          @votes.push(@votes.inject(0){|sum,x| sum + x })
-#        when 'check_box'
-#          @votes.push(voted_users.uniq.count)
-#      end
-#    end
-#  end
-  
   # Set editing poll time limit
   def set_editing_time
     @editing_time = 10.hour

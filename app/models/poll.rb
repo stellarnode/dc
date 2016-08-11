@@ -33,6 +33,10 @@ class Poll < ApplicationRecord
 		event :close do
 			transitions :from => :opened, :to => :closed
     	end
+
+    event :close_wo_opening do
+      transitions :from => :created, :to => :closed
+      end
 	end
 
   # Use roles with this model

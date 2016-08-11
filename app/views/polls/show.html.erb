@@ -15,16 +15,14 @@
 <% end %>
 
 <p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
-
-<!-- TODO: refactor this block -->
-<p>
-<% unless Poll.voted_by_user(@poll, current_user) or poll.closed? %>
-  <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-success btn-lg" %>
-<% else %>
+<% if Poll.voted_by_user(@poll, current_user) %>
   <p style="color: red"><b>You've already voted for this poll.</b></p>
+<% elsif @poll.opened? %>
+  <div>
+    <%= button_to "Vote now!", voting_poll_path(@poll), method: :get, class: "btn btn-success btn-lg" %>
+  </div>
+  <br>
 <% end %>
-</p>
-<!-- Ebd of the block -->
 
 <% if current_user.is_admin? or can? :edit, @poll %>
   <div class="btn-group btn-group" role="group" aria-label="...">
