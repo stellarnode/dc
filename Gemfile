@@ -42,7 +42,6 @@ end
 
 gem 'devise', '4.1.1'
 gem 'devise_invitable'
-gem 'pundit'
 gem 'rolify'
 gem 'cancancan'
 gem 'twitter-bootstrap-rails'

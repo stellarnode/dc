@@ -15,12 +15,8 @@
 
   <p><b>Options:</b></p>
   <% poll.options.each_with_index do |option, index| %>
-    <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
-    <% if poll.closed? %>
-      <b><span style="color: #428bca">&#8756; 
-      <%= Vote.where(:option_id => option.id).count %>
-      </span></b></p>
-    <% end %> 
+    <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %>
+    <%= show_poll_options(poll, option) %>
   <% end %>
 
   <p><b>Poll Status:</b> <%= show_poll_status(poll) %></p>
@@ -52,4 +48,7 @@
 
 <div align ="center">
   <%= paginate @polls %>
+</div>
+<div align ="center" style="font-size: small">
+  <%= page_entries_info @polls %>
 </div>

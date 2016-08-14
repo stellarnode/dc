@@ -11,11 +11,12 @@
 
 <p><b>Options:</b></p>
 <% @poll.options.each_with_index do |option, index| %>
-  <%= show_poll_results(@poll, option, index, @votes) %>
+  <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %>
+  <%= show_poll_options(@poll, option) %>
 <% end %>
 
 <p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
-<% if Poll.voted_by_user(@poll, current_user) %>
+<% if @poll.voted_by_user(current_user) %>
   <p style="color: red"><b>You've already voted for this poll.</b></p>
 <% elsif @poll.opened? %>
   <div>

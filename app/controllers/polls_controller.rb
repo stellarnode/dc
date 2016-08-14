@@ -5,7 +5,6 @@ class PollsController < ApplicationController
 
   # GET /polls
   # GET /polls.json
-  # List of all polls in app
   def index
     case params[:show_me] = params[:show_me] || 'all'
     when 'all'
@@ -18,22 +17,6 @@ class PollsController < ApplicationController
   # GET /polls/1
   # GET /polls/1.json
   def show
-    if Poll.voted_by_user(@poll, current_user) || @poll.closed?
-      @votes = []
-      voted_users = []
-      @poll.options.each_with_index do |option, index|
-        # NOTE: option.votes.size if option.votes == nil raise exception. Have to use .to_a.
-        # TODO: solve this problem
-        @votes.push(option.votes.to_a.size)
-        voted_users.push(option.votes.pluck(:user_id))
-      end
-      case @poll.poll_type
-        when 'radio'
-          @votes.push(@votes.inject(0){|sum,x| sum + x })
-        when 'check_box'
-          @votes.push(voted_users.uniq.count)
-      end
-    end
   end
 
   # GET /polls/new
@@ -53,7 +36,7 @@ class PollsController < ApplicationController
 
   # GET /polls/1/voting
   def voting
-    Poll.voted_by_user(@poll, current_user) ? alert_string = "You've voted for this poll. " : alert_string = ''
+    @poll.voted_by_user(current_user) ? alert_string = "You've voted for this poll. " : alert_string = ''
     alert_string = alert_string + 'Poll is not opened.' unless @poll.opened?
     unless alert_string.blank?
       respond_to do |format|
@@ -110,7 +93,7 @@ class PollsController < ApplicationController
   end
 
   def set_poll
-    @poll = Poll.find(params[:id])
+    @poll = Poll.includes(:options).find(params[:id])
   end
 
   def poll_params

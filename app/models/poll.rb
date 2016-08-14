@@ -2,7 +2,7 @@ class Poll < ApplicationRecord
   include AASM
 
 	belongs_to 										:user
-	has_many 											:options, dependent: :destroy
+	has_many 											:options, -> { order(created_at: :asc) }, dependent: :destroy
   has_many                      :votes
 	accepts_nested_attributes_for :options, allow_destroy: true, reject_if: :all_blank
 	validates_presence_of 				:title, :start, :finish, :poll_type, :user_id
@@ -46,8 +46,8 @@ class Poll < ApplicationRecord
   paginates_per 2
 
   # Check can user vote or not?
-  def self.voted_by_user(poll, user)
-    if poll.votes.pluck(:user_id).include? user.id 
+  def voted_by_user(user)
+    if self.votes.pluck(:user_id).include? user.id
       return true 
     else
       return false

@@ -108,9 +108,9 @@ ActiveRecord::Schema.define(version: 20160809120303) do
   create_table "options", force: :cascade do |t|
     t.string   "poll_option"
     t.integer  "poll_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.integer  "votes_count"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "votes_count", default: 0
     t.index ["poll_id"], name: "index_options_on_poll_id", using: :btree
   end
 
@@ -120,11 +120,11 @@ ActiveRecord::Schema.define(version: 20160809120303) do
     t.datetime "start"
     t.datetime "finish"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.string   "state"
     t.string   "poll_type"
-    t.integer  "votes_count"
+    t.integer  "votes_count", default: 0
     t.index ["user_id"], name: "index_polls_on_user_id", using: :btree
   end
 
