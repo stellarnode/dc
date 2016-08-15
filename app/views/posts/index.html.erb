@@ -29,7 +29,7 @@
       <%= link_to 'Show', post, type: 'button', class: 'btn btn-default' %>
       <%= link_to 'Edit', edit_post_path(post), type: 'button', class: 'btn btn-default' %>  
       <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, 
-        type: 'button', class: 'btn btn-default' %>
+        type: 'button', class: 'btn btn-danger' %>
     </div>
   <% end %>
   <% unless post == @posts.last %><hr><% end %>

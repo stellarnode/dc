@@ -18,12 +18,12 @@
 <br>
 
 <% if current_user.is_admin? or can? :edit, @post %>
-	<div class="btn-group btn-group" role="group" aria-label="...">
-	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-primary' %>  
+	<div class="btn-group btn-group-sm" role="group" aria-label="...">
+	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-default' %>  
 	  <%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' }, 
-	  	type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
-	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-primary' %>
+	  	type: 'button', class: 'btn btn-danger' %>
+    <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-default' %>
+	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-default' %>
 	</div>
 <% end %>
 

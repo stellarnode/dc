@@ -26,14 +26,14 @@
 <% end %>
 
 <% if current_user.is_admin? or can? :edit, @poll %>
-  <div class="btn-group btn-group" role="group" aria-label="...">
+  <div class="btn-group btn-group-sm" role="group" aria-label="...">
     <% if (DateTime.now.to_i - @poll.created_at.to_i) < @editing_time && @poll.state == 'created' %>
-      <%= link_to 'Edit', edit_poll_path(@poll), type: 'button', class: 'btn btn-primary' %>  
+      <%= link_to 'Edit', edit_poll_path(@poll), type: 'button', class: 'btn btn-default' %>  
     <% end %>
     <%= link_to 'Destroy', @poll, method: :delete, data: { confirm: 'Are you sure?' }, 
-      type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'My polls', polls_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'All polls', polls_path, type: 'button', class: 'btn btn-primary' %>
+      type: 'button', class: 'btn btn-danger' %>
+    <%= link_to 'My polls', polls_path(show_me: 'my'), type: 'button', class: 'btn btn-default' %>
+    <%= link_to 'All polls', polls_path, type: 'button', class: 'btn btn-default' %>
   </div>
 <% end %>
 
