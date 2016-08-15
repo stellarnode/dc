@@ -21,7 +21,7 @@
   <% end %>
 
   <% if post.commentable == true %>
-    <p><b>Comments total:</b> <span class="badge"><%= post.thread.comments.count %></span></p>
+    <p><b>Comments total:</b> <span class="badge"><%= post.comment_threads.count %></span></p>
   <% end %>
   
   <% if current_user.is_admin? or can? :edit, post %>
@@ -53,6 +53,9 @@
 <div align ="center">
   <%= paginate @posts %>
 </div>
+
+<% unless @posts.size == 0 %>
 <div align ="center" style="font-size: small">
   <%= page_entries_info @posts %>
 </div>
+<% end %>

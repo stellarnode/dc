@@ -10,7 +10,7 @@
     <p><b>User:</b> <%= post.user_id %></p>   
     <p><b>Commentable:</b> <%= post.commentable %></p>
     <% if post.commentable == true %>
-    	<p><b>Comments total:</b> <span class="badge"><%= post.thread.comments.count %></span></p>
+    	<p><b>Comments total:</b> <span class="badge"><%= post.comment_threads.count %></span></p>
   	<% end %>
 
 <% end %>

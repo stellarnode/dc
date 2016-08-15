@@ -14,7 +14,8 @@
     <%= f.input :commentable, label: 'Allow comments' %>
 
     <%= f.simple_fields_for :post_categories do |ff| %>
-      <%= ff.input :category_id, label: 'Category', as: :select, collection: Category.all, selected: '' %>
+      <% @post.categories.blank? ? category = '' : category = @post.categories.first.id %>
+      <%= ff.input :category_id, label: 'Category', as: :select, collection: Category.all, selected: category %>
     <% end %>
   </div>
 

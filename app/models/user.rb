@@ -13,8 +13,6 @@ class User < ApplicationRecord
   has_many      :chat_messages
   has_many      :votes
 
-  acts_as_commontator
-
   rolify
 
   # Include default devise modules. Others available are:

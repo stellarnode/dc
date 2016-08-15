@@ -60,7 +60,7 @@ gem 'cocoon'
 gem 'sprockets', '3.6.3' # Delete version number once Sprockets 4.0 become available
 gem 'sprockets-es6'
 
-gem 'commontator', '~> 4.11.1'
+gem 'acts_as_commentable_with_threading'
 
 gem 'rack', '~> 2.0.1'
 

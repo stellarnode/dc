@@ -29,7 +29,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-    commontator_thread_show(@post)
+    @new_comment = Comment.build_from(@post, current_user.id, "")
   end
 
   # GET /posts/new
@@ -83,11 +83,9 @@ class PostsController < ApplicationController
   end
 
   def set_category
-    category_name = params[:category_name]
-    show_me = params[:show_me]
     action_name = Rails.application.routes.recognize_path(request.referrer)[:action]
     controller_name = Rails.application.routes.recognize_path(request.referrer)[:controller]
-    redirect_to controller: controller_name, action: action_name, category_name: category_name, show_me: show_me
+    redirect_to controller: controller_name, action: action_name, category_name: params[:category_name], show_me: params[:show_me]
   end
 
   private

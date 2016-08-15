@@ -49,6 +49,9 @@
 <div align ="center">
   <%= paginate @polls %>
 </div>
+
+<% unless @polls.size == 0 %>
 <div align ="center" style="font-size: small">
   <%= page_entries_info @polls %>
 </div>
+<% end %>

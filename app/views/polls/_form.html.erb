@@ -8,7 +8,7 @@
   <%= f.input :finish, start_year: Time.now.year, 
   order: [:day, :month, :year, :hour, :minute], minute_step: 30 %>
   
-  <% @poll.poll_type.nil? ? poll_type = 'radio' : poll_type = @poll.poll_type %>
+  <% @poll.poll_type.blank? ? poll_type = 'radio' : poll_type = @poll.poll_type %>
   <%= f.input :poll_type, as: :select, collection: 
               [['RadioButtons', 'radio'], ['Multiply CheckBoxes', 'check_box']], selected: "#{poll_type}" %>
 

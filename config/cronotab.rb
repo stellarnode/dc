@@ -11,7 +11,7 @@ Dc::Application.load_tasks
 
 class Poll
   def perform
-    Rake::Task['poll:all'].execute
+    Rake::Task['poll:set'].execute
   end
 end
 
