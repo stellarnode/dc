@@ -1,0 +1,33 @@
+.comments-header {
+  border-bottom: 1px dotted gray;
+  margin-bottom: 10px;
+}
+
+.comments-container P{
+  margin-bottom: 0px;
+}
+
+.comments-container .comment-nav {
+  margin-left: 5px;
+  margin-bottom: 12px;
+}
+
+.comments-container .comment-nav span {
+  font-size: 10px;
+  font-weight: bold;
+  color: dodgerblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.comments-container .comment-nav span:hover{
+  text-decoration: none;
+}
+
+.reply-form {
+  display: none;
+}
+
+.comments-show {
+  margin-left: 25px;
+}

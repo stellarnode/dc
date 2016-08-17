@@ -1,25 +1,16 @@
 class PollsController < ApplicationController
   before_action :authenticate_user!
-  #before_action :set_cache_headers, only: [:voting, :show ]
   before_action :set_poll,          only: [:voting, :show, :edit, :update, :destroy]
   before_action :set_editing_time,  only: [:edit, :show, :index]
-  before_action :count_votes,       only: [:show]
-
-  # Set editing poll time limit
-  def set_editing_time
-    @editing_time = 23.hour
-  end
 
   # GET /polls
   # GET /polls.json
-  # List of all polls in app
   def index
-    @show_me = params[:show_me] || 'all'
-    case @show_me
+    case params[:show_me] = params[:show_me] || 'all'
     when 'all'
-      @polls = Poll.all.order(state: :asc, created_at: :desc).page params[:page]
+      @polls = Poll.all.order(state: :desc, created_at: :desc).page params[:page]
     when 'my'
-      @polls = current_user.polls.order(state: :asc, created_at: :desc).page params[:page]
+      @polls = current_user.polls.order(state: :desc, created_at: :desc).page params[:page]
     end
   end
   
@@ -36,20 +27,22 @@ class PollsController < ApplicationController
 
   # GET /polls/1/edit
   def edit
-    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time
+    if (DateTime.now.to_i - @poll.created_at.to_i) > @editing_time || !@poll.created?
       respond_to do |format|
-        format.html { redirect_to @poll, alert: "Sorry! You can't edit this poll, 'cause editing time is over." }
+        format.html { redirect_to @poll, alert: "Sorry! But you can't edit this poll." }
       end   
     end
   end
 
   # GET /polls/1/voting
   def voting
-    unless Poll.voted_by_user(@poll, current_user)
+    @poll.voted_by_user(current_user) ? alert_string = "You've voted for this poll. " : alert_string = ''
+    alert_string = alert_string + 'Poll is not opened.' unless @poll.opened?
+    unless alert_string.blank?
       respond_to do |format|
-        format.html { redirect_to @poll, alert: "You've voted for this poll." }
+        format.html { redirect_to @poll, alert: alert_string }
       end
-    end  
+    end
   end
 
   # POST /polls
@@ -58,7 +51,7 @@ class PollsController < ApplicationController
     @poll = Poll.new(poll_params)
     @poll.user = current_user
     respond_to do |format|
-      if @poll.save #check_poll_datetime && 
+      if @poll.save
         format.html { redirect_to @poll, notice: 'Poll was successfully created.' }
         format.json { render :show, status: :created, location: @poll }
       else
@@ -72,7 +65,7 @@ class PollsController < ApplicationController
   # PATCH/PUT /polls/1.json
   def update
     respond_to do |format|
-      if @poll.update(poll_params) #&& save_poll_options
+      if @poll.update(poll_params)
         format.html { redirect_to @poll, notice: 'Poll was successfully updated.' }
         format.json { render :show, status: :ok, location: @poll }
       else
@@ -92,59 +85,28 @@ class PollsController < ApplicationController
     end
   end
   
-  # TODO: replace this action w/ checking on model level
-  # Reloads voting & show pages to prevent poll cheating
-#  def set_cache_headers
-#    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-#    response.headers["Pragma"] = "no-cache"
-#    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-#  end
-  
-  # Counts votes for building bars - Move to helper??
-  def count_votes
-    if @voted || @poll.closed?
-      @votes = []
-      voted_users = []
-      @poll.options.each_with_index do |option, index|
-        #@votes.push(Vote.where(:option_id => option.id).count)
-        @votes.push(option.votes.size)
-        voted_users.push(option.votes.pluck(:user_id))
-      end
-      case @poll.poll_type
-        when 'radio'
-          @votes.push(@votes.inject(0){|sum,x| sum + x })
-        when 'check_box'
-          @votes.push(voted_users.uniq.count)
-      end
-    end
-  end
-  
-  private    
-    # Validates start & finish datetimes
-    def check_poll_datetime
-      if @poll.finish > @poll.start && @poll.start > DateTime.now && @poll.finish > DateTime.now 
-        return true 
-      else
-        flash[:alert] = "You set the wrong start or finish time."
-        return false
-      end
-    end
-    
-    def set_poll
-      @poll = Poll.find(params[:id])
-    end
+  private 
 
-    def poll_params
-      params.require(:poll).permit( :title, 
-                                    :body, 
-                                    :start, 
-                                    :finish, 
-                                    :state, 
-                                    :poll_type, 
-                                    :user_id, 
-                                    :show_me, 
-                                    :votes_count, 
-                                    options_attributes: [:poll_option, :poll_id, :id, :_destroy]
-                                    )
-    end
+  # Set editing poll time limit
+  def set_editing_time
+    @editing_time = 10.hour
+  end
+
+  def set_poll
+    @poll = Poll.includes(:options).find(params[:id])
+  end
+
+  def poll_params
+    params.require(:poll).permit( :title, 
+                                  :body, 
+                                  :start, 
+                                  :finish, 
+                                  :state, 
+                                  :poll_type, 
+                                  :user_id, 
+                                  :show_me, 
+                                  :votes_count, 
+                                  options_attributes: [:poll_option, :poll_id, :id, :_destroy]
+                                  )
+  end
 end

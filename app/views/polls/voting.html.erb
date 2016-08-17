@@ -1,44 +1,35 @@
-<% unless @poll.opened? %>
-	
-	<h3 style="color: red">This poll is not open now.</h3>
-
-<% else %>
-
-	<h1><%= @poll.title %></h1>
-	<p><b>User ID:</b> <%= @poll.user_id %></p>
-	<p><b>Poll ID:</b> <%= @poll.id %></p>
-	<p><b>Body:</b> <%= @poll.body %></p>
-	<p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
-	<p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
-	    
-	<p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
-	    
-	<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p> 
-
-	<p><b>Options:</b></p>  
-
-  	<%= form_tag "/votes" do |f| %>
-		<% case @poll.poll_type %>
-	    <% when 'radio' %>
-				<% @poll.options.each do |option| %>
-					<div class="field form-group">
-				  	<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
-			        <%= radio_button_tag("options", option.id, checked = false) %><%= option.poll_option %>
-			      <% end %>
-				  </div>
-				<% end %>
-		  <% when 'check_box' %>
-				<% @poll.options.each do |option| %>
-					<div class="field form-group">
-				  	<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
-			        <%= check_box("options", option.id) %> <%= option.poll_option %>
-			      <% end %>
-				  </div>
-				<% end %>
-		<% end %>
-	  <%= submit_tag "VOTE!", class: "btn btn-lg btn-success" %>
-	  <br><br>
+<h1><%= @poll.title %></h1>
+<p><b>User ID:</b> <%= @poll.user_id %></p>
+<p><b>Poll ID:</b> <%= @poll.id %></p>
+<p><b>Body:</b> <%= @poll.body %></p>
+<p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
+<p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
+    
+<p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
+    
+<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p>
+<p><b>Options:</b></p>
+ 	<%= form_tag "/votes" do |f| %>
+	<% case @poll.poll_type %>
+    <% when 'radio' %>
+			<% @poll.options.each do |option| %>
+				<div class="field form-group">
+			  	<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
+		        <%= radio_button_tag("votes_params[#{@poll.id}]", option.id, checked = false) %><%= option.poll_option %>
+		      <% end %>
+			  </div>
+			<% end %>
+	  <% when 'check_box' %>
+			<% @poll.options.each do |option| %>
+				<div class="field form-group">
+			  	<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
+		        <%= check_box("votes_params[#{@poll.id}]", option.id) %> <%= option.poll_option %>
+		      <% end %>
+			  </div>
+			<% end %>
 	<% end %>
-
+  <%= submit_tag "VOTE!", class: "btn btn-lg btn-success" %>
+  <br><br>
 <% end %>
+
 <%= link_to 'All Polls', polls_path %>

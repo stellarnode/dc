@@ -14,7 +14,7 @@ class Post < ApplicationRecord
     resourcify
 
   	# Set comments to Post
-    acts_as_commontable
+    acts_as_commentable
     
     # Set number of posts per page
     paginates_per 2

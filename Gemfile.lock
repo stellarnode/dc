@@ -49,10 +49,16 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_commentable_with_threading (2.0.1)
+      activerecord (>= 4.0)
+      activesupport (>= 4.0)
+      awesome_nested_set (>= 3.0)
     addressable (2.4.0)
     airbrussh (1.0.2)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (7.1.0)
+    awesome_nested_set (3.1.1)
+      activerecord (>= 4.0.0, < 5.1)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -107,9 +113,6 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     commonjs (0.2.7)
-    commontator (4.11.1)
-      jquery-rails
-      rails (>= 3.1)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     crono (1.0.3)
@@ -213,8 +216,6 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     puma (3.5.2)
-    pundit (1.1.0)
-      activesupport (>= 3.0.0)
     rack (2.0.1)
     rack-protection (1.5.3)
       rack
@@ -346,6 +347,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  acts_as_commentable_with_threading
   byebug
   cancancan
   capistrano
@@ -358,7 +360,6 @@ DEPENDENCIES
   carrierwave
   cocoon
   coffee-rails (~> 4.2)
-  commontator (~> 4.11.1)
   crono
   devise (= 4.1.1)
   devise_invitable
@@ -373,7 +374,6 @@ DEPENDENCIES
   pg (~> 0.18)
   pry-rails
   puma (~> 3.0)
-  pundit
   rack (~> 2.0.1)
   rails (= 5.0.0)
   rails-controller-testing

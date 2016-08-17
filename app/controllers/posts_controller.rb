@@ -1,30 +1,26 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :get_categories, only: :index
-
-  def get_categories
-    @categories = Category.all
-  end
 
   # GET /posts
   # GET /posts.json
   def index
-    @category_name = params[:category_name] || 'All'
-    @show_me = params[:show_me] || 'all'
-    case @show_me
+    @categories = Category.all
+    params[:category_name] = params[:category_name] || 'All'
+    
+    case params[:show_me] = params[:show_me] || 'all'
     when 'all'
-      if @category_name == 'All'
+      if params[:category_name] == 'All'
         @posts = Post.published.order(created_at: :desc).page params[:page]
       else
-        category = Category.where(:name => @category_name).first
+        category = Category.where(:name => params[:category_name]).first
         @posts = category.posts.published.order(created_at: :desc).page params[:page]
       end
     when 'my'
-      if @category_name == 'All'
+      if params[:category_name] == 'All'
         @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
       else
-        category = Category.where(:name => @category_name).first
+        category = Category.where(:name => params[:category_name]).first
         @posts = category.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
       end
     end
@@ -33,7 +29,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-    commontator_thread_show(@post)
+    @new_comment = Comment.build_from(@post, current_user.id, "")
   end
 
   # GET /posts/new
@@ -87,29 +83,27 @@ class PostsController < ApplicationController
   end
 
   def set_category
-    category_name = params[:category_name]
-    show_me = params[:show_me]
     action_name = Rails.application.routes.recognize_path(request.referrer)[:action]
     controller_name = Rails.application.routes.recognize_path(request.referrer)[:controller]
-    redirect_to controller: controller_name, action: action_name, category_name: category_name, show_me: show_me
+    redirect_to controller: controller_name, action: action_name, category_name: params[:category_name], show_me: params[:show_me]
   end
 
   private
 
-    def set_post
-      @post = Post.find(params[:id])
-    end
-  
-    def post_params
-      params.require(:post).permit( :title, 
-                                    :body, 
-                                    :user_id, 
-                                    :is_pinned, 
-                                    :is_draft, 
-                                    :commentable,
-                                    :category_name,
-                                    :show_me,
-                                    post_categories_attributes: [:category_id, :post_id, :id]
-                                    )
-    end
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit( :title, 
+                                  :body, 
+                                  :user_id, 
+                                  :is_pinned, 
+                                  :is_draft, 
+                                  :commentable,
+                                  :category_name,
+                                  :show_me,
+                                  post_categories_attributes: [:category_id, :post_id, :id]
+                                  )
+  end
 end

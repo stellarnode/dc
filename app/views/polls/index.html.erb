@@ -1,4 +1,4 @@
-<h1><%= @show_me.capitalize %> Polls</h1>
+<h1><%= params[:show_me].capitalize %> Polls</h1>
 
 <% @polls.each do |poll| %>
   <h3><%= link_to "#{poll.title}", poll_path(poll) %>
@@ -15,12 +15,8 @@
 
   <p><b>Options:</b></p>
   <% poll.options.each_with_index do |option, index| %>
-    <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %></b>
-    <% if poll.closed? %>
-      <b><span style="color: #428bca">&#8756; 
-      <%= Vote.where(:option_id => option.id).count %>
-      </span></b></p>
-    <% end %> 
+    <p>Opt. <%= index + 1 %>: <b><%= option.poll_option %>
+    <%= show_poll_options(poll, option) %>
   <% end %>
 
   <p><b>Poll Status:</b> <%= show_poll_status(poll) %></p>
@@ -32,7 +28,7 @@
         <%= link_to 'Edit', edit_poll_path(poll), type: 'button', class: 'btn btn-default' %>  
       <% end %>
       <%= link_to 'Destroy', poll, method: :delete, data: { confirm: 'Are you sure?' }, 
-        type: 'button', class: 'btn btn-default' %>
+        type: 'button', class: 'btn btn-danger' %>
     </div>
   <% end %>
   <hr />
@@ -41,7 +37,7 @@
 <br>
 
 <% if @polls.size == 0 %>
-  <% case @show_me %>
+  <% case params[:show_me] %>
     <% when 'all' %>
       <p>There's absolutely no polls. <%= link_to "It's time to create one", new_poll_path %>.</p>
     <% when 'my' %>
@@ -53,3 +49,9 @@
 <div align ="center">
   <%= paginate @polls %>
 </div>
+
+<% unless @polls.size == 0 %>
+<div align ="center" style="font-size: small">
+  <%= page_entries_info @polls %>
+</div>
+<% end %>

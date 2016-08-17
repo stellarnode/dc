@@ -1,6 +1,6 @@
 <h2><%= @post.title %></h2>
 
-<p><b>Category:</b><%= @post.categories.first.name %></p>
+<p><b>Category: </b><%= @post.categories.first.name %></p>
 <p><b>Body: </b><%= @post.body %></p>
 <p><b>User: </b><%= @post.user_id %></p>
 
@@ -11,22 +11,20 @@
   <p><b>Commentable: </b><%= @post.commentable %></p>
 <% end %>
 
-<% if @post.commentable == true %>
-  <p><b>Comments total: </b><span class="badge"><%= @post.thread.comments.count %></span></p>
-<% end %>
-
 <br>
 
 <% if current_user.is_admin? or can? :edit, @post %>
-	<div class="btn-group btn-group" role="group" aria-label="...">
-	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-primary' %>  
+	<div class="btn-group btn-group-sm" role="group" aria-label="...">
+	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-default' %>  
 	  <%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' }, 
-	  	type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
-	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-primary' %>
+	  	type: 'button', class: 'btn btn-danger' %>
+    <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-default' %>
+	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-default' %>
 	</div>
 <% end %>
 
 <%= render partial: '/shared/pager', locals: { model_name: Post, object_name: @post } %>
 
-<%= commontator_thread(@post) if @post.commentable %>
+<% if @post.commentable == true %>
+	<%= render partial: 'comments/template', locals: {commentable: @post, new_comment: @comment} %>  
+<% end %>

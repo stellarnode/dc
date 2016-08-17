@@ -2,13 +2,12 @@ Rails.application.routes.draw do
 
   resources   :polls
   match       '/polls/:id/voting' => 'polls#voting', via: [:get], :as => :voting_poll
-  match       '/mypolls' => 'polls#my_index', via: [:get], :as => :my_polls
   post        '/votes' => 'votes#create', via: [:post], :as => :new_votes
 
+  resources   :comments
+
   resources   :posts
-  match       '/myposts' => 'posts#my_index', via: [:get], :as => :my_posts
-  #post        '/category' => 'categories#set_category', via: [:post], :as => :set_category
-  match        'posts/category' => 'posts#set_category', via: [:post], :as => :set_category
+  match       'posts/category' => 'posts#set_category', via: [:post], :as => :set_category
 
   resources		:profiles, only: [:show, :edit, :update ]
   resources 	:flats
@@ -29,7 +28,4 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
-  mount Commontator::Engine => '/commontator'
-  
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
