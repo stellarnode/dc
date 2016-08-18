@@ -17,6 +17,7 @@ class PollsController < ApplicationController
   # GET /polls/1
   # GET /polls/1.json
   def show
+    @polls = Poll.all.order(created_at: :asc).pluck(:id).to_a
   end
 
   # GET /polls/new

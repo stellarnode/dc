@@ -37,4 +37,4 @@
   </div>
 <% end %>
 
-<%= render partial: '/shared/pager', locals: { model_name: Poll, object_name: @poll } %>
+<%= render partial: '/shared/pager', locals: { object: @poll, collection: @polls } %>
