@@ -23,7 +23,7 @@
 	</div>
 <% end %>
 
-<%= render partial: '/shared/pager', locals: { model_name: Post, object_name: @post } %>
+<%= render partial: '/shared/pager', locals: { object: @post, collection: @posts } %>
 
 <% if @post.commentable == true %>
 	<%= render partial: 'comments/template', locals: {commentable: @post, new_comment: @comment} %>  

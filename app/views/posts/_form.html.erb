@@ -15,7 +15,7 @@
 
     <%= f.simple_fields_for :post_categories do |ff| %>
       <% @post.categories.blank? ? category = '' : category = @post.categories.first.id %>
-      <%= ff.input :category_id, label: 'Category', as: :select, collection: Category.all, selected: category %>
+      <%= ff.input :category_id, label: 'Category', as: :select, collection: $categories, selected: category %>
     <% end %>
   </div>
 

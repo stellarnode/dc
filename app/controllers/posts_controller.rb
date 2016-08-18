@@ -1,3 +1,5 @@
+$categories = Category.all
+
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
@@ -5,7 +7,6 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @categories = Category.all
     params[:category_name] = params[:category_name] || 'All'
     
     case params[:show_me] = params[:show_me] || 'all'
@@ -13,15 +14,13 @@ class PostsController < ApplicationController
       if params[:category_name] == 'All'
         @posts = Post.published.order(created_at: :desc).page params[:page]
       else
-        category = Category.where(:name => params[:category_name]).first
-        @posts = category.posts.published.order(created_at: :desc).page params[:page]
+        @posts = $categories.where(name: params[:category_name]).first.posts.published.order(created_at: :desc).page params[:page]
       end
     when 'my'
       if params[:category_name] == 'All'
         @posts = current_user.posts.order(is_draft: :asc, created_at: :desc).page params[:page]
       else
-        category = Category.where(:name => params[:category_name]).first
-        @posts = category.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
+        @posts = $categories.where(name: params[:category_name]).first.posts.where(user: current_user).order(is_draft: :asc, created_at: :desc).page params[:page]
       end
     end
   end
@@ -30,6 +29,7 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @new_comment = Comment.build_from(@post, current_user.id, "")
+    @posts = Post.published.order(created_at: :asc).pluck(:id).to_a
   end
 
   # GET /posts/new
