@@ -5,14 +5,14 @@ class ProfilesController < ApplicationController
   def show
     unless @profile
       if params[:id] != current_user.id
-        redirect_to root, alert: 'Profile not found.'
+        redirect_to root_path, alert: 'Profile not found.'
       else
         @profile = Profile.new
         @profile.user = current_user
         if @profile.save
           redirect_to profile_path(current_user)
         else
-          redirect_to root, alert: 'Sorry, something went wrong.'
+          redirect_to root_path, alert: 'Sorry, something went wrong.'
         end
       end
     end
@@ -35,8 +35,11 @@ class ProfilesController < ApplicationController
   private
 
   def set_profile
-    #@profile = current_user.profile
-    @profile = Profile.find(params[:id])
+    begin
+      @profile = Profile.find(params[:id])
+    rescue
+      @profile = nil
+    end
   end
 
   def permit_profile
