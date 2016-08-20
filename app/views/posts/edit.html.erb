@@ -4,6 +4,6 @@
 
 <div class="btn-group btn-group" role="group" aria-label="...">
   <%= link_to 'Show', @post, type: 'button', class: 'btn btn-primary' %>  
-  <%= link_to 'My posts', my_posts_path, type: 'button', class: 'btn btn-primary' %>
+  <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-primary' %>
   <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-primary' %>
 </div>

@@ -5,15 +5,19 @@
     <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your post title here" %>
     <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your post here", 
     :input_html => {rows: 7} %>
-
-    <%= f.input :is_pinned, label: 'Pin to newsboard' %>
+    <% if can? :manage, :all %>
+      <%= f.input :is_pinned, label: 'Pin to newsboard' %>
+    <% else %>
+      <%= f.hidden_field :is_pinned, label: 'Pin to newsboard', value: false %>
+    <% end %>
     <%= f.input :is_draft, label: 'Save as draft' %>
     <%= f.input :commentable, label: 'Allow comments' %>
 
-    <%= f.simple_fields_for :post_categories, @post.post_categories.build do |ff| %>
-      <%= ff.input :category_id, label: 'Category', as: :select, collection: Category.all, selected: '' %>
-      <% end %>
-    </div>
+    <%= f.simple_fields_for :post_categories do |ff| %>
+      <% @post.categories.blank? ? category = '' : category = @post.categories.first.id %>
+      <%= ff.input :category_id, label: 'Category', as: :select, collection: $categories, selected: category %>
+    <% end %>
+  </div>
 
   <div class="form-actions">
     <%= f.submit "Save Post", class: "btn btn-lg btn-success" %>

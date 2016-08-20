@@ -1,60 +1,35 @@
-<% if @poll.status != 1 %>
-	
-	<h2 style="color: red">This poll is not open now.</h2>
-
-<% else %>
-
-	<h1><%= @poll.title %></h1>
-	<p>User ID: <%= @poll.user_id %></p>
-	<p>Poll ID: <%= @poll.id %></p>
-	<p>Body: <%= @poll.body %></p>
-	<p>Start: <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
-	<p>Finish: <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
-	    
-	<p>Poll Status: 
-	  <% case @poll.status %>
-	    <% when 2 %> 
-	      <span style="color: orange">Voting will start at <%= @poll.start.to_formatted_s(:long_ordinal) %></span>
-	    <% when 1 %> 
-	      <span style="color: dodgerblue">Voting is in progress. Open 'til <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-	    <% when 3 %>
-	      <span style="color: red">Voting was closed at <%= @poll.finish.to_formatted_s(:long_ordinal) %></span>
-	  <% end %>
-	</p>
-	    
-	<p>Poll Type: 
-	  <% case @poll.poll_type %>
-	    <% when 1 %>
-	      <span>RadioButtons</span>
-	    <% when 2 %>
-	      <span>Multiply CheckBoxes</span>
-	  <% end %>
-	</p>
-
-	<p><b>Options:</b></p>  
-
-  	<%= form_tag "/votes" do |f| %>
-		<% case @poll.poll_type %>
-	    	<% when 1 %>
-				<% @poll.options.each do |option| %>
+<h1><%= @poll.title %></h1>
+<p><b>User ID:</b> <%= @poll.user_id %></p>
+<p><b>Poll ID:</b> <%= @poll.id %></p>
+<p><b>Body:</b> <%= @poll.body %></p>
+<p><b>Start:</b> <%= @poll.start.to_formatted_s(:long_ordinal) %></p>
+<p><b>Finish:</b> <%= @poll.finish.to_formatted_s(:long_ordinal) %></p>
+    
+<p><b>Poll Status:</b> <%= show_poll_status(@poll) %></p>
+    
+<p><b>Poll Type: </b><%= show_poll_type(@poll) %></p>
+<p><b>Options:</b></p>
+ 	<%= form_tag "/votes" do |f| %>
+	<% case @poll.poll_type %>
+    <% when 'radio' %>
+			<% @poll.options.each do |option| %>
 				<div class="field form-group">
-			  		<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
-		            	<%= radio_button_tag("options", option.id, checked = false) %><%= option.poll_option %>
-		            <% end %>
-			  	</div>
-				<% end %>
-		    <% when 2 %>
-				<% @poll.options.each do |option| %>
+			  	<%= label_tag "poll_option_#{option.id}", type: 'radio' do %>
+		        <%= radio_button_tag("votes_params[#{@poll.id}]", option.id, checked = false) %><%= option.poll_option %>
+		      <% end %>
+			  </div>
+			<% end %>
+	  <% when 'check_box' %>
+			<% @poll.options.each do |option| %>
 				<div class="field form-group">
-			  		<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
-		            	<%= check_box("options", option.id) %> <%= option.poll_option %>
-		            <% end %>
-			  	</div>
-				<% end %>
-		<% end %>
-	  <%= submit_tag "VOTE!", class: "btn btn-lg btn-success" %>
-	  <br><br>
+			  	<%= label_tag "poll_option_#{option.id}", type: 'checkbox' do %>
+		        <%= check_box("votes_params[#{@poll.id}]", option.id) %> <%= option.poll_option %>
+		      <% end %>
+			  </div>
+			<% end %>
 	<% end %>
-
+  <%= submit_tag "VOTE!", class: "btn btn-lg btn-success" %>
+  <br><br>
 <% end %>
+
 <%= link_to 'All Polls', polls_path %>

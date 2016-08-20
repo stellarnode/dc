@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs">
+  <%= active_class_post(params[:category_name], 'All') %>
+  <%= link_to 'All', set_category_path(category_name: 'All', show_me: params[:show_me]), method: :post %></li>
+
+  <% $categories.each do |category| %>
+    <%= active_class_post(params[:category_name], category.name) %>
+    <%= link_to "#{category.name}", set_category_path(category_name: category.name, show_me: params[:show_me]), method: :post %></li> 
+  <% end %>
+</ul>

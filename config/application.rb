@@ -22,6 +22,7 @@ module Dc
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.time_zone = 'Moscow'
-    config.i18n.load_path += Dir[root.join('config', 'locales', '**', '*.{rb,yml}')]
+    # config.i18n.load_path += Dir[root.join('config', 'locales', '**', '*.{rb,yml}')]
+    # config.cache_classes = true
   end
 end

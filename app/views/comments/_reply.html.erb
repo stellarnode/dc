@@ -1,0 +1,23 @@
+<% comments.each do |comment| %>  
+  <div class="comments-show">
+    <div class="comment">
+      <p><small><span style='color: dodgerblue'><%= comment.user.email %></span> <em>(<%= time_ago_in_words(comment.created_at) %>)</em></small></p>
+      <p><%= comment.body %></p>
+      <div class="comment-nav"><span class="comment-reply">Reply</span></div>
+      <div class="reply-form">
+        <%= form_for @new_comment do |f| %>
+          <%= f.hidden_field :commentable_id, value: @new_comment.commentable_id %>
+          <%= f.hidden_field :commentable_type, value: @new_comment.commentable_type %>
+          <%= f.hidden_field :comment_id, value: comment.id %>
+          <div class="field form-group">
+            <%= f.text_area :body, class: 'form-control' %>
+          </div>
+          <div class="field form-group">
+            <%= submit_tag "Post Reply", class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%= render partial: "comments/reply", locals: {comments: comment.children.includes(:user)} %>
+  </div>
+<% end %>

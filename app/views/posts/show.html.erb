@@ -1,45 +1,30 @@
 <h2><%= @post.title %></h2>
 
-<p><b>Category:</b>
-  <%= @post.categories.first.name %></p>
+<p><b>Category: </b><%= @post.categories.first.name %></p>
+<p><b>Body: </b><%= @post.body %></p>
+<p><b>User: </b><%= @post.user_id %></p>
 
-<p><b>Body:</b>
-  <%= @post.body %></p>
+<% if current_user.is_admin? or can? :edit, @post %>
+  <p><b>Post ID: </b><%= @post.id %></p>
+  <p><b>Is pinned: </b><%= @post.is_pinned %></p>
+  <p><b>Is draft: </b><%= @post.is_draft %></p>
+  <p><b>Commentable: </b><%= @post.commentable %></p>
+<% end %>
 
-<p><b>User:</b>
-  <%= @post.user_id %></p>
-
-<p><b>Is pinned:</b>
-  <%= @post.is_pinned %></p>
-
-<p><b>Is draft:</b>
-  <%= @post.is_draft %></p>
-
-<p><b>Commentable:</b>
-  <%= @post.commentable %></p>
-
-<p><b>Comments total:</b>
-  <span class="badge"><%= @post.thread.comments.count %></span></p>
 <br>
-<% if belongs_to_user?(@post) %>
-	<div class="btn-group btn-group" role="group" aria-label="...">
-	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-primary' %>  
+
+<% if current_user.is_admin? or can? :edit, @post %>
+	<div class="btn-group btn-group-sm" role="group" aria-label="...">
+	  <%= link_to 'Edit', edit_post_path(@post), type: 'button', class: 'btn btn-default' %>  
 	  <%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' }, 
-	  	type: 'button', class: 'btn btn-primary' %>
-    <%= link_to 'My posts', my_posts_path, type: 'button', class: 'btn btn-primary' %>
-	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-primary' %>
+	  	type: 'button', class: 'btn btn-danger' %>
+    <%= link_to 'My posts', posts_path(show_me: 'my'), type: 'button', class: 'btn btn-default' %>
+	  <%= link_to 'All posts', posts_path, type: 'button', class: 'btn btn-default' %>
 	</div>
 <% end %>
 
-<nav aria-label="...">
-  <ul class="pager">
-    <% unless @post == Post.first %>
-    <li><%= link_to '< Prev. post', Post.where("id < ?", @post.id).last %></li>
-    <% end %>
-    <% unless @post == Post.last %>
-      <li><%= link_to 'Next post >', Post.where("id > ?", @post.id).first %></li>
-    <% end %>
-  </ul>
-</nav>
+<%= render partial: '/shared/pager', locals: { object: @post, collection: @posts } %>
 
-<%= commontator_thread(@post) if @post.commentable %>
+<% if @post.commentable == true %>
+	<%= render partial: 'comments/template', locals: {commentable: @post, new_comment: @comment} %>  
+<% end %>

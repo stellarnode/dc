@@ -1,17 +1,17 @@
 <div class="row">
     
-  <% if !user_signed_in? %>
+  <% if current_user == nil %>
     <div class="container">
       <div class="jumbotron">
         <h1>Welcome</h1>
         <p><i>Domochat</i> is&nbsp;a&nbsp;place to&nbsp;communicate with&nbsp;your neighbors and&nbsp;manage the&nbsp;life of&nbsp;your house.</p>
-        <%= button_to "Sign Up Now", new_user_registration_path, method: :get, class: 'btn btn-primary btn-lg' %>
+        <%= button_to "Sign Up Now", new_user_registration_path, method: :get, class: 'btn btn-primary btn-md' %>
       </div>
     </div>
     
     <% else %>
     <% unless @posts.empty?%>
-      <div class="col-lg-6">
+      <div class="col-md-6">
         <div class="thumbnail">
           <div class="caption">
   		      <%= render :partial => "/posts/news" %>
@@ -20,7 +20,7 @@
       </div><!--/col-->
     <% end %>
     <% unless @polls.empty?%>
-    <div class="col-lg-6">
+    <div class="col-md-6">
       <div class="thumbnail">
         <div class="caption">
 		      <%= render :partial => "/polls/actual_polls" %>

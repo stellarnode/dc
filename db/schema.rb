@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728110306) do
+ActiveRecord::Schema.define(version: 20160815085043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,43 +29,20 @@ ActiveRecord::Schema.define(version: 20160728110306) do
     t.index ["user_id"], name: "index_chat_messages_on_user_id", using: :btree
   end
 
-  create_table "commontator_comments", force: :cascade do |t|
-    t.string   "creator_type"
-    t.integer  "creator_id"
-    t.string   "editor_type"
-    t.integer  "editor_id"
-    t.integer  "thread_id",                     null: false
-    t.text     "body",                          null: false
-    t.datetime "deleted_at"
-    t.integer  "cached_votes_up",   default: 0
-    t.integer  "cached_votes_down", default: 0
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.index ["cached_votes_down"], name: "index_commontator_comments_on_cached_votes_down", using: :btree
-    t.index ["cached_votes_up"], name: "index_commontator_comments_on_cached_votes_up", using: :btree
-    t.index ["creator_id", "creator_type", "thread_id"], name: "index_commontator_comments_on_c_id_and_c_type_and_t_id", using: :btree
-    t.index ["thread_id", "created_at"], name: "index_commontator_comments_on_thread_id_and_created_at", using: :btree
-  end
-
-  create_table "commontator_subscriptions", force: :cascade do |t|
-    t.string   "subscriber_type", null: false
-    t.integer  "subscriber_id",   null: false
-    t.integer  "thread_id",       null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["subscriber_id", "subscriber_type", "thread_id"], name: "index_commontator_subscriptions_on_s_id_and_s_type_and_t_id", unique: true, using: :btree
-    t.index ["thread_id"], name: "index_commontator_subscriptions_on_thread_id", using: :btree
-  end
-
-  create_table "commontator_threads", force: :cascade do |t|
-    t.string   "commontable_type"
-    t.integer  "commontable_id"
-    t.datetime "closed_at"
-    t.string   "closer_type"
-    t.integer  "closer_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.index ["commontable_id", "commontable_type"], name: "index_commontator_threads_on_c_id_and_c_type", unique: true, using: :btree
+  create_table "comments", force: :cascade do |t|
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.string   "title"
+    t.text     "body"
+    t.string   "subject"
+    t.integer  "user_id",          null: false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "crono_jobs", force: :cascade do |t|
@@ -108,8 +85,9 @@ ActiveRecord::Schema.define(version: 20160728110306) do
   create_table "options", force: :cascade do |t|
     t.string   "poll_option"
     t.integer  "poll_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "votes_count", default: 0
     t.index ["poll_id"], name: "index_options_on_poll_id", using: :btree
   end
 
@@ -118,11 +96,12 @@ ActiveRecord::Schema.define(version: 20160728110306) do
     t.text     "body"
     t.datetime "start"
     t.datetime "finish"
-    t.integer  "status"
-    t.integer  "poll_type"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "state"
+    t.string   "poll_type"
+    t.integer  "votes_count", default: 0
     t.index ["user_id"], name: "index_polls_on_user_id", using: :btree
   end
 
@@ -223,7 +202,9 @@ ActiveRecord::Schema.define(version: 20160728110306) do
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "poll_id"
     t.index ["option_id"], name: "index_votes_on_option_id", using: :btree
+    t.index ["poll_id"], name: "index_votes_on_poll_id", using: :btree
     t.index ["user_id"], name: "index_votes_on_user_id", using: :btree
   end
 
@@ -237,5 +218,6 @@ ActiveRecord::Schema.define(version: 20160728110306) do
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "votes", "options"
+  add_foreign_key "votes", "polls"
   add_foreign_key "votes", "users"
 end

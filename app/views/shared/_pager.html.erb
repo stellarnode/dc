@@ -1,0 +1,10 @@
+<nav aria-label="...">
+  <ul class="pager">
+    <% unless object.id == collection.first %>
+    <li><%= link_to "< Prev. #{object.class.name.downcase}", url_for(only_path: true, action: 'show', id: collection.select {|e| e < object.id}.last) %></li>
+    <% end %>
+    <% unless object.id == collection.last %>
+      <li><%= link_to "Next #{object.class.name.downcase} >", url_for(only_path: true, action: 'show', id: collection.select {|e| e > object.id}.first) %></li>
+    <% end %>
+  </ul>
+</nav>
