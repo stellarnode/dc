@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160815085043) do
+ActiveRecord::Schema.define(version: 20160820184538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,25 @@ ActiveRecord::Schema.define(version: 20160815085043) do
     t.datetime "updated_at",              null: false
     t.integer  "votes_count", default: 0
     t.index ["poll_id"], name: "index_options_on_poll_id", using: :btree
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string   "receiver"
+    t.string   "formcomment"
+    t.string   "short_dest"
+    t.string   "quickpay_form"
+    t.string   "targets"
+    t.string   "payment_type"
+    t.string   "sum"
+    t.string   "label"
+    t.string   "comment"
+    t.string   "successURL"
+    t.string   "need_fio"
+    t.string   "need_email"
+    t.string   "need_phone"
+    t.string   "need_address"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "polls", force: :cascade do |t|

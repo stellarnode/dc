@@ -1,0 +1,24 @@
+<%= simple_form_for(@payment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :receiver %>
+    <%= f.input :formcomment %>
+    <%= f.input :short_dest %>
+    <%= f.input :quickpay_form %>
+    <%= f.input :targets %>
+    <%= f.input :payment_type %>
+    <%= f.input :sum %>
+    <%= f.input :label %>
+    <%= f.input :comment %>
+    <%= f.input :successURL %>
+    <%= f.input :need_fio %>
+    <%= f.input :need_email %>
+    <%= f.input :need_phone %>
+    <%= f.input :need_address %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

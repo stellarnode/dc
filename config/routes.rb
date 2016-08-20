@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :payments
   resources   :polls
   match       '/polls/:id/voting' => 'polls#voting', via: [:get], :as => :voting_poll
   post        '/votes' => 'votes#create', via: [:post], :as => :new_votes
