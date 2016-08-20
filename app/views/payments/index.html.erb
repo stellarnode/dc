@@ -2,23 +2,15 @@
 
 <h1>Payments</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Receiver</th>
-      <th>Formcomment</th>
-      <th>Short dest</th>
-      <th>Quickpay form</th>
-      <th>Targets</th>
-      <th>Payment type</th>
+      <th>Project</th>
+      <th>Full Description</th>
       <th>Sum</th>
-      <th>Label</th>
+      <th>Request ID</th>
       <th>Comment</th>
-      <th>Successurl</th>
-      <th>Need fio</th>
-      <th>Need email</th>
-      <th>Need phone</th>
-      <th>Need address</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -28,21 +20,19 @@
       <tr>
         <td><%= payment.receiver %></td>
         <td><%= payment.formcomment %></td>
-        <td><%= payment.short_dest %></td>
-        <td><%= payment.quickpay_form %></td>
         <td><%= payment.targets %></td>
-        <td><%= payment.payment_type %></td>
         <td><%= payment.sum %></td>
         <td><%= payment.label %></td>
         <td><%= payment.comment %></td>
-        <td><%= payment.successURL %></td>
-        <td><%= payment.need_fio %></td>
-        <td><%= payment.need_email %></td>
-        <td><%= payment.need_phone %></td>
-        <td><%= payment.need_address %></td>
-        <td><%= link_to 'Show', payment %></td>
-        <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
-        <td><%= link_to 'Destroy', payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Donate', payment_donate_path(payment) %></td>
+
+        <% if payment.user == current_user %>
+
+          <td><%= link_to 'Show', payment %></td>
+          <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
+          <td><%= link_to 'Destroy', payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -50,4 +40,4 @@
 
 <br>
 
-<%= link_to 'New Payment', new_payment_path %>
+<%= link_to 'New Payment', new_payment_path, class: "btn btn-lg btn-primary" %>

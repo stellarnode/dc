@@ -1,33 +1,30 @@
-<p id="notice"><%= notice %></p>
+<h1>Payment Request #<%= @payment.id %></h1>
+
+<br />
 
 <p>
-  <strong>Receiver:</strong>
+  <strong>Receiver's Yandex wallet ID:</strong>
   <%= @payment.receiver %>
 </p>
 
 <p>
-  <strong>Formcomment:</strong>
+  <strong>Created by:</strong>
+  <%= @payment.user.email %>
+</p>
+
+<p>
+  <strong>Project or crowd-funding objective:</strong>
   <%= @payment.formcomment %>
 </p>
 
 <p>
-  <strong>Short dest:</strong>
-  <%= @payment.short_dest %>
-</p>
-
-<p>
-  <strong>Quickpay form:</strong>
+  <strong>Payment format:</strong>
   <%= @payment.quickpay_form %>
 </p>
 
 <p>
-  <strong>Targets:</strong>
+  <strong>Full description:</strong>
   <%= @payment.targets %>
-</p>
-
-<p>
-  <strong>Payment type:</strong>
-  <%= @payment.payment_type %>
 </p>
 
 <p>
@@ -36,7 +33,7 @@
 </p>
 
 <p>
-  <strong>Label:</strong>
+  <strong>Payment form ID:</strong>
   <%= @payment.label %>
 </p>
 
@@ -51,24 +48,32 @@
 </p>
 
 <p>
-  <strong>Need fio:</strong>
-  <%= @payment.need_fio %>
+  <strong>Need payer's name:</strong>
+  <%= @payment.need_fio == "1" ? "yes" : "no" %>
 </p>
 
 <p>
-  <strong>Need email:</strong>
-  <%= @payment.need_email %>
+  <strong>Need payer's email:</strong>
+  <%= @payment.need_email == "1" ? "yes" : "no" %>
 </p>
 
 <p>
-  <strong>Need phone:</strong>
-  <%= @payment.need_phone %>
+  <strong>Need payer's phone:</strong>
+  <%= @payment.need_phone == "1" ? "yes" : "no" %>
 </p>
 
 <p>
-  <strong>Need address:</strong>
-  <%= @payment.need_address %>
+  <strong>Need payer's address:</strong>
+  <%= @payment.need_address == "1" ? "yes" : "no" %>
 </p>
 
+<p>
+  <strong>Permanent URL for sharing:</strong>
+  <a href="<%= "#{ENV["ROOT_URL"]}/payments/#{@payment.id}/donate" %>" target="_blank"><%= "#{ENV["ROOT_URL"]}/payments/#{@payment.id}/donate" %></a>
+</p>
+
+<br />
+
+<%= link_to 'Donate', payment_donate_path(@payment) %> |
 <%= link_to 'Edit', edit_payment_path(@payment) %> |
 <%= link_to 'Back', payments_path %>

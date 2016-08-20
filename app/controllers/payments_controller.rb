@@ -1,5 +1,5 @@
 class PaymentsController < ApplicationController
-  before_action :set_payment, only: [:show, :edit, :update, :destroy]
+  before_action :set_payment, only: [:donate, :show, :edit, :update, :destroy]
 
   # GET /payments
   # GET /payments.json
@@ -10,6 +10,10 @@ class PaymentsController < ApplicationController
   # GET /payments/1
   # GET /payments/1.json
   def show
+  end
+
+  def donate
+
   end
 
   # GET /payments/new
@@ -25,6 +29,7 @@ class PaymentsController < ApplicationController
   # POST /payments.json
   def create
     @payment = Payment.new(payment_params)
+    @payment.user = current_user
 
     respond_to do |format|
       if @payment.save
@@ -64,11 +69,15 @@ class PaymentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_payment
-      @payment = Payment.find(params[:id])
+      begin
+        @payment = Payment.find(params[:id])
+      rescue
+        @payment = Payment.find(params[:payment_id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_params
-      params.require(:payment).permit(:receiver, :formcomment, :short_dest, :quickpay_form, :targets, :payment_type, :sum, :label, :comment, :successURL, :need_fio, :need_email, :need_phone, :need_address)
+      params.require(:payment).permit(:receiver, :formcomment, :short_dest, :quickpay_form, :targets, :payment_type, :sum, :label, :comment, :successURL, :need_fio, :need_email, :need_phone, :need_address, :payment_id)
     end
 end
