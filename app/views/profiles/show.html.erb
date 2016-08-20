@@ -1,10 +1,24 @@
 <h1><%= @profile.user == current_user ? 'My' : 'User ' + @profile.user.email %> profile</h1>
 
+<br />
 <%= image_tag @profile.avatar, size: "100x100", alt: "Avatar" %>
 
-<p><b>Name:</b> <%= @profile.full_name %></p>
-<p><b>Phone Number:</b> <%= @profile.phone %></p>
+<br />
+
+<h3>Name:</h3>
+
+<p><%= @profile.full_name %></p>
+
+<h3>Email:</h3>
+
+<p><%= @profile.user.email %></p>
+
+<h3>Phone Number:</h3>
+
+<p><%= @profile.phone %></p>
+
+<br />
 
 <% if @profile.user == current_user %>
-	<%= link_to "Edit Profile", edit_profile_path %>
+	<%= link_to "Edit Profile", edit_profile_path, class: "btn btn-lg btn-primary" %>
 <% end %>
