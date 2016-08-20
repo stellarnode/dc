@@ -1,0 +1,18 @@
+<%= simple_form_for(@payment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :receiver, label: "Your Yandex wallet ID", placeholder: "41001XXXXXXXXX" %>
+    <%= f.input :formcomment, label: "Project or crowd-funding objective", placeholder: "Gift to Maria Ivanovna" %>
+    <%= f.input :sum, label: "Default amount in RUB", placeholder: "100.00" %>
+    <%= f.input :comment, placeholder: "She has always wanted a cooking class." %>
+    <%= f.input :need_fio, as: :boolean, label: "Require payer's name" %>
+    <%= f.input :need_email, as: :boolean, label: "Require payer's email" %>
+    <%= f.input :need_phone, as: :boolean, label: "Require payer's phone number" %>
+    <%= f.input :need_address, as: :boolean, label: "Require payer's address" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

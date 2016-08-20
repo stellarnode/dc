@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many      :polls
   has_many      :chat_messages
   has_many      :votes
+  has_many      :payments, dependent: :destroy
 
   rolify
 

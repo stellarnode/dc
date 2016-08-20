@@ -1,0 +1,84 @@
+<!-- <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
+    <input type="hidden" name="receiver" value="41001xxxxxxxxxxxx">
+    <input type="hidden" name="formcomment" value="Проект «Железный человек»: реактор холодного ядерного синтеза">
+    <input type="hidden" name="short-dest" value="Проект «Железный человек»: реактор холодного ядерного синтеза">
+    <input type="hidden" name="label" value="$order_id">
+    <input type="hidden" name="quickpay-form" value="donate">
+    <input type="hidden" name="targets" value="транзакция {order_id}">
+    <input type="hidden" name="sum" value="4568.25" data-type="number">
+    <input type="hidden" name="comment" value="Хотелось бы дистанционного управления.">
+    <input type="hidden" name="need-fio" value="true">
+    <input type="hidden" name="need-email" value="true">
+    <input type="hidden" name="need-phone" value="false">
+    <input type="hidden" name="need-address" value="false">
+    <label><input type="radio" name="paymentType" value="PC">Яндекс.Деньгами</label>
+    <label><input type="radio" name="paymentType" value="AC">Банковской картой</label>
+    <input type="submit" value="Donate" class="btn btn-lg btn-primary">
+</form> -->
+
+
+
+<%= simple_form_for(@payment, method: :post, url: "https://money.yandex.ru/quickpay/confirm.xml") do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+
+
+    <div class="form-group">
+      <label for="receiver">Receiver's Yandex wallet ID</label>
+      <input type="text" class="form-control" name="receiver" value="<%= @payment.receiver %>" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="formcomment">Project or crowd-funding objective</label>
+      <input type="text" class="form-control" name="formcomment" value="<%= @payment.formcomment %>" readonly>
+    </div>
+
+
+    <!-- <%= f.input :receiver, label: "Receiver's Yandex wallet ID", name: "receiver", value: @payment.receiver, disabled: true %> -->
+    <!-- <%= f.input :formcomment, label: "Project or crowd-funding objective", placeholder: @payment.formcomment, disabled: true %> -->
+
+
+
+    <input type="hidden" name="short-dest" value="<%= @payment.short_dest %>">
+    <input type="hidden" name="label" value="<%= @payment.label %>">
+    <input type="hidden" name="quickpay-form" value="<%= @payment.quickpay_form %>">
+    <input type="hidden" name="targets" value="<%= @payment.targets %>">
+
+    <div class="form-group">
+      <label for="sum">Amount in RUB</label>
+      <input type="text" class="form-control" name="sum" value="<%= @payment.sum %>" data-type="number">
+    </div>
+
+    <!-- <%= f.input :sum, label: "Amount in RUB", placeholder: @payment.sum %> -->
+    <!-- <%= f.input :comment, placeholder: @payment.comment %> -->
+
+    <div class="form-group">
+      <label for="comment">Comment</label>
+      <input type="text" class="form-control" name="comment" placeholder="<%= @payment.comment %>">
+    </div>
+
+    <input type="hidden" name="need-fio" value="<%= @payment.need_fio == "1" ? "true" : "false" %>">
+    <input type="hidden" name="need-email" value="<%= @payment.need_email == "1" ? "true" : "false" %>">
+    <input type="hidden" name="need-phone" value="<%= @payment.need_phone == "1" ? "true" : "false" %>">
+    <input type="hidden" name="need-address" value="<%= @payment.need_address == "1" ? "true" : "false" %>">
+
+    <div class="radio">
+      <label><input type="radio" name="paymentType" value="AC" checked="checked">Pay with your Banking Card</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="paymentType" value="PC">Pay with Yandex.Money</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="paymentType" value="MC">Pay with your Mobile Phone</label>
+    </div>
+  </div>
+
+  <input type="hidden" name="successURL" value="<%= @payment.successURL != "" ? @payment.successURL : ENV["ROOT_URL"] %>">
+
+  <br />
+
+  <div class="form-actions">
+    <%= f.button :submit, "Donate", class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

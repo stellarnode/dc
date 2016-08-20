@@ -1,0 +1,14 @@
+<h1>Donate for Request #<%= @payment.label %></h1>
+
+<br />
+<p>
+  After submitting the form you will be redirected to Yandex.Money for payment processing.
+</p>
+
+<br />
+<%= render 'payment_form', payment: @payment %>
+
+<br />
+
+<%= link_to 'Show', @payment %> |
+<%= link_to 'Back', payments_path %>

@@ -1,0 +1,22 @@
+<h1>New Payment</h1>
+
+<br />
+<div class="row">
+  <div class="col-md-9 col-xs-12">
+    <p>
+      In order to create a new crowd funding form and be able to collect donations, make sure you register with <a href="https://money.yandex.ru" target="_blank">Yandex.Money</a> and have the ID of your Yandex wallet ready. When people use the form you create, they will be redirected to Yandex for the transaction. They will also be able to choose whether to pay with a credit card, their Yandex wallet or their mobile phone.
+    </p>
+  </div>
+</div>
+
+<br />
+
+<div class="row">
+  <div class="col-md-9 col-xs-12">
+    <%= render 'form', payment: @payment %>
+
+    <br />
+
+    <%= link_to 'Back', payments_path %>
+  </div>
+</div>

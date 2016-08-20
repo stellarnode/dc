@@ -1,0 +1,79 @@
+<h1>Payment Request #<%= @payment.id %></h1>
+
+<br />
+
+<p>
+  <strong>Receiver's Yandex wallet ID:</strong>
+  <%= @payment.receiver %>
+</p>
+
+<p>
+  <strong>Created by:</strong>
+  <%= @payment.user.email %>
+</p>
+
+<p>
+  <strong>Project or crowd-funding objective:</strong>
+  <%= @payment.formcomment %>
+</p>
+
+<p>
+  <strong>Payment format:</strong>
+  <%= @payment.quickpay_form %>
+</p>
+
+<p>
+  <strong>Full description:</strong>
+  <%= @payment.targets %>
+</p>
+
+<p>
+  <strong>Sum:</strong>
+  <%= @payment.sum %>
+</p>
+
+<p>
+  <strong>Payment form ID:</strong>
+  <%= @payment.label %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @payment.comment %>
+</p>
+
+<p>
+  <strong>Successurl:</strong>
+  <%= @payment.successURL %>
+</p>
+
+<p>
+  <strong>Need payer's name:</strong>
+  <%= @payment.need_fio == "1" ? "yes" : "no" %>
+</p>
+
+<p>
+  <strong>Need payer's email:</strong>
+  <%= @payment.need_email == "1" ? "yes" : "no" %>
+</p>
+
+<p>
+  <strong>Need payer's phone:</strong>
+  <%= @payment.need_phone == "1" ? "yes" : "no" %>
+</p>
+
+<p>
+  <strong>Need payer's address:</strong>
+  <%= @payment.need_address == "1" ? "yes" : "no" %>
+</p>
+
+<p>
+  <strong>Permanent URL for sharing:</strong>
+  <a href="<%= "#{ENV["ROOT_URL"]}/payments/#{@payment.id}/donate" %>" target="_blank"><%= "#{ENV["ROOT_URL"]}/payments/#{@payment.id}/donate" %></a>
+</p>
+
+<br />
+
+<%= link_to 'Donate', payment_donate_path(@payment) %> |
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Back', payments_path %>

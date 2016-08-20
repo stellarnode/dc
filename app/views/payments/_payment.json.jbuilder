@@ -1,0 +1,2 @@
+json.extract! payment, :id, :receiver, :formcomment, :short_dest, :quickpay_form, :targets, :payment_type, :sum, :label, :comment, :successURL, :need_fio, :need_email, :need_phone, :need_address, :created_at, :updated_at
+json.url payment_url(payment, format: :json)
