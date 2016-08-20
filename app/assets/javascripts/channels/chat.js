@@ -15,7 +15,7 @@ App.chat = App.cable.subscriptions.create({channel: "ChatChannel", room: "chat"}
     // console.log(data);
     // console.log(document.cookie);
     var messages = document.getElementById("list_of_messages");
-    var newMessage = document.createElement("li");
+    var newMessage = document.createElement("p");
     var cookies = document.cookie.split(";");
     var cls = "";
     cookies.forEach(function(el) {

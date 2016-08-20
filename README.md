@@ -10,8 +10,6 @@ To run this application, remember to do the following (instructions given for Ma
 
 * Launch Sidekiq for async jobs in a separate terminal window: `bundle exec sidekiq`
 
-* Launch Faye service in a separate terminal window: `rackup sync.ru -E production`
-
 * Launch Crono service in a separate terminal window in your Rails project root directory: `crono` (or `bundle exec crono`)
 
 * Run command 'rake db:seed' to create categories for posts.

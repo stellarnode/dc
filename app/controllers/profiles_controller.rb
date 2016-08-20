@@ -3,10 +3,23 @@ class ProfilesController < ApplicationController
   before_action :set_profile
 
   def show
+    unless @profile
+      if params[:id] != current_user.id
+        redirect_to root_path, alert: 'Profile not found.'
+      else
+        @profile = Profile.new
+        @profile.user = current_user
+        if @profile.save
+          redirect_to profile_path(current_user)
+        else
+          redirect_to root_path, alert: 'Sorry, something went wrong.'
+        end
+      end
+    end
   end
 
   def edit
-    unless belongs_to_user?(@profile)
+    unless @profile.user == current_user
       respond_to do |format|
          format.html { redirect_to profile_path(current_user), alert: 'You can edit only your own profile.' }
        end
@@ -22,8 +35,11 @@ class ProfilesController < ApplicationController
   private
 
   def set_profile
-    #@profile = current_user.profile
-    @profile = Profile.find(params[:id])
+    begin
+      @profile = Profile.find(params[:id])
+    rescue
+      @profile = nil
+    end
   end
 
   def permit_profile

@@ -142,11 +142,10 @@ ActiveRecord::Schema.define(version: 20160815085043) do
     t.string   "name"
     t.string   "resource_type"
     t.integer  "resource_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -183,7 +182,6 @@ ActiveRecord::Schema.define(version: 20160815085043) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
     t.index ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
-    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   end
@@ -191,9 +189,7 @@ ActiveRecord::Schema.define(version: 20160815085043) do
   create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
-    t.index ["role_id"], name: "index_users_roles_on_role_id", using: :btree
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
-    t.index ["user_id"], name: "index_users_roles_on_user_id", using: :btree
   end
 
   create_table "votes", force: :cascade do |t|

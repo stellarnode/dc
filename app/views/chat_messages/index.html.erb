@@ -5,9 +5,9 @@
 <div id="message_view">
 
   <% if @chat_messages.any? %>
-  <ul id="list_of_messages">
+  <div id="list_of_messages">
     <%= render partial: 'chat_message', collection: @chat_messages %>
-  </ul>
+  </div>
   <% end %>
 
 </div>
