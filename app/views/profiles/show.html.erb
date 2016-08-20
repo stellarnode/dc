@@ -1,9 +1,10 @@
-<h1><%= belongs_to_user?(@profile) ? 'My' : 'User ' + @profile.user.email %> profile</h1>
+<h1><%= @profile.user == current_user ? 'My' : 'User ' + @profile.user.email %> profile</h1>
+
+<%= image_tag @profile.avatar, size: "100x100", alt: "Avatar" %>
 
 <p><b>Name:</b> <%= @profile.full_name %></p>
 <p><b>Phone Number:</b> <%= @profile.phone %></p>
-<p><b>Avatar:</b> <%= image_tag @profile.avatar %></p>
 
-<% if belongs_to_user?(@profile) %>
+<% if @profile.user == current_user %>
 	<%= link_to "Edit Profile", edit_profile_path %>
 <% end %>

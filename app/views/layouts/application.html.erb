@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Dc" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Domochat" %></title>
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
 
@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Domochat 2</a>
+          <a class="navbar-brand" href="/">Domochat</a>
         </div>
 
         <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -65,17 +65,21 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
           <%= bootstrap_flash %>
           <%= yield %>
         </div>
-        <% if user_signed_in? %>
+
+
+        <!-- <% if user_signed_in? %>
           <div class="col-md-3">
-            <!-- Side nav -->
+
             <%= render partial: '/shared/side_nav' %>
-            <!-- Side nav -->
-          </div><!--/span-->
-        <% end %>
+
+          </div>
+        <% end %> -->
+
+
       </div><!--/row-->
 
       <footer>
