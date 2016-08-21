@@ -19,13 +19,16 @@ Email:
   item:
     Create New Email:
       path: /users/#{current_user.id}/emails/new
-
     Separator:
-
     My Emails:
       path: /users/#{current_user.id}/emails
 
 Crowd Funding:
   controller: payments
-  nav_type: default
-  path: /payments
+  nav_type: dropdown
+  item:
+    All Payment Requests:
+      path: /payments
+    Separator:
+    Create New Payment Request:
+      path: /payments/new
