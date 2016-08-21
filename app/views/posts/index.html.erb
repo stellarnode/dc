@@ -5,30 +5,30 @@
 <!-- end of Nav bar for post categories -->
 
 <% @posts.each do |post| %>
-    
+
   <h3><%= link_to "#{post.title}", post_path(post) %>
   <span class="label label-primary"><%= 'New' if post.created_at.to_date == Date.today %></span>
   </h3>
   <p><b>Category: </b><%= post.categories.first.name %></p>
   <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
-  <p><b>User:</b> <%= post.user_id %></p> 
+  <p><b>User:</b> <%= post.user_id %></p>
 
   <% if current_user.is_admin? %>
     <p><b>Post ID: </b><%= post.id %></p>
-    <p><b>Is pinned:</b> <%= post.is_pinned %></p>    
-    <p><b>Is draft:</b> <%= post.is_draft %></p>   
+    <p><b>Is pinned:</b> <%= post.is_pinned %></p>
+    <p><b>Is draft:</b> <%= post.is_draft %></p>
     <p><b>Commentable:</b> <%= post.commentable %></p>
   <% end %>
 
   <% if post.commentable == true %>
     <p><b>Comments total:</b> <span class="badge"><%= post.comment_threads.count %></span></p>
   <% end %>
-  
+
   <% if current_user.is_admin? or can? :edit, post %>
     <div class="btn-group btn-group-sm" role="group" aria-label="...">
       <%= link_to 'Show', post, type: 'button', class: 'btn btn-default' %>
-      <%= link_to 'Edit', edit_post_path(post), type: 'button', class: 'btn btn-default' %>  
-      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, 
+      <%= link_to 'Edit', edit_post_path(post), type: 'button', class: 'btn btn-default' %>
+      <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' },
         type: 'button', class: 'btn btn-danger' %>
     </div>
   <% end %>
