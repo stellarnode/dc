@@ -1,12 +1,8 @@
-if ENV["RAILS-ENV"] == "production"
-  redis_url = ENV['REDIS-PROD']
 
-  Sidekiq.configure_server do |config|
-    config.redis = { url: redis_url }
-  end
+Sidekiq.configure_server do |config|
+  config.redis = { url: ENV['REDIS-PROD'] }
+end
 
-  Sidekiq.configure_client do |config|
-    config.redis = { url: redis_url }
-  end
-
+Sidekiq.configure_client do |config|
+  config.redis = { url: ENV['REDIS-PROD'] }
 end
