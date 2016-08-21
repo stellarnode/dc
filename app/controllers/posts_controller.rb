@@ -1,14 +1,13 @@
-$categories = Category.all
-
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_categories
 
   # GET /posts
   # GET /posts.json
   def index
     params[:category_name] = params[:category_name] || 'All'
-    
+
     case params[:show_me] = params[:show_me] || 'all'
     when 'all'
       if params[:category_name] == 'All'
@@ -90,16 +89,20 @@ class PostsController < ApplicationController
 
   private
 
+  def set_categories
+    $categories = Category.all
+  end
+
   def set_post
     @post = Post.find(params[:id])
   end
 
   def post_params
-    params.require(:post).permit( :title, 
-                                  :body, 
-                                  :user_id, 
-                                  :is_pinned, 
-                                  :is_draft, 
+    params.require(:post).permit( :title,
+                                  :body,
+                                  :user_id,
+                                  :is_pinned,
+                                  :is_draft,
                                   :commentable,
                                   :category_name,
                                   :show_me,
