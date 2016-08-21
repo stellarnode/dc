@@ -52,6 +52,8 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  config.action_cable.allowed_request_origins = ['http://localhost:3000', ENV["ROOT_URL"], ENV["ROOT_URL_PROD"]]
+
   # SMTP settings for mailgun
   config.action_mailer.perform_deliveries = true
   ActionMailer::Base.delivery_method = :smtp
