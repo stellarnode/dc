@@ -1,7 +1,8 @@
+$categories = Category.all
+
 class PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :set_categories
 
   # GET /posts
   # GET /posts.json
@@ -88,10 +89,6 @@ class PostsController < ApplicationController
   end
 
   private
-
-  def set_categories
-    $categories = Category.all
-  end
 
   def set_post
     @post = Post.find(params[:id])
