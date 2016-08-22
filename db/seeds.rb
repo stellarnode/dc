@@ -5,10 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 
-Category.delete_all
 
+# Fill default Category table
 ['Buy', 'Sell', 'News', 'Help', 'Other'].each do |category|
 	Category.find_or_create_by(name: category)
 end
-
 puts 'Categories created'
+
+# Create first user to have access to admin dashboard
+# Don't fogret to change it to your data
+User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+puts "First user created. Don't fogret to change it to your data in Admin Dashboard!"
