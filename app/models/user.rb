@@ -14,6 +14,10 @@ class User < ApplicationRecord
   has_many      :votes
   has_many      :payments, dependent: :destroy
 
+  scope :admins,      -> { joins(:roles).where('roles.name = ?', 'admin').distinct }
+  scope :users,       -> { joins(:roles).where('roles.name = ?', 'user').distinct }
+  scope :moderators,  -> { joins(:roles).where('roles.name = ?', 'moderator').distinct }
+
   rolify
 
   # Include default devise modules. Others available are:
