@@ -4,7 +4,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Dc Admin"
+  config.site_title = "Domochat"
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
@@ -125,7 +125,7 @@ ActiveAdmin.setup do |config|
   # config.comments = false
   #
   # You can change the name under which comments are registered:
-  # config.comments_registration_name = 'AdminComment'
+  config.comments_registration_name = 'AdminComments'
   #
   # You can change the order for the comments and you can change the column
   # to be used for ordering:
@@ -160,7 +160,7 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  # config.favicon = 'favicon.ico'
+  config.favicon = 'favicon.ico'
 
   # == Meta Tags
   #
