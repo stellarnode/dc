@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   resources   :chat_messages
 
   devise_for 	:users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
+  #devise_for :users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
 
   resources   :users do
     resources :emails, only: [:index, :show, :new, :create, :destroy]
