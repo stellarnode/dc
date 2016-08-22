@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+
   before_action :set_user, only: [:show, :edit, :update, :destroy, :finish_signup]
 
 # GET /users/:id.:format
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
           format.html { redirect_to root_url, notice: 'Your profiles was successfully updated.' }
           format.json { render '/', status: :ok }
         end
-        #redirect_to root_url, notice: 'Your profiles was successfully updated.'
+        redirect_to root_url, notice: 'Your profiles was successfully updated.'
       else
         @show_errors = true
       end
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   private
   def set_user
     @user = User.find(params[:id])
