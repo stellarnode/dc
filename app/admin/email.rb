@@ -1,6 +1,7 @@
 ActiveAdmin.register Email do
 
-menu priority: 5
+	permit_params :subject, :body, :to, :user_id
 
+	menu priority: 5
 
 end
