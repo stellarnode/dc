@@ -1,7 +1,7 @@
 <% comments.each do |comment| %>  
   <div class="comments-show">
     <div class="comment">
-      <p><small><span style='color: dodgerblue'><%= comment.user.email %></span> <em>(<%= time_ago_in_words(comment.created_at) %>)</em></small></p>
+      <p><small><span style='color: dodgerblue'><%= comment.user.username %></span> <em>(<%= time_ago_in_words(comment.created_at) %>)</em></small></p>
       <p><%= comment.body %></p>
       <div class="comment-nav"><span class="comment-reply">Reply</span></div>
       <div class="reply-form">

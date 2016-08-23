@@ -1,6 +1,7 @@
 ActiveAdmin.register ChatMessage do
 
-menu priority: 8
+	permit_params :message
 
+	menu priority: 8
 
 end

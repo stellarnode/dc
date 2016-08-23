@@ -1,6 +1,6 @@
 <p>
-  <strong class=<%= current_user.email == chat_message.user.email ? "current_user" : "" %>>
-    <%= chat_message.user.email %>:
+  <strong class=<%= current_user.username == chat_message.user.username ? "current_user" : "" %>>
+    <%= chat_message.user.username %>:
   </strong>
     <%= chat_message.message %>
 </p>

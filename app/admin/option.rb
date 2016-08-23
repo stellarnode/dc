@@ -1,6 +1,7 @@
 ActiveAdmin.register Option do
 
-menu priority: 9
-
+	permit_params :poll_option, :poll_id
+	
+	menu priority: 9
 
 end
