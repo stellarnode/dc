@@ -20,7 +20,7 @@ class ChatMessagesController < ApplicationController
       # head :ok
       ChatChannel.broadcast_to(
         'chat',
-        user: @chat_message.user.username,
+        user: @chat_message.user.username || @chat_message.user.email,
         message: @chat_message.message
       )
 
@@ -42,6 +42,7 @@ class ChatMessagesController < ApplicationController
 
   def set_user
     cookies[:user_email] = current_user.email || 'guest'
+    cookies[:username] = current_user.username || 'guest'
   end
 
 end

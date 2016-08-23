@@ -1,6 +1,6 @@
 development:
   adapter: redis
-  url: <%= ENV["REDIS-PROD"] %>
+  url: <%= ENV["REDIS-DEV"] %>
 
 test:
   adapter: async

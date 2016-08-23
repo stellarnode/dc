@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  
+
   before_action :set_user, only: [:show, :edit, :update, :destroy, :finish_signup]
 
 # GET /users/:id.:format
@@ -53,14 +53,14 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   private
   def set_user
     @user = User.find(params[:id])
   end
 
   def user_params
-    accessible = [ :username, :email ] 
+    accessible = [ :username, :email ]
     accessible << [ :password, :password_confirmation ] unless params[:user][:password].blank?
     accessible << [ :username ]
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :login)
