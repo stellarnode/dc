@@ -3,6 +3,8 @@ class User < ApplicationRecord
   TEMP_EMAIL_PREFIX = 'dc@user'
   TEMP_EMAIL_REGEX = /\Adc@user/
 
+  attr_accessor :login
+
   after_create  :create_profile
   after_create  :add_role_to_user
   has_one       :profile, dependent: :destroy
@@ -26,6 +28,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
+  
+  validates :username, presence: true, length: { maximum: 20 }, exclusion: { in: %w(admin superuser superadmin modartor) }, 
+              format: { with: /\A[a-zA-Z0-9А-Яа-я\s]+\z/ }, uniqueness: { case_sensitive: false }
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 
@@ -82,6 +87,15 @@ class User < ApplicationRecord
       self.add_role :admin
     else
       self.add_role :user
+    end
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions. to_hash).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+      where(conditions.to_hash).first
     end
   end
 end

@@ -20,7 +20,7 @@ class ChatMessagesController < ApplicationController
       # head :ok
       ChatChannel.broadcast_to(
         'chat',
-        user: @chat_message.user.email,
+        user: @chat_message.user.username,
         message: @chat_message.message
       )
 

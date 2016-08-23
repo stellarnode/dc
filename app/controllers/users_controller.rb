@@ -37,7 +37,7 @@ class UsersController < ApplicationController
           format.html { redirect_to root_url, notice: 'Your profiles was successfully updated.' }
           format.json { render '/', status: :ok }
         end
-        redirect_to root_url, notice: 'Your profiles was successfully updated.'
+        #redirect_to root_url, notice: 'Your profiles was successfully updated.'
       else
         @show_errors = true
       end
@@ -60,9 +60,10 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    accessible = [ :username, :email ] # extend with your own params
+    accessible = [ :username, :email ]
     accessible << [ :password, :password_confirmation ] unless params[:user][:password].blank?
-    params.require(:user).permit(accessible)
+    accessible << [ :username ]
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :login)
   end
 
 end
