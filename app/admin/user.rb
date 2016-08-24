@@ -1,9 +1,10 @@
 ActiveAdmin.register User do
+  
   permit_params :email, :password, :password_confirmation
 
   includes :profile
 
-  menu priority: 1
+  menu parent: 'Users', priority: 0
 
   scope :all, default: true
   scope :admins
