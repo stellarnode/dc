@@ -1,8 +1,17 @@
 <% comments.each do |comment| %>  
   <div class="comments-show">
     <div class="comment">
-      <p><small><span style='color: dodgerblue'><%= comment.user.username %></span> <em>(<%= time_ago_in_words(comment.created_at) %>)</em></small></p>
-      <p><%= comment.body %></p>
+      <p><small><span style='color: dodgerblue'><%= comment.user.username || comment.user.email %></span> <em>(<%= time_ago_in_words(comment.created_at) %>)</em></small></p>
+      
+      <div class="comments-block">
+        <div class="comments-avatar">
+          <%= comment.user.profile.avatar? ? image_tag(comment.user.profile.avatar, size: "40", alt: "#{comment.user.username  || comment.user.email}") : image_tag('man.png', size: "40", alt: "#{comment.user.username  || comment.user.email}") %>
+        </div>
+        <div class="comments-body">
+          <p><%= comment.body %></p>
+        </div>
+      </div>
+
       <div class="comment-nav"><span class="comment-reply">Reply</span></div>
       <div class="reply-form">
         <%= form_for @new_comment do |f| %>
