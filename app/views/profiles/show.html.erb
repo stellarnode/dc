@@ -1,7 +1,7 @@
-<h1><%= @profile.user == current_user ? 'My' : 'User ' + @profile.user.username + "'s" %> profile</h1>
+<h1><%= @profile.user == current_user ? 'My' : 'User ' + @profile.user.username || @profile.user.email + "'s" %> profile</h1>
 
 <br />
-<%= @profile.avatar? ? image_tag(@profile.avatar, size: "100x100", alt: "Avatar") : image_tag('man.png', size: "100x100", alt: "Avatar") %>
+<%= @profile.avatar? ? image_tag(@profile.avatar, size: "100", alt: "#{@profile.user.username  || @profile.user.email}") : image_tag('man.png', size: "100", alt: "#{@profile.user.username  || @profile.user.email}") %>
 
 <br />
 
