@@ -98,4 +98,5 @@ class User < ApplicationRecord
       where(conditions.to_hash).first
     end
   end
+
 end

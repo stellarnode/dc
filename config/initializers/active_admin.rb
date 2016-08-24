@@ -1,4 +1,12 @@
 ActiveAdmin.setup do |config|
+  # == Custom Menu Items
+
+  config.namespace :admin do |admin|
+    admin.build_menu do |menu|
+      menu.add label: 'Users', priority: 1
+    end
+  end 
+
   # == Site Title
   #
   # Set the title that is displayed on the main layout
@@ -122,7 +130,7 @@ ActiveAdmin.setup do |config|
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
+  config.comments = false
   #
   # You can change the name under which comments are registered:
   config.comments_registration_name = 'AdminComments'
