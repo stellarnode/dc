@@ -31,16 +31,18 @@
 .comments-show {
   margin-left: 25px;
 }
-.comments-block { 
+.comments-block {
   width: 100%;
   float: left;
 }
-.comments-avatar { 
-  margin: 5px;
-  margin-right: 10px; 
+.comments-avatar {
+  width: 5%;
+  min-width: 50px;
+  margin-right: 3px;
+  margin-top: 6px;
   float: left;
 }
-.comments-body { 
-  margin: 5px;
-  margin-left: 10px; 
+.comments-body {
+  width: 90%;
+  float: left;
 }
