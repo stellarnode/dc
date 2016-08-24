@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     params[:category_name] = params[:category_name] || 'All'
-    
+
     case params[:show_me] = params[:show_me] || 'all'
     when 'all'
       if params[:category_name] == 'All'
@@ -95,11 +95,11 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit( :title, 
-                                  :body, 
-                                  :user_id, 
-                                  :is_pinned, 
-                                  :is_draft, 
+    params.require(:post).permit( :title,
+                                  :body,
+                                  :user_id,
+                                  :is_pinned,
+                                  :is_draft,
                                   :commentable,
                                   :category_name,
                                   :show_me,

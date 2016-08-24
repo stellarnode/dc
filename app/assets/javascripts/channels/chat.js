@@ -11,9 +11,9 @@ App.chat = App.cable.subscriptions.create({channel: "ChatChannel", room: "chat"}
 
   received: function(data) {
     // Called when there's incoming data on the websocket for this channel
-    console.log("received data...");
+    // console.log("received data...");
     // console.log(data);
-    // console.log(document.cookie);
+    console.log(document.cookie);
     var messages = document.getElementById("list_of_messages");
     var newMessage = document.createElement("p");
     var cookies = document.cookie.split(";");
