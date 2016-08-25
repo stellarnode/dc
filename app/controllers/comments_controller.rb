@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
         make_child_comment
         format.html  { redirect_to(:back) }
       else
-        format.html  { render :action => "new" }
+        format.html  { redirect_to(:back, alert: 'Empty comment. Try again!') }
       end
     end
   end

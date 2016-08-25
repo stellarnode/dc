@@ -1,9 +1,10 @@
 ActiveAdmin.register Post do
 
-	includes :categories
+  permit_params :title, :body, :user_id, :is_pinned, :is_draft, :commentable, :category_name, :show_me, 
+                post_categories_attributes: [:category_id, :post_id, :id]
 
-	permit_params :title, :body, :user_id, :is_pinned, :is_draft, :commentable, :category_name, :show_me, 
-								post_categories_attributes: [:category_id, :post_id, :id]
+	includes :categories
+  belongs_to :user, optional: true
 
 	menu priority: 2
 
@@ -23,8 +24,9 @@ ActiveAdmin.register Post do
     column :is_draft
     column :commentable
     column :created_at
-    column :updated_at
-    column :category
+    column "Category" do |post|
+      post.categories.first.name
+    end
     column :user
     column "Comments" do |post|
     	post.comment_threads.count
@@ -33,6 +35,6 @@ ActiveAdmin.register Post do
   end
 
 	preserve_default_filters!
-	remove_filter :roles, :post_categories
+  remove_filter    :roles, :post_categories, :comment_threads
 
 end
