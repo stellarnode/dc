@@ -8,12 +8,12 @@ class User < ApplicationRecord
   after_create  :create_profile
   after_create  :add_role_to_user
   has_one       :profile, dependent: :destroy
-  has_many      :posts
+  has_many      :posts, dependent: :destroy
   has_many      :identities, dependent: :destroy
   has_many      :emails, dependent: :destroy
-  has_many      :polls
+  has_many      :polls, dependent: :destroy
   has_many      :chat_messages
-  has_many      :votes
+  has_many      :votes, dependent: :destroy
   has_many      :payments, dependent: :destroy
 
   scope :admins,      -> { joins(:roles).where('roles.name = ?', 'admin').distinct }
@@ -30,7 +30,7 @@ class User < ApplicationRecord
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
   
   validates :username, presence: true, length: { maximum: 20 }, exclusion: { in: %w(admin superuser superadmin modartor) }, 
-              format: { with: /\A[a-zA-Z0-9А-Яа-я\s]+\z/ }, uniqueness: { case_sensitive: false }
+              format: { with: /\A[a-zA-Z0-9А-Яа-я_\s]+\z/ }, uniqueness: { case_sensitive: false }
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 
@@ -49,7 +49,7 @@ class User < ApplicationRecord
       # Get the existing user by email if the provider gives us a verified email.
       # If no verified email was provided we assign a temporary email and ask the
       # user to verify it on the next step via UsersController.finish_signup
-      email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
+      email_is_verified = auth.info.email #&& (auth.info.verified || auth.info.verified_email)
       email = auth.info.email if email_is_verified
       user = User.where(:email => email).first if email
 
