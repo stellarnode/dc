@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   
-  permit_params :email, :password, :password_confirmation
+  permit_params :username, :email, :password, :password_confirmation
 
   includes :profile
 
@@ -14,26 +14,41 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
+    column "Avatar" do |user|
+      user.profile.avatar? ? image_tag(user.profile.avatar, size: "30") : image_tag('man.png', size: "30")
+    end
     column :username
     column :email
+    column :profile    
+    column :created_at    
     column :current_sign_in_at
-    column :sign_in_count
-    column :created_at
-    column :profile
+    column "Sign In's", :sign_in_count
     actions
   end
 
+  filter :username
   filter :email
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
 
+  sidebar "User Has", only: [:show, :edit] do
+    ul do
+      li link_to "User's Posts", admin_user_posts_path(resource)
+      li link_to "User's Polls", admin_user_polls_path(resource)
+      li link_to "User's Payments", admin_user_payments_path(resource)
+      li link_to "User's E-mails", admin_user_emails_path(resource)
+      li link_to "User's Comments", admin_user_comments_path(resource)
+      li link_to "User's Chat Messages", admin_user_votes_path(resource)
+    end
+  end
+
   form do |f|
     f.inputs "Admin Details" do
       f.input :username
       f.input :email
-      f.input :password
-      f.input :password_confirmation
+      #f.input :password
+      #f.input :password_confirmation
     end
     f.actions
   end

@@ -1,8 +1,9 @@
 ActiveAdmin.register Category do
 
-permit_params :name
+	permit_params :name
 
-menu priority: 7
+	belongs_to :post, optional: true
 
+	menu priority: 7
 
 end

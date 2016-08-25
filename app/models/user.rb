@@ -15,12 +15,14 @@ class User < ApplicationRecord
   has_many      :chat_messages
   has_many      :votes, dependent: :destroy
   has_many      :payments, dependent: :destroy
+  has_many      :comments, dependent: :destroy
+
+  #Use roles for user model
+  rolify
 
   scope :admins,      -> { joins(:roles).where('roles.name = ?', 'admin').distinct }
   scope :users,       -> { joins(:roles).where('roles.name = ?', 'user').distinct }
   scope :moderators,  -> { joins(:roles).where('roles.name = ?', 'moderator').distinct }
-
-  rolify
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
@@ -29,8 +31,10 @@ class User < ApplicationRecord
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
   
-  validates :username, presence: true, length: { maximum: 20 }, exclusion: { in: %w(admin superuser superadmin modartor) }, 
-              format: { with: /\A[a-zA-Z0-9А-Яа-я_\s]+\z/ }, uniqueness: { case_sensitive: false }
+  validates :username, presence: true,
+            length: { maximum: 20 },
+            exclusion: { in: %w(admin superuser superadmin modartor) },
+            format: { with: /\A[a-zA-Z0-9А-Яа-я_\s]+\z/ }, uniqueness: { case_sensitive: false }
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 
