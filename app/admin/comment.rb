@@ -4,6 +4,6 @@ ActiveAdmin.register Comment do
 
 	belongs_to :user, optional: true
 
-	menu priority: 6
+	menu parent: 'Posts', priority: 1
 
 end

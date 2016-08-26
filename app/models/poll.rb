@@ -43,7 +43,7 @@ class Poll < ApplicationRecord
   resourcify
 
   # Set number of posts per page
-  paginates_per 2
+  paginates_per 10
 
   # Check can user vote or not?
   def voted_by_user(user)
@@ -52,6 +52,11 @@ class Poll < ApplicationRecord
     else
       return false
     end
+  end
+
+  #Helper method for Active Admin
+  def display_name
+    self.title.truncate(40, separator: ' ')
   end
 
 end

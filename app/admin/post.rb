@@ -6,7 +6,7 @@ ActiveAdmin.register Post do
 	includes :categories
   belongs_to :user, optional: true
 
-	menu priority: 2
+	menu parent: 'Posts', priority: 0
 
 	scope :all, default: true
 	scope :published

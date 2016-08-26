@@ -17,6 +17,6 @@ class Post < ApplicationRecord
     acts_as_commentable
     
     # Set number of posts per page
-    paginates_per 2
+    paginates_per 10
 
 end

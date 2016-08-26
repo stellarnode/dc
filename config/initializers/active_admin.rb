@@ -1,7 +1,7 @@
 ActiveAdmin.setup do |config|
   
   # == Customize Display name methods
-  config.display_name_methods = [:username, :full_name, :name, :login, :title, :email, :to_s]
+  config.display_name_methods = [:display_name, :username, :full_name, :name, :login, :title, :email, :to_s]
   
   # == Custom Menu Items
   config.namespace :admin do |admin|
@@ -10,6 +10,9 @@ ActiveAdmin.setup do |config|
     end
     admin.build_menu do |menu|
       menu.add label: 'Polls', priority: 2
+    end
+    admin.build_menu do |menu|
+      menu.add label: 'Posts', priority: 3
     end
   end 
 

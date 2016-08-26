@@ -22,7 +22,7 @@ ActiveAdmin.register User do
     column :profile    
     column :created_at    
     column :current_sign_in_at
-    column "Sign In's", :sign_in_count
+    #column "Sign In's", :sign_in_count
     actions
   end
 
@@ -33,14 +33,12 @@ ActiveAdmin.register User do
   filter :created_at
 
   sidebar "User Has", only: [:show, :edit] do
-    ul do
-      li link_to "User's Posts", admin_user_posts_path(resource)
-      li link_to "User's Polls", admin_user_polls_path(resource)
-      li link_to "User's Payments", admin_user_payments_path(resource)
-      li link_to "User's E-mails", admin_user_emails_path(resource)
-      li link_to "User's Comments", admin_user_comments_path(resource)
-      li link_to "User's Chat Messages", admin_user_votes_path(resource)
-    end
+    para strong link_to "User's Posts", admin_user_posts_path(resource)
+    para strong link_to "User's Polls", admin_user_polls_path(resource)
+    para strong link_to "User's Payments", admin_user_payments_path(resource)
+    para strong link_to "User's E-mails", admin_user_emails_path(resource)
+    para strong link_to "User's Comments", admin_user_comments_path(resource)
+    para strong link_to "User's Chat Messages", admin_user_chat_messages_path(resource)
   end
 
   form do |f|
