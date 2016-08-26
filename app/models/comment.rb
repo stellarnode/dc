@@ -45,4 +45,10 @@ class Comment < ActiveRecord::Base
   def self.find_commentable(commentable_str, commentable_id)
     commentable_str.constantize.find(commentable_id)
   end
+
+  #Helper method for Active Admin
+  def display_name
+    self.body.truncate(40, separator: ' ')
+  end
+
 end
