@@ -16,7 +16,7 @@ ActiveAdmin.register Option do
 	  	unless option.votes.blank?
 	  		link_to option.votes.size, admin_option_votes_path(option)
 	  	else
-	  		option.votes.size
+	  		0
 	  	end
   	end  	
     column :created_at
