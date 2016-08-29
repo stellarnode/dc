@@ -14,15 +14,15 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
-    column "Avatar" do |user|
-      user.profile.avatar? ? image_tag(user.profile.avatar, size: "30") : image_tag('man.png', size: "30")
+    column 'Avatar' do |user|
+      user.profile.avatar? ? image_tag(user.profile.avatar, size: '30') : image_tag('man.png', size: '30')
     end
     column :username
     column :email
     column :profile    
     column :created_at    
     column :current_sign_in_at
-    #column "Sign In's", :sign_in_count
+    #column 'Sign In's', :sign_in_count
     actions
   end
 
@@ -32,9 +32,10 @@ ActiveAdmin.register User do
   filter :sign_in_count
   filter :created_at
 
-  sidebar "User Has", only: [:show, :edit] do
+  sidebar 'User Has', only: [:show, :edit] do
     para strong link_to "User's Posts", admin_user_posts_path(resource)
     para strong link_to "User's Polls", admin_user_polls_path(resource)
+    para strong link_to "User's Votes", admin_votes_path(q: { user_id_eq: resource.id })
     para strong link_to "User's Payments", admin_user_payments_path(resource)
     para strong link_to "User's E-mails", admin_user_emails_path(resource)
     para strong link_to "User's Comments", admin_user_comments_path(resource)
@@ -42,7 +43,7 @@ ActiveAdmin.register User do
   end
 
   form do |f|
-    f.inputs "Admin Details" do
+    f.inputs 'Admin Details' do
       f.input :username
       f.input :email
       #f.input :password

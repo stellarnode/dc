@@ -17,6 +17,18 @@ ActiveAdmin.register Vote do
     actions
   end
 
+  show do
+    attributes_table do
+      row :id
+      row :poll
+      row :option
+      row :user
+      row('Weight') { resource.option_vote }
+      row :created_at
+      row :updated_at
+    end
+  end
+
   filter 	:user
   filter 	:poll
   filter 	:option

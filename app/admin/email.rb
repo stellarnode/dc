@@ -19,6 +19,18 @@ ActiveAdmin.register Email do
     actions
   end
 
+  show do
+    attributes_table do
+      row :id
+      row :user
+      row('To') { mail_to(resource.to) }
+      row :subject
+      row :body
+      row :created_at
+      row :updated_at
+    end
+  end
+
   filter :user
   filter :to
   filter :subject
