@@ -2,6 +2,7 @@ ActiveAdmin.register Poll do
 
 	permit_params :title, :body, :start, :finish, :state, :poll_type, :user_id, :show_me, :votes_count, 
 								options_attributes: [:poll_option, :poll_id, :id, :_destroy]
+	
 	includes :options, :votes
 	belongs_to :user, optional: true
 
@@ -14,6 +15,7 @@ ActiveAdmin.register Poll do
 
   index do
     selectable_column
+    id_column    
     column 'Title', :display_name
     column 'Body', sortable: :body  do |post|
     	truncate(post.body, length: 40, separator: ' ')
@@ -23,6 +25,9 @@ ActiveAdmin.register Poll do
     column 	:state
 		column 	:poll_type
 		column 	:user
+		column 'Votes'  do |poll|
+	  	poll.votes.size
+  	end 
     column 	:created_at
     actions
   end

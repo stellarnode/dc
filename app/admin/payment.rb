@@ -7,4 +7,7 @@ ActiveAdmin.register Payment do
 
 	menu priority: 8
 
+	preserve_default_filters!
+	remove_filter :updated_at
+
 end
