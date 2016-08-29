@@ -14,16 +14,33 @@ ActiveAdmin.register Comment do
     column 'Body', :display_name
     column :user
   	column :parent_id
-#TODO: choose better variant
-#    column 'Parent' do |comment|
-#      if comment.parent_id.nil?
-#        nil
-#      else
-#        link_to comment.parent_id, admin_comment_path(id: comment.parent_id)
-#      end
-#    end  	
     column :created_at
     actions
   end
+
+  show do
+    attributes_table do
+      row :id
+      row('Model') { resource.commentable_type }
+      row('Model Obj.') { link_to Post.where(id: resource.commentable_id).first.title, admin_post_path(id: resource.commentable_id) }
+      row('Body') { resource.body }
+      row :user
+      row :parent_id
+      row :title
+      row :subject
+      row :lft
+      row :rgt
+      row :created_at
+      row :updated_at
+    end
+  end
+
+	filter :user
+	filter :commentable_type, label: 'Model'
+	filter :commentable_id, label: 'Model Object', as: :select, collection: proc { Post.all }
+  filter :body
+  filter :parent_id
+  filter :children
+  filter :created_at
 
 end

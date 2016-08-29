@@ -11,7 +11,7 @@ ActiveAdmin.register Option do
     selectable_column
     id_column
     column :poll
-    column 'Option', :display_name
+    column 'Body', :display_name
     column 'Votes'  do |option|
 	  	unless option.votes.blank?
 	  		link_to option.votes.size, admin_option_votes_path(option)
@@ -21,6 +21,17 @@ ActiveAdmin.register Option do
   	end  	
     column :created_at
     actions
+  end
+
+  show do
+    attributes_table do
+      row :id
+      row('Body') { resource.poll_option }
+      row('Votes') { resource.votes_count }
+      row :poll
+      row :created_at
+      row :updated_at
+    end
   end
 
   filter :poll
