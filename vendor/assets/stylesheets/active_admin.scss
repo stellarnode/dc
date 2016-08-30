@@ -15,3 +15,10 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+.status_tag {
+  &.created { background: orange; }
+  &.opened { background: dodgerblue; }
+  &.closed { background: red; }
+  &.radio { background: grey; }
+  &.check_box { background: black; }
+}
