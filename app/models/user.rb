@@ -33,7 +33,7 @@ class User < ApplicationRecord
   
   validates :username, presence: true,
             length: { maximum: 20 },
-            exclusion: { in: %w(admin superuser superadmin modartor) },
+            exclusion: { in: %w(admin superuser superadmin moderator) },
             format: { with: /\A[a-zA-Z0-9А-Яа-я_\s]+\z/ }, uniqueness: { case_sensitive: false }
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
