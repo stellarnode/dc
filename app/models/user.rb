@@ -1,28 +1,28 @@
 class User < ApplicationRecord
 
   TEMP_EMAIL_PREFIX = 'dc@user'
-  TEMP_EMAIL_REGEX = /\Adc@user/
+  TEMP_EMAIL_REGEX  = /\Adc@user/
 
-  attr_accessor :login
+  attr_accessor     :login
 
-  after_create  :create_profile
-  after_create  :add_role_to_user
-  has_one       :profile, dependent: :destroy
-  has_many      :posts, dependent: :destroy
-  has_many      :identities, dependent: :destroy
-  has_many      :emails, dependent: :destroy
-  has_many      :polls, dependent: :destroy
-  has_many      :chat_messages
-  has_many      :votes, dependent: :destroy
-  has_many      :payments, dependent: :destroy
-  has_many      :comments, dependent: :destroy
+  after_create      :create_profile
+  after_initialize  :add_role_to_user, if: :new_record?
+  has_one           :profile, dependent: :destroy
+  has_many          :posts, dependent: :destroy
+  has_many          :identities, dependent: :destroy
+  has_many          :emails, dependent: :destroy
+  has_many          :polls, dependent: :destroy
+  has_many          :chat_messages
+  has_many          :votes, dependent: :destroy
+  has_many          :payments, dependent: :destroy
+  has_many          :comments, dependent: :destroy
 
   #Use roles for user model
   rolify
 
-  scope :admins,      -> { joins(:roles).where('roles.name = ?', 'admin').distinct }
-  scope :users,       -> { joins(:roles).where('roles.name = ?', 'user').distinct }
-  scope :moderators,  -> { joins(:roles).where('roles.name = ?', 'moderator').distinct }
+  scope :admins,     -> { joins(:roles).where('roles.name = ?', 'admin').distinct }
+  scope :users,      -> { joins(:roles).where('roles.name = ?', 'user').distinct }
+  scope :moderators, -> { joins(:roles).where('roles.name = ?', 'moderator').distinct }
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
@@ -87,10 +87,10 @@ class User < ApplicationRecord
   end
 
   def add_role_to_user
-    if !self.has_any_role? && self == User.first
-      self.add_role :admin
+    if self == User.first
+      add_role 'admin'
     else
-      self.add_role :user
+      add_role 'user'
     end
   end
 
