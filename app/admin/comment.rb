@@ -1,6 +1,6 @@
 ActiveAdmin.register Comment do
 
-	actions :all, except: :new
+	actions :all, except: [:new, :create]
 
 	permit_params :body, :commentable_id, :commentable_type, :comment_id
 

@@ -52,7 +52,7 @@ ActiveAdmin.register Post do
 			row :user
 			row('Comments') do |post|
 			 post.comment_threads.count
-			end      
+			end
 			row :created_at
 			row :updated_at
 		end
@@ -93,6 +93,6 @@ ActiveAdmin.register Post do
 
 	sidebar 'Post details', only: [:show, :edit] do
 		para strong link_to 'Post Comments', admin_comments_path(q: {commentable_type_eq: 'Post', commentable_id_eq: resource.id })
-	end  
+	end
 
 end

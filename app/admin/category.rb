@@ -1,6 +1,8 @@
 ActiveAdmin.register Category do
 
-	permit_params :name
+	config.batch_actions = false
+
+  permit_params :name
 
 	includes :posts
 	belongs_to :post, optional: true

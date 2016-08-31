@@ -12,25 +12,34 @@ ActiveAdmin.register_page "Dashboard" do
 
 		columns do
 			
-			column do
-				panel "Recent Users" do
-					ul do
-						User.last(5).map do |user|
-							li link_to(user.username || user.email, admin_user_path(user))
-						end
-					end
-				end
-			end
+	    column do
+	      panel "Recent Users" do
+	        table_for User.last(5) do
+	        	column('Avatar') do |user|
+      				user.profile.avatar? ? image_tag(user.profile.avatar, size: '30') : image_tag('man.png', size: '30')
+    				end
+	          column('Username') 	{ |user| link_to(user.username, admin_user_path(user)) }
+	          column('E-mail')  	{ |user| user.email }
+	        end
+	      end
+	    end	
 
 			column do
-				panel "Recent Polls" do
-					ul do
-						Poll.last(5).map do |poll|
-							li link_to(poll.title, admin_poll_path(poll))
-						end
-					end
-				end
-			end
+	      panel "Recent Polls" do
+	        table_for Poll.last(5) do
+						column('Title') 	{ |poll| link_to(poll.display_name, admin_poll_path(poll)) }
+						column('Start') 	{ |poll| poll.start }
+						column('Finish') 	{ |poll| poll.finish }
+						column('State') 	{ |poll| status_tag(poll.state) }
+						column('Votes') 	{ |poll| poll.votes.size }
+						column('User') 		{ |poll| poll.user.username }
+	        end
+	      end
+	    end	
+
+		end #columns	
+
+		columns do
 
 			column do
 				panel "Recent Posts" do
@@ -40,10 +49,8 @@ ActiveAdmin.register_page "Dashboard" do
 						end
 					end
 				end
-			end
-		end #columns
+			end	
 
-		columns do
 			column do
 				panel "Recent E-mails" do
 					ul do
@@ -62,7 +69,7 @@ ActiveAdmin.register_page "Dashboard" do
 						end
 					end
 				end
-			end
+			end	
 
 		end #columns
 

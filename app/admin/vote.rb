@@ -1,6 +1,6 @@
 ActiveAdmin.register Vote do
 
-	actions :all, except: :new
+	actions :all, except: [:new, :create]
 
   permit_params :option_vote, :user_id, :option_id, :poll_option, votes_params: []
 
