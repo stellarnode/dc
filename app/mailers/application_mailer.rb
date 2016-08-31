@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: ENV["YANDEX_USER"]
+  default from: ENV["default_from"]
   layout 'mailer'
 end
