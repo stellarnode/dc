@@ -90,7 +90,7 @@ class PollsController < ApplicationController
 
   # Set editing poll time limit
   def set_editing_time
-    @editing_time = 10.hour
+    @editing_time = 1.hour
   end
 
   def set_poll

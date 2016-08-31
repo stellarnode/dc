@@ -12,7 +12,7 @@ To run this application, remember to do the following (instructions given for Ma
 
 * Launch Crono service in a separate terminal window in your Rails project root directory: `crono` (or `bundle exec crono`)
 
-* Run command 'rake db:seed' to create categories for posts and first (admin) user.
+* Run command 'rake db:seed' to create categories for posts.
 
 * Run command 'rake poll:set' to set poll states.
 
