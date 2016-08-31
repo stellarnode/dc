@@ -1,5 +1,7 @@
 ActiveAdmin.register User do
   
+  config.batch_actions = false
+
   permit_params :username, :email, :password, :password_confirmation
 
   includes :profile
@@ -25,6 +27,19 @@ ActiveAdmin.register User do
     actions
   end
 
+  form do |f|
+    f.semantic_errors *f.object.errors
+    f.inputs 'User Details' do
+      f.input :username
+      f.input :email
+      if ['new', 'create'].include? action_name or params[:full_edit] == 'true'
+        f.input :password
+        f.input :password_confirmation
+      end
+    end
+    f.actions
+  end
+
   filter :username
   filter :email
   filter :current_sign_in_at
@@ -45,19 +60,6 @@ ActiveAdmin.register User do
 
   action_item :view, only: [:edit, :show] do
     link_to 'Full Edit', edit_admin_user_path(resource, full_edit: true)
-  end
-
-  form do |f|
-    f.semantic_errors *f.object.errors
-    f.inputs 'User Details' do
-      f.input :username
-      f.input :email
-      if ['new', 'create'].include? action_name or params[:full_edit] == 'true'
-        f.input :password
-        f.input :password_confirmation
-      end
-    end
-    f.actions
   end
 
 end

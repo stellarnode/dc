@@ -1,13 +1,13 @@
 <h1><%= @profile.user == current_user ? 'My' : 'User ' + @profile.user.username || @profile.user.email + "'s" %> profile</h1>
 
 <br />
-<%= @profile.avatar? ? image_tag(@profile.avatar, size: "100", alt: "#{@profile.user.username || @profile.user.email}") : image_tag('man.png', size: "100", alt: "#{@profile.user.username || @profile.user.email}") %>
+<%= @profile.avatar? ? image_tag(@profile.avatar, size: '100', alt: "#{@profile.user.username || @profile.user.email}") : image_tag('man.png', size: '100', alt: "#{@profile.user.username || @profile.user.email}") %>
 
 <br />
 
 <h3>Name:</h3>
 
-<p><%= @profile.full_name || 'n/a'%></p>
+<p><%= @profile.full_name || 'n/a' %></p>
 
 <h3>Email:</h3>
 

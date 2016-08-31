@@ -1,6 +1,6 @@
 ActiveAdmin.register Poll do
 
-	permit_params :title, :body, :start, :finish, :state, :poll_type, :user_id, :show_me, :votes_count, 
+	permit_params :title, :body, :start, :finish, :state, :poll_type, :user_id, :votes_count, 
 								options_attributes: [:poll_option, :poll_id, :id, :_destroy]
 	
 	includes :options, :votes
@@ -56,6 +56,29 @@ ActiveAdmin.register Poll do
     end
   end
 
+  form do |f|
+    f.semantic_errors *f.object.errors
+    f.inputs "Poll Details" do
+      li para strong "User: #{resource.user.username}" if resource.user
+      f.input :user unless resource.user
+      f.input :title
+      f.input :body
+      f.input :state, as: :radio, collection: ['created', 'opened', 'closed'], selected: object.state
+      object.poll_type ||= 'radio'
+      f.input :poll_type, as: :radio, collection: ['radio', 'check_box'], selected: object.poll_type
+      if ['new', 'create'].include? action_name or params[:full_edit] == 'true'
+        f.input :start
+        f.input :finish
+      end
+      f.inputs do
+        f.has_many :options, heading: 'Options', allow_destroy: true, new_record: true do |ff|
+          ff.input :poll_option, label: 'Option'
+        end
+      end
+    end
+    f.actions
+  end
+
   filter 	:user
   filter 	:title
   filter 	:body
@@ -70,6 +93,26 @@ ActiveAdmin.register Poll do
     resource.options.each_with_index do |option, index|
     	para "Opt. #{index + 1}: \"" + option.display_name.to_s + '" - ' + option.votes.size.to_s + ' votes'
     end
+  end
+
+  controller do
+    def update
+      edited_poll = Poll.find(params[:id])
+      edited_poll.attributes = permitted_params[:poll]
+      edited_poll.skip_datetime_validation = true
+
+      respond_to do |format|
+        if edited_poll.save
+          format.html { redirect_to admin_poll_path(resource) }
+        else
+          format.html { redirect_to edit_admin_poll_path(resource) }
+        end
+      end
+    end
+  end
+
+  action_item :view, only: [:edit, :show] do
+    link_to 'Full Edit', edit_admin_poll_path(resource, full_edit: true)
   end
 
 end

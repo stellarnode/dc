@@ -1,6 +1,6 @@
 ActiveAdmin.register Option do
 
-	permit_params :poll_option, :poll_id
+  permit_params :poll_option, :poll_id
 	
 	includes :votes
 	belongs_to :poll, optional: true
@@ -34,12 +34,22 @@ ActiveAdmin.register Option do
     end
   end
 
+  form do |f|
+    f.semantic_errors *f.object.errors
+    f.inputs "Option Details" do
+      li para strong "Poll: \"#{resource.poll.display_name}\"" if resource.poll
+      f.input :poll unless resource.poll
+      f.input :poll_option, label: 'Body'
+    end
+    f.actions
+  end
+
   filter :poll
   filter :poll_option, label: 'Options'
   filter :created_at
 
   sidebar 'Option details', only: [:show, :edit] do
-    para strong link_to "Option Votes", admin_option_votes_path(resource)
+    para strong link_to "Option Votes (#{resource.votes.size})", admin_option_votes_path(resource)
   end
 
 end
