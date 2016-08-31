@@ -1,16 +1,18 @@
 class Poll < ApplicationRecord
   include AASM
 
+  attr_accessor :skip_datetime_validation
+
 	belongs_to 										:user
 	has_many 											:options, -> { order(created_at: :asc) }, dependent: :destroy
   has_many                      :votes
 	accepts_nested_attributes_for :options, allow_destroy: true, reject_if: :all_blank
 	validates_presence_of 				:title, :start, :finish, :poll_type, :user_id
-  validates                     :poll_type, inclusion:  { in: ['radio', 'check_box'], 
+  validates                     :poll_type, inclusion: { in: ['radio', 'check_box'], 
                                                     message: "%{value} is not a valid type" }
-  validates                     :state, inclusion:  { in: ['created', 'opened', 'closed'], 
+  validates                     :state, inclusion: { in: ['created', 'opened', 'closed'], 
                                                     message: "%{value} is not a valid state" }
-  validate                      :must_start_and_finish_properly
+  validate                      :must_start_and_finish_properly, unless: :skip_datetime_validation
 
   # Validates start & finish datetimes
   def must_start_and_finish_properly
