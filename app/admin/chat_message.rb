@@ -10,8 +10,14 @@ ActiveAdmin.register ChatMessage do
 
 	index do
 		selectable_column
-		id_column    
-		column :user
+		id_column
+		column 'User' do |chat_message|		
+			if chat_message.user
+				link_to chat_message.user.username, admin_user_path(chat_message.user_id)
+			else
+				status_tag('User deleted', :warning)
+			end
+		end	
 		column 'Message', :display_name
 		column 	:created_at
 		actions
@@ -20,7 +26,11 @@ ActiveAdmin.register ChatMessage do
 	show do
 		attributes_table do
 			row :id
-			row :user
+			if resource.user
+				row :user				
+			else
+				row('User deleted')
+			end
 			row :message
 			row :created_at
 			row :updated_at
@@ -30,8 +40,11 @@ ActiveAdmin.register ChatMessage do
 	form do |f|
 		f.semantic_errors *f.object.errors
 		f.inputs "Chat Message Details" do
-			li para strong "User: #{resource.user.username}" if resource.user
-			f.input :user unless resource.user
+			if resource.user
+				li para strong "User: #{resource.user.username}"
+			else
+				li para strong 'User DELETED'
+			end
 			f.input :message
 		end
 		f.actions

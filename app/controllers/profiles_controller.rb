@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    unless @profile.user == current_user
+    unless @profile.user == current_user or current_user.is_admin?
       respond_to do |format|
          format.html { redirect_to profile_path(current_user), alert: 'You can edit only your own profile.' }
        end

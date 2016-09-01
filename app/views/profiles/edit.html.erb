@@ -8,10 +8,13 @@
       <%= f.input :last_name %>
       <%= f.input :middle_name %>
       <%= f.input :phone %>
-      <%= f.input :avatar %>
+      <p><b>Avatar</b></p>
+      <%= image_tag(@profile.avatar, size: '150') if @profile.avatar? %>
+      <br><br>
+      <%= f.file_field :avatar %>
     </div>
-
+    <br><br>
     <div class="form-actions">
-      <%= f.button :submit %>
+      <%= f.submit 'Update Profile', class: "btn btn-lg btn-success"  %>
     </div>
 <% end %>
