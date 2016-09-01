@@ -14,7 +14,13 @@ ActiveAdmin.register Comment do
 		column 'Model', :commentable_type
 		column 'Model Obj.', :commentable_id
 		column 'Body', :display_name
-		column :user
+		column 'User' do |comment|		
+			if comment.user
+				link_to comment.user.username, admin_user_path(comment.user_id)
+			else
+				status_tag('User deleted', :warning)
+			end
+		end		
 		column :parent_id
 		column :created_at
 		actions
@@ -26,7 +32,11 @@ ActiveAdmin.register Comment do
 			row('Model') { resource.commentable_type }
 			row('Model Obj.') { link_to Post.where(id: resource.commentable_id).first.title, admin_post_path(id: resource.commentable_id) }
 			row('Body') { resource.body }
-			row :user
+			if resource.user
+				row :user				
+			else
+				row('User deleted')
+			end
 			row :parent_id
 			row :title
 			row :subject
@@ -39,8 +49,12 @@ ActiveAdmin.register Comment do
 
 	form do |f|
 		f.semantic_errors *f.object.errors
-		f.inputs "Comment Details" do
-			li para strong "User: #{resource.user.username}"
+		f.inputs 'Comment Details' do
+			if resource.user
+				li para strong "User: #{resource.user.username}"
+			else
+				li para strong 'User deleted'
+			end
 			li para strong "Parent comment: \"#{resource.parent.body}\""
 			li para strong "Model: #{resource.commentable_type}"
 			li para strong "Model id: #{resource.commentable_id}"

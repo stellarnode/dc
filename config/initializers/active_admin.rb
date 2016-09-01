@@ -9,10 +9,10 @@ ActiveAdmin.setup do |config|
       menu.add label: 'Users', priority: 1
     end
     admin.build_menu do |menu|
-      menu.add label: 'Polls', priority: 2
+      menu.add label: 'Posts', priority: 2
     end
     admin.build_menu do |menu|
-      menu.add label: 'Posts', priority: 3
+      menu.add label: 'Polls', priority: 3
     end
   end 
 

@@ -13,7 +13,7 @@ ActiveAdmin.register_page "Dashboard" do
 		columns do
 			
 			column do
-				panel "Recent Users" do
+				panel link_to('Recent Users', admin_users_path) do
 					table_for User.last(5) do
 						column('Avatar') do |user|
 							user.profile.avatar? ? image_tag(user.profile.avatar, size: '30') : image_tag('man.png', size: '30')
@@ -25,7 +25,7 @@ ActiveAdmin.register_page "Dashboard" do
 			end
 
 			column do
-				panel "Recent Polls" do
+				panel link_to('Recent Polls', admin_polls_path) do
 					table_for Poll.last(5) do
 						column('Title') 	{ |poll| link_to(poll.display_name, admin_poll_path(poll)) }
 						column('Start') 	{ |poll| poll.start }
@@ -42,7 +42,7 @@ ActiveAdmin.register_page "Dashboard" do
 		columns do
 
 			column do
-				panel "Recent Posts" do
+				panel link_to('Recent Posts', admin_posts_path) do
 					table_for Post.last(5) do
 						column('Title') 				{ |post| link_to(post.display_name, admin_post_path(post)) }
 						column('Category') 			{ |post| post.categories.first.name }						
@@ -55,7 +55,7 @@ ActiveAdmin.register_page "Dashboard" do
 			end						
 
 			column do
-				panel "Recent E-mails" do
+				panel link_to('Recent E-mails', admin_emails_path) do
 					table_for Email.last(5) do
 						column('User') 		{ |email| email.user.username }
 						column('To:') 		{ |email| email.to }
@@ -69,7 +69,7 @@ ActiveAdmin.register_page "Dashboard" do
 		columns do
 			
 			column do
-				panel "Recent Payments" do
+				panel link_to('Recent Payments', admin_payments_path) do
 					table_for Payment.last(5) do
 						column('User') 			{ |payment| payment.user.username }
 						column('Receiver:') { |payment| payment.receiver }

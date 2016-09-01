@@ -27,7 +27,7 @@ ActiveAdmin.register Post do
 			post.categories.first.name
 		end
 		column :user
-		column 'Comments'  do |post|
+		column 'Comments' do |post|
 			unless post.comment_threads.count == 0
 				link_to post.comment_threads.count, admin_comments_path(q: {commentable_type_eq: 'Post', commentable_id_eq: post.id })
 			else

@@ -6,16 +6,16 @@ class User < ApplicationRecord
   attr_accessor     :login
 
   after_create      :create_profile
-  after_initialize  :add_role_to_user, if: :new_record?
-  has_one           :profile, dependent: :destroy
-  has_many          :posts, dependent: :destroy
-  has_many          :identities, dependent: :destroy
-  has_many          :emails, dependent: :destroy
-  has_many          :polls, dependent: :destroy
-  has_many          :chat_messages
-  has_many          :votes, dependent: :destroy
-  has_many          :payments, dependent: :destroy
-  has_many          :comments, dependent: :destroy
+  after_initialize  :add_role_to_user,  if: :new_record?
+  has_one           :profile,           dependent: :destroy
+  has_many          :posts,             dependent: :destroy
+  has_many          :identities,        dependent: :destroy
+  has_many          :emails,            dependent: :destroy
+  has_many          :polls,             dependent: :destroy
+  has_many          :chat_messages,     dependent: :nullify
+  has_many          :votes,             dependent: :destroy
+  has_many          :payments,          dependent: :destroy
+  has_many          :comments,          dependent: :nullify
 
   #Use roles for user model
   rolify

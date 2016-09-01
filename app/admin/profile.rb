@@ -11,8 +11,8 @@ ActiveAdmin.register Profile do
 	index do
 		selectable_column
 		id_column
-		column "Avatar" do |profile|
-			profile.avatar? ? image_tag(profile.avatar, size: "30") : image_tag('man.png', size: "30")
+		column 'Avatar' do |profile|
+			profile.avatar? ? image_tag(profile.avatar, size: '30') : image_tag('man.png', size: '30')
 		end
 		column :user
 		column :full_name
@@ -28,10 +28,9 @@ ActiveAdmin.register Profile do
 			row :user
 			row :full_name
 			row :phone
-			row :avatar
-			row :avatar do |profile|
-				profile.avatar? ? image_tag(profile.avatar, size: '50') : image_tag('man.png', size: '50')
-			end
+			row('Avatar path') 	{ |profile| profile.avatar }
+			row('Avatar') 			{ |profile| profile.avatar? ? 
+														image_tag(profile.avatar, size: '50') : image_tag('man.png', size: '50') }
 			row :created_at
 			row :updated_at
 		end
