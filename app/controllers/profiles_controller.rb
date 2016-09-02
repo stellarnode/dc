@@ -27,9 +27,11 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @user = current_user
-    @user.profile.update(permit_profile)
-    redirect_to profile_path
+    if @profile.update(permit_profile)
+      redirect_to profile_path, notice: 'Profile was successfully updated.'
+    else
+      render :edit
+    end
   end
 
   private
@@ -43,7 +45,7 @@ class ProfilesController < ApplicationController
   end
 
   def permit_profile
-    params.require(:profile).permit(:first_name, :last_name, :middle_name, :phone, :avatar)
+    params.require(:profile).permit(:first_name, :last_name, :middle_name, :phone, :avatar, :avatar_cache, :remove_avatar)
   end
 
 end
