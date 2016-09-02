@@ -10,8 +10,13 @@
   <span class="label label-primary"><%= 'New' if post.created_at.to_date == Date.today %></span>
   </h3>
   <p><b>Category: </b><%= post.categories.first.name %></p>
-  <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
   <p><b>User:</b> <%= post.user_id %></p>
+  <p><b>Body:</b> <%= truncate(post.body, length: 200, separator: ' ') %></p>
+  <p>
+  <% post.images.each do |image| %>
+    <%= image_tag(image.url, size: '50') %>
+  <% end %>
+  </p>
 
   <% if current_user.is_admin? %>
     <p><b>Post ID: </b><%= post.id %></p>

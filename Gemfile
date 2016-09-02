@@ -49,7 +49,7 @@ gem 'simple_form'
 gem 'figaro'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'carrierwave'
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 gem 'sidekiq'
 gem 'crono'
