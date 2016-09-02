@@ -1,7 +1,7 @@
 ActiveAdmin.register Post do
 
 	permit_params :title, :body, :user_id, :is_pinned, :is_draft, :commentable, :category_name, :show_me, 
-								post_categories_attributes: [:category_id, :post_id, :id]
+								post_categories_attributes: [:category_id, :post_id, :id], images: []
 
 	includes :categories
 	belongs_to :user, optional: true
@@ -41,15 +41,20 @@ ActiveAdmin.register Post do
 	show do
 		attributes_table do
 			row :id
-			row :title
-			row :body
-			row('Pinned') { status_tag(resource.is_pinned) }
-			row('Draft') { status_tag(resource.is_draft) }
-			row(:commentable) { status_tag(resource.commentable) }
 			row('Category') do |post|
 				post.categories.first.name
 			end
 			row :user
+			row :title
+			row :body
+			row('Pictures') do |post|
+        post.images.each do |image|
+					span image_tag(image.url, size: '100')
+				end
+			end
+			row('Pinned') { status_tag(resource.is_pinned) }
+			row('Draft') { status_tag(resource.is_draft) }
+			row(:commentable) { status_tag(resource.commentable) }
 			row('Comments') do |post|
 			 post.comment_threads.count
 			end
@@ -63,11 +68,21 @@ ActiveAdmin.register Post do
 		f.inputs "Poll Details" do
 			li para strong "User: #{resource.user.username}" if resource.user
 			f.input :user unless resource.user
-			f.input :title
-			f.input :body
 			f.has_many :post_categories, heading: 'Category', allow_destroy: false, new_record: false do |ff|	
 				ff.input :category, label: 'Choose Category', include_blank: false, required: true, hint: "Don't you ever push the Remove button if you can see it!"
-			end
+			end			
+			f.input :title
+			f.input :body
+      f.inputs 'Pictures' do
+      	if resource.images?
+        	resource.images.each do |image|
+        		span image_tag(image.url, size: '100')
+        	end
+      	end
+      	br
+      	br
+      	f.file_field :images, multiple: true
+    	end
 			f.input :is_pinned, label: 'Pinned'
 			f.input :is_draft, label: 'Draft'
 			f.input :commentable
