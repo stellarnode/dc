@@ -20,7 +20,7 @@ class Post < ApplicationRecord
   paginates_per 10
 
   # Use CarrierWave image uploader
-  mount_uploader :images, ImageUploader
+  mount_uploaders :images, ImageUploader
 
   #Helper method for Active Admin
   def display_name

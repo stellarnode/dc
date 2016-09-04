@@ -26,6 +26,13 @@ App.chat = App.cable.subscriptions.create({channel: "ChatChannel", room: "chat"}
             cls = "current_user";
         }
       }
+      if (/username/i.test(el)) {
+        var username = el.split("=");
+        username = decodeURIComponent(username[1]);
+        if (username === data.user) {
+            cls = "current_user";
+        }
+      }
     });
     newMessage.innerHTML = "<strong " + "class=\"" + cls + "\">" + data.user + ": </strong>" + data.message;
     messages.appendChild(newMessage);
