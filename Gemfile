@@ -50,6 +50,7 @@ gem 'figaro'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'carrierwave'
+gem 'cloudinary'
 
 gem 'sidekiq'
 gem 'crono'
