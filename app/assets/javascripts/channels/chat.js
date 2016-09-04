@@ -22,19 +22,20 @@ App.chat = App.cable.subscriptions.create({channel: "ChatChannel", room: "chat"}
       if (/user_email/i.test(el)) {
         var email = el.split("=");
         email = decodeURIComponent(email[1]);
-        if (email === data.user) {
+        if (email === data.user_email) {
             cls = "current_user";
         }
       }
       if (/username/i.test(el)) {
         var username = el.split("=");
         username = decodeURIComponent(username[1]);
-        if (username === data.user) {
+        if (username === data.username) {
             cls = "current_user";
         }
       }
     });
-    newMessage.innerHTML = "<strong " + "class=\"" + cls + "\">" + data.user + ": </strong>" + data.message;
+    var sentBy = data.username ? data.username : data.user_email;
+    newMessage.innerHTML = "<strong " + "class=\"" + cls + "\">" + sentBy + ": </strong>" + data.message;
     messages.appendChild(newMessage);
   },
 
