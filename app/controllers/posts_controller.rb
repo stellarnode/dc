@@ -103,6 +103,7 @@ class PostsController < ApplicationController
                                   :commentable,
                                   :category_name,
                                   :show_me,
+                                  { images: [] },
                                   post_categories_attributes: [:category_id, :post_id, :id]
                                   )
   end

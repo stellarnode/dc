@@ -1,6 +1,6 @@
 <h1>Edit Profile</h1>
 
-<%= simple_form_for @profile, url: profile_path do |f| %>
+<%= simple_form_for @profile, url: profile_path, html: {multipart: true} do |f| %>
     <%= f.error_notification %>
 
     <div class="form-inputs">
@@ -8,10 +8,12 @@
       <%= f.input :last_name %>
       <%= f.input :middle_name %>
       <%= f.input :phone %>
-      <%= f.input :avatar %>
+      <%= f.input :avatar, hint: @profile.avatar? ? image_tag(@profile.avatar, size: '100') : image_tag('man.png', size: '100') %>
+      <%= f.hidden_field :avatar_cache %>
+      <%= f.input :remove_avatar, as: :boolean, label: 'Remove avatar' if @profile.avatar? %>
     </div>
-
+    <br><br>
     <div class="form-actions">
-      <%= f.button :submit %>
+      <%= f.submit 'Update Profile', class: "btn btn-lg btn-success"  %>
     </div>
 <% end %>

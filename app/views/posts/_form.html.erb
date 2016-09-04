@@ -2,9 +2,23 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <%= f.simple_fields_for :post_categories do |ff| %>
+      <% @post.categories.blank? ? category = '' : category = @post.categories.first.id %>
+      <%= ff.input :category_id, label: 'Category', as: :select, collection: $categories, selected: category %>
+    <% end %>
     <%= f.input :title, label: 'Title', autocomplete: "off", placeholder: "Add your post title here" %>
     <%= f.input :body, label: 'Body', autocomplete: "off", placeholder: "Add your post here",
     :input_html => {rows: 7} %>
+    <div class="form-inputs">
+      <p><b>Pictures:</b></p>
+      <% if @post.images?  %>
+        <% @post.images.each do |image| %>
+          <%= image_tag(image.url, size: '100') %>
+        <% end %>
+        <br><br>
+      <% end %>
+      <%= f.file_field :images, label: 'Pictures', multiple: true %>
+    </div>
     <% if can? :manage, :all %>
       <%= f.input :is_pinned, label: 'Pin to newsboard' %>
     <% else %>
@@ -13,10 +27,6 @@
     <%= f.input :is_draft, label: 'Save as draft' %>
     <%= f.input :commentable, label: 'Allow comments' %>
 
-    <%= f.simple_fields_for :post_categories do |ff| %>
-      <% @post.categories.blank? ? category = '' : category = @post.categories.first.id %>
-      <%= ff.input :category_id, label: 'Category', as: :select, collection: $categories, selected: category %>
-    <% end %>
   </div>
 
   <div class="form-actions">

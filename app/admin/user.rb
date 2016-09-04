@@ -47,6 +47,7 @@ ActiveAdmin.register User do
   filter :created_at
 
   sidebar 'User Has', only: [:show, :edit] do
+    para strong link_to "User's Profile", admin_profiles_path(q: { user_id_eq: resource.id })
     para strong link_to "User's Posts", admin_user_posts_path(resource)
     para strong link_to "User's Polls", admin_user_polls_path(resource)
     para strong link_to "User's Votes", admin_votes_path(q: { user_id_eq: resource.id })

@@ -3,23 +3,10 @@ class ProfilesController < ApplicationController
   before_action :set_profile
 
   def show
-    unless @profile
-      if params[:id] != current_user.id
-        redirect_to root_path, alert: 'Profile not found.'
-      else
-        @profile = Profile.new
-        @profile.user = current_user
-        if @profile.save
-          redirect_to profile_path(current_user)
-        else
-          redirect_to root_path, alert: 'Sorry, something went wrong.'
-        end
-      end
-    end
   end
 
   def edit
-    unless @profile.user == current_user
+    unless @profile.user == current_user or current_user.is_admin?
       respond_to do |format|
          format.html { redirect_to profile_path(current_user), alert: 'You can edit only your own profile.' }
        end
@@ -27,23 +14,21 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @user = current_user
-    @user.profile.update(permit_profile)
-    redirect_to profile_path
+    if @profile.update(profile_params)
+      redirect_to profile_path, notice: 'Profile was successfully updated.'
+    else
+      render :edit
+    end
   end
 
   private
 
   def set_profile
-    begin
-      @profile = Profile.find(params[:id])
-    rescue
-      @profile = nil
-    end
+    @profile = Profile.find(params[:id])
   end
 
-  def permit_profile
-    params.require(:profile).permit(:first_name, :last_name, :middle_name, :phone, :avatar)
+  def profile_params
+    params.require(:profile).permit(:first_name, :last_name, :middle_name, :phone, :avatar, :avatar_cache, :remove_avatar)
   end
 
 end

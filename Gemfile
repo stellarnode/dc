@@ -49,6 +49,7 @@ gem 'simple_form'
 gem 'figaro'
 gem 'omniauth'
 gem 'omniauth-facebook'
+
 gem 'carrierwave'
 gem 'cloudinary'
 
