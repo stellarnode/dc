@@ -9,6 +9,15 @@ GIT
       responders
 
 GIT
+  remote: git://github.com/carrierwaveuploader/carrierwave.git
+  revision: 16fd8536b68136c75dc7abfddaf220ef42815538
+  specs:
+    carrierwave (0.11.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
+
+GIT
   remote: git://github.com/sinatra/sinatra.git
   revision: 751f2a7a8f26a01f984cecbfe1385ecc0feda9e0
   specs:
@@ -127,12 +136,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    carrierwave (0.11.2)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      json (>= 1.7)
-      mime-types (>= 1.16)
-      mimemagic (>= 0.3.0)
     cloudinary (1.2.3)
       aws_cf_signer
       rest-client
@@ -219,7 +222,6 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mimemagic (0.3.1)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
     multi_json (1.12.1)
@@ -426,7 +428,7 @@ DEPENDENCIES
   capistrano-sidekiq
   capistrano3-puma
   capybara
-  carrierwave
+  carrierwave!
   cloudinary
   cocoon
   coffee-rails (~> 4.2)
